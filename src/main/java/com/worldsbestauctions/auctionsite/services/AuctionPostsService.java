@@ -10,6 +10,7 @@ public class AuctionPostsService {
     @Autowired
     AuctionPostRepo auctionPostRepo;
 
-
-
+    public Iterable getAll(){
+        return auctionPostRepo.findTop10ById;
+    }
 }

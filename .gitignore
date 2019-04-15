@@ -3,6 +3,8 @@ HELP.md
 /src/main/resources/static/**
 !.mvn/wrapper/maven-wrapper.jar
 
+application.properties
+
 ### STS ###
 .apt_generated
 .classpath

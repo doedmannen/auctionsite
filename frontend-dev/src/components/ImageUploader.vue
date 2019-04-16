@@ -22,11 +22,8 @@ export default {
             for(let pic of uploads){
                 this.cropAndResizeImage(pic);
             }
-            console.log(this.filestorage);
-            console.log(this.pics);
         },
         fileToBase64(file){
-            console.log(file);
             let reader = new FileReader();
             reader.readAsDataURL(file)
             reader.onload = (e) => {
@@ -56,8 +53,6 @@ export default {
                 cy = height || defaulty;
                 cvs.width = cx;
                 cvs.height = cy;
-                // ctx.fillStyle = 'white';
-                // ctx.fillRect(0,0, cx, cy);
                 s = cx / image.width;
                 s = (image.height * s) > cy ? cy / image.height : s;
                 ix = image.width;
@@ -114,8 +109,6 @@ export default {
 
 <style lang="css" scoped>
 .uploadPic{
-    max-height: 150px;
-    max-width: 200px;
     display: inline-block;
 }
 .pictureFrame{

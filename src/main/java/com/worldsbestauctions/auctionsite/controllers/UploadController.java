@@ -13,25 +13,29 @@ import java.util.UUID;
 public class UploadController {
 
     private final String currentDir = System.getProperty("user.dir");
-    private final String uploadDir = currentDir + "/src/main/resources/static/assets/img/";
+    private final String pathForFullsize = currentDir + "/src/main/resources/static/assets/img/";
+    private final String pathForThumbnail = currentDir + "/src/main/resources/static/assets/img/thumbnail/";
 
     @PostConstruct
     void createUploadDir(){
-        File path = new File(uploadDir);
-        if (!path.exists()) path.mkdirs();
+        File[] paths = {new File(pathForFullsize), new File(pathForThumbnail)};
+        for(File path : paths){
+            if (!path.exists()) path.mkdirs();
+        }
     }
 
     @PostMapping
-    String uploadPicture(@RequestParam("file") MultipartFile file){
+    String uploadPicture(@RequestParam("fullsize") MultipartFile fullsize, @RequestParam("thumbnail") MultipartFile thumbnail){
         System.out.println("new file got sent to us");
-        System.out.println(file.getContentType());
-//        String[] allowedContent = {"image/png"};
-//        if(!file.getContentType().matches("^"+String.join("|", allowedContent)+".*$"));
+        System.out.println(fullsize.getContentType());
+
         String filename = UUID.randomUUID().toString().
-                concat(file.getOriginalFilename().replaceAll("^.*(\\.[\\w]{3,4})$", "$1"));
-        File path = new File(uploadDir + filename);
+                concat(fullsize.getOriginalFilename().replaceAll("^.*(\\.[\\w]{3,4})$", "$1"));
+        File pathFullsize = new File(pathForFullsize + filename);
+        File pathThumbnail = new File(pathForThumbnail + filename);
         try{
-            file.transferTo(path);
+            fullsize.transferTo(pathFullsize);
+            thumbnail.transferTo(pathThumbnail);
         }catch (Exception e){ return null; }
         return filename;
     }

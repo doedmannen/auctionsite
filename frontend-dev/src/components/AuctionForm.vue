@@ -33,17 +33,21 @@ export default {
             }
             console.log(this.filestorage);
 
-            let data = new FormData();
-            data.append('file', this.filestorage[0])
-
-            let responseFromServer = await fetch('/api/upload/', {
-                method: 'POST',
-                body: data
-            });
-
-            responseFromServer = await responseFromServer.text();
-            console.log(responseFromServer);
-
+            // Upload files to the backend and get filenames
+            for(let file of this.filestorage){
+                // Append formdata
+                let data = new FormData();
+                data.append('fullsize', file.fullsize);
+                data.append('thumbnail', file.thumbnail);
+                // Send files
+                let responseFromServer = await fetch('/api/upload/', {
+                    method: 'POST',
+                    body: data
+                });
+                responseFromServer = await responseFromServer.text();
+                // log the path/filename
+                console.log(responseFromServer);
+            }
             return true;
         }
     },

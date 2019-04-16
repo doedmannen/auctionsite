@@ -21,9 +21,20 @@ public class Auctions {
     @JoinColumn(name="auctionowner")
     private Users users;
 
+
+    @ManyToOne
+    @JoinColumn(name="auctionid", referencedColumnName = "auctionid", insertable = false, updatable = false)
+    private Images images;
+
+    public Images getImages() {
+        return images;
+    }
+
     public Users getUsers() {
         return users;
     }
+
+
 
     public void setAuctionid(long auctionid) {
         this.auctionid = auctionid;

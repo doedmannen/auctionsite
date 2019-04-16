@@ -2,20 +2,22 @@
     <div class="home">
         <router-view/>
         <Header/>
-        <h1 class="logo">Sell your stuff!</h1>
-        <p>Wow, an auction site! Check out some auctions below. Information and etc and blah blah. </p>
-        <div class="mainFlex" v-for="(auction, index) in auctions" :key="index">
-            <a :href="auction.url" class="flexSection">
-                <div>
-                    <p class="title">{{ auction.title }}</p>
-                    <summary>{{ auction.description }}</summary>
-                    <div class="flex">
-                        <a :href="auction.sellerProfile"><p>Seller: {{ auction.seller }}</p></a>
-                        <p class="currBid">{{ auction.currBid }}</p>
+        <div class="body">
+            <h1 class="logo">Sell your stuff!</h1>
+            <p>Wow, an auction site! Check out some auctions below. Information and etc and blah blah. </p>
+            <div class="mainFlex" v-for="(auction, index) in auctions" :key="index">
+                <a :href="auction.url" class="flexSection">
+                    <div>
+                        <p class="title">{{ auction.title }}</p>
+                        <summary>{{ auction.description }}</summary>
+                        <div class="flex">
+                            <a :href="auction.sellerProfile"><p>Seller: {{ auction.seller }}</p></a>
+                            <p class="currBid">{{ auction.currBid }}</p>
+                        </div>
                     </div>
-                </div>
-                <img :src="auction.image" id="image">
-            </a>
+                    <img :src="auction.image" id="image">
+                </a>
+            </div>
         </div>
         <Footer/>
     </div>
@@ -68,11 +70,6 @@
 </script>
 
 <style scoped>
-
-    * {
-        font-family: 'Oxygen', sans-serif;
-    }
-
     .logo {
         font-family: 'Bungee Inline', cursive;
     }
@@ -86,7 +83,11 @@
     }
 
     .home {
-        margin-bottom: 75px;
+        padding-bottom: 75px;
+    }
+
+    .body {
+        margin-top: 2em;
     }
 
     .mainFlex {

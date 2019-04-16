@@ -1,7 +1,6 @@
 package com.worldsbestauctions.auctionsite.entities;
 
 import javax.persistence.*;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Entity
@@ -17,6 +16,9 @@ public class Auctions {
     private double startprice;
     private Date starttime;
     private Date endtime;
+
+    @JoinColumn(name="userid")
+    private Users user;
 
     public void setAuctionid(long auctionid) {
         this.auctionid = auctionid;
@@ -40,14 +42,6 @@ public class Auctions {
 
     public String getDescription() {
         return description;
-    }
-
-    public void setAuctionowner(int auctionowner) {
-        this.auctionowner = auctionowner;
-    }
-
-    public int getAuctionowner() {
-        return auctionowner;
     }
 
     public void setCategory(int category) {
@@ -81,4 +75,6 @@ public class Auctions {
     public Date getEndtime() {
         return endtime;
     }
+
+
 }

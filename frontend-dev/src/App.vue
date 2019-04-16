@@ -4,6 +4,16 @@
     </div>
 </template>
 
+<script>
+export default {
+  name: "App",
+  created() {
+    this.$store.dispatch("getPostsFromDb");
+  }
+};
+
+</script>
+
 <style>
     #app {
         font-family: 'Oxygen', sans-serif;

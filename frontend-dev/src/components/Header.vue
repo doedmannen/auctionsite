@@ -11,13 +11,15 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropdown
+                        Find auctions!
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Active</a>
+                        <a class="dropdown-item" href="#">Completed</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                        <div v-for="(category, index) in categories" :key="index">
+                            <a :href="category.url" class="dropdown-item">{{ category.name }}</a>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -33,7 +35,36 @@
 <script>
     export default {
         name: "Header",
-        props: {}
+        data() {
+            return {
+                categories: [
+                    {
+                        name: "Vehicles",
+                        url: "/vehicles"
+                    },
+                    {
+                        name: "Fashion",
+                        url: "/fashion"
+                    },
+                    {
+                        name: "Electronics",
+                        url: "/health"
+                    },
+                    {
+                        name: "Collectibles",
+                        url: "/health"
+                    },
+                    {
+                        name: "Home and Garden",
+                        url: "/health"
+                    },
+                    {
+                        name: "Sporting Goods",
+                        url: "/health"
+                        //etc etc more categories
+                    }]
+            }
+        }
     };
 </script>
 

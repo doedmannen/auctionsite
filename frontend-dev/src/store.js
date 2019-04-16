@@ -5,10 +5,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-
+      currentUploads: []
   },
   mutations: {
-
+      addUpload(state, value){
+          state.currentUploads.push(value);
+        },
+      clearUploads(state, value){
+          state.currentUploads = [];
+      }
   },
   actions: {
 

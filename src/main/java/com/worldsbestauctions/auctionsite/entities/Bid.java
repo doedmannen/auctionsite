@@ -1,17 +1,15 @@
 package com.worldsbestauctions.auctionsite.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import java.sql.Date;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Bid {
 
+    @Id
     private int userId;
     private int auctionId;
     private double bidAmount;
-    @Temporal(TemporalType.TIMESTAMP)
     private Date bidTime;
 
     public void setUserId(int userId) {
@@ -38,11 +36,5 @@ public class Bid {
         return bidAmount;
     }
 
-    public void setBidTime(Date bidTime) {
-        this.bidTime = bidTime;
-    }
 
-    public Date getBidTime() {
-        return bidTime;
-    }
 }

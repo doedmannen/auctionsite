@@ -8,6 +8,8 @@ import javax.persistence.Id;
 @Entity
 public class Image {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int auctionId;
     private String path;
 

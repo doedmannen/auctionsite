@@ -1,8 +1,8 @@
 package com.worldsbestauctions.auctionsite.entities;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @Entity
 public class AuctionPost {
@@ -15,9 +15,7 @@ public class AuctionPost {
     private String description;
     private int category;
     private double startPrice;
-    @Temporal(TemporalType.TIMESTAMP)
     private Date startTime;
-    @Temporal(TemporalType.TIMESTAMP)
     private Date endTime;
 
     public long getId() {
@@ -64,19 +62,5 @@ public class AuctionPost {
         return startPrice;
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
 
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
 }

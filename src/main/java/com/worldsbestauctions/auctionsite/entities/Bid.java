@@ -7,33 +7,33 @@ import java.util.Date;
 public class Bid {
 
     @Id
-    private int userId;
-    private int auctionId;
-    private double bidAmount;
-    private Date bidTime;
+    private int userid;
+    private int auctionid;
+    private double bidamount;
+    private Date bidtime;
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUserid(int userid) {
+        this.userid = userid;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getUserid() {
+        return userid;
     }
 
-    public void setAuctionId(int auctionId) {
-        this.auctionId = auctionId;
+    public void setAuctionid(int auctionid) {
+        this.auctionid = auctionid;
     }
 
-    public int getAuctionId() {
-        return auctionId;
+    public int getAuctionid() {
+        return auctionid;
     }
 
-    public void setBidAmount(double bidAmount) {
-        this.bidAmount = bidAmount;
+    public void setBidamount(double bidamount) {
+        this.bidamount = bidamount;
     }
 
-    public double getBidAmount() {
-        return bidAmount;
+    public double getBidamount() {
+        return bidamount;
     }
 
 

@@ -9,7 +9,7 @@ public class Auctions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long auctionid;
-    private int auctionowner;
+   // private int auctionowner;
     private String title;
     private String description;
     private int category;
@@ -17,8 +17,13 @@ public class Auctions {
     private Date starttime;
     private Date endtime;
 
-    @JoinColumn(name="userid")
-    private Users user;
+    @ManyToOne
+    @JoinColumn(name="auctionowner")
+    private Users users;
+
+    public Users getUsers() {
+        return users;
+    }
 
     public void setAuctionid(long auctionid) {
         this.auctionid = auctionid;

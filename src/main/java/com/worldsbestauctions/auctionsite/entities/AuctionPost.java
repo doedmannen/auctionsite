@@ -1,10 +1,8 @@
 package com.worldsbestauctions.auctionsite.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 public class AuctionPost {
@@ -17,7 +15,9 @@ public class AuctionPost {
     private String description;
     private int category;
     private double startPrice;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date startTime;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date endTime;
 
     public long getId() {

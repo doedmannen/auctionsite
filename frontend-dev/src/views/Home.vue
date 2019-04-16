@@ -1,7 +1,6 @@
 <template>
     <div class="home">
         <router-view/>
-        <Header/>
         <div class="body">
             <h1 class="logo">Sell your stuff!</h1>
             <p>Wow, an auction site! Check out some auctions below. Information and etc and blah blah. </p>

@@ -42,8 +42,6 @@ public class Auctions {
         return images.stream().map(Images::getPath).toArray(String[]::new);
     }
 
-
-
     public void setAuctionid(long auctionid) {
         this.auctionid = auctionid;
     }

@@ -10,11 +10,9 @@ public class AuctionService {
     @Autowired
     AuctionRepo auctionPostRepo;
 
-    /*public Iterable getTopTen(){
-        return auctionPostRepo.findTop10ById;
-    }*/
 
-    public Iterable getAll(){
-        return auctionPostRepo.findAll();
+
+    public Iterable getTopTen(){
+        return auctionPostRepo.findTop10ByOrderByAuctionidDesc();
     }
 }

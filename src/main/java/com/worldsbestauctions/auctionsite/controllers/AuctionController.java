@@ -22,6 +22,6 @@ public class AuctionController {
 
     @GetMapping
     Iterable<Auctions> getAll(){
-        return auctionPostsService.getAll();
+        return auctionPostsService.getTopTen();
     }
 }

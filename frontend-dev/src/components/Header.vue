@@ -38,6 +38,14 @@
                             <p class="logo">Create an account</p></div>
                         <form role="form" autocomplete="off">
                             <div class="form-group">
+                                <input type="name" name="register_first" class="form-control"
+                                       placeholder="First name" value="Kate">
+                            </div>
+                            <div class="form-group">
+                                <input type="name" name="register_last" class="form-control"
+                                       placeholder="Last name" value="Curran">
+                            </div>
+                            <div class="form-group">
                                 <input type="email" name="register_email" class="form-control"
                                        placeholder="Email Address" value="curran.kate@gmail.com">
                             </div>
@@ -52,7 +60,9 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-6 col-xs-offset-3">
-                                        <button v-on:click="createNewUser" type="button" class="btn btn-center">Register</button>
+                                        <button v-on:click="createNewUser" type="button" class="btn btn-center">
+                                            Register
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -84,7 +94,8 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-5">
-                                        <button v-on:click="loginUser" type="button" class="btn btn-center">Submit</button>
+                                        <button v-on:click="loginUser" type="button" class="btn btn-center">Submit
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -120,12 +131,13 @@
             }
         },
         methods: {
-            async createNewUser(){
-                let data = {
-                }
-                    data.email = document.getElementsByName('register_email').value;
-                    data.password = document.getElementsByName('register_pass').value;
-                    data.confirm_pass = document.getElementsByName('confirm_pass').value;
+            async createNewUser() {
+                let data = {}
+                data.first = document.getElementsByName('register_first').value;
+                data.last = document.getElementsByName('register_last').value;
+                data.email = document.getElementsByName('register_email').value;
+                data.password = document.getElementsByName('register_pass').value;
+                data.confirm_pass = document.getElementsByName('confirm_pass').value;
 
                 let responseFromBackend = await fetch('/api/user/login', {
                     method: "POST",
@@ -138,9 +150,8 @@
                 console.log(responseFromBackend);
             },
 
-            async loginUser(){
-                let data = {
-                }
+            async loginUser() {
+                let data = {}
                 data.email = document.getElementsByName('register_email').value;
                 data.password = document.getElementsByName('register_pass').value;
 
@@ -153,7 +164,7 @@
                 });
                 responseFromBackend = await responseFromBackend.text();
                 console.log(responseFromBackend);
-            }
+            },
         }
     };
 </script>

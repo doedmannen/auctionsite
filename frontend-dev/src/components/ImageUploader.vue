@@ -38,12 +38,12 @@ export default {
                 image.onload = () => {
                     let large = this.canvasToFile(image);
                     let thumb = this.canvasToFile(image, 160, 120);
-                    this.$store.commit('addUpload', {fullsize: large._v, thumbnail: thumb._v})
+                    this.$store.commit('addUpload', {fullsize: large, thumbnail: thumb})
                 }
                 image.src = e.target.result;
             }
         },
-        async canvasToFile(image, width, height){
+        canvasToFile(image, width, height){
                 let s, cx, cy, ix, iy, cvs, ctx, defaultx, defaulty;
                 cvs = document.createElement("canvas");
                 ctx = cvs.getContext("2d");

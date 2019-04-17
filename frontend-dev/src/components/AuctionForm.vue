@@ -22,16 +22,19 @@ export default {
         ImageUploader: () => import('@/components/ImageUploader.vue')
     },
     methods:{
-        createAuction(){
-            this.uploadPictures();
-
+        async createAuction(){
+            let auction = {};
+            auction.title = document.getElementsByName('aucTitle')[0].value;
+            auction.description = document.getElementsByName('aucDescription')[0].value;
+            auction.images = await this.uploadPictures();
+            console.log(auction);
         },
         async uploadPictures(){
+            let imagePaths = [];
+
             if(this.filestorage.length < 1){
-                console.log("No files to upload");
-                return false;
+                return null;
             }
-            console.log(this.filestorage);
 
             // Upload files to the backend and get filenames
             for(let file of this.filestorage){
@@ -45,10 +48,11 @@ export default {
                     body: data
                 });
                 responseFromServer = await responseFromServer.text();
-                // log the path/filename
-                console.log(responseFromServer);
+                imagePaths.push( {'path': responseFromServer} );
+                if(imagePaths.length > 4) break; 
             }
-            return true;
+            // console.log(imagePaths);
+            return imagePaths;
         }
     },
     computed: {

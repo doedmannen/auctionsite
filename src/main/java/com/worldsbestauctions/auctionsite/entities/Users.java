@@ -1,18 +1,22 @@
 package com.worldsbestauctions.auctionsite.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Users {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userid;
     private String email;
     private String firstname;
     private String lastname;
     private String password;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade={CascadeType.ALL})
+    @JoinColumn(name="auctionowner")
+    private Set<Auctions> roles;
 
     public void setUserid(long userid) {
         this.userid = userid;

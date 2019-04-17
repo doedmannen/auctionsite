@@ -11,7 +11,7 @@
             <p class="title">{{ auction.title }}</p>
             <summary>{{ auction.description }}</summary>
             <p>{{auction.users.firstname}}</p>
-            <p>{{auction.images.path}}</p>
+            <p>{{auction.images.path[0]}}</p>
           </div>
       </div>
 

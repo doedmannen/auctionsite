@@ -1,12 +1,13 @@
 package com.worldsbestauctions.auctionsite.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-public class User {
+public class Users {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userid;
     private String email;
     private String firstname;

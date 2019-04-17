@@ -1,11 +1,11 @@
 <template>
     <div class="home">
         <router-view/>
-        <Header/>
         <div class="body">
             <h1 class="logo">Sell your stuff!</h1>
-            <p>Wow, an auction site! Check out some auctions below. Information and etc and blah blah. </p>
-            <div class="mainFlex" v-for="(auction, index) in auctions" :key="index">
+            <p>Wow, an auction site! Check out some auctions below, select a category or search for exactly what you want. </p>
+            <input class="searchBox" type="text" v-model="searchAuctions" placeholder="Search">
+            <div class="mainFlex" v-for="(auction, index) in filteredAuctions" :key="index">
                 <a :href="auction.url" class="flexSection">
                     <div>
                         <p class="title">{{ auction.title }}</p>
@@ -24,17 +24,12 @@
 </template>
 
 <script>
-    import Header from "@/components/Header.vue";
-    import Footer from "@/components/Footer.vue";
 
     export default {
         name: 'home',
-        components: {
-            Header,
-            Footer
-        },
         data() {
             return {
+                searchAuctions: "",
                 auctions: [
                     {
                         title: "Jerboas",
@@ -43,27 +38,42 @@
                         image: "https://i.pinimg.com/originals/62/db/ee/62dbee7f3c8ae9c12dffa59f7ded1dc9.jpg",
                         description: "Here's this thing and it's just so cute and so interesting. Just look at those ears. I wonder if they make good pets.",
                         url: "/auctionId",
-                        sellerProfile: "/sellerProfile"
+                        sellerProfile: "/sellerProfile",
+                        category: ""
                     },
                     {
-                        title: "Jerboas",
+                        title: "Very cute ocelots",
                         currBid: "400 SEK",
                         seller: "Daniel Radcliffe",
                         image: "https://i.pinimg.com/originals/62/db/ee/62dbee7f3c8ae9c12dffa59f7ded1dc9.jpg",
-                        description: "Here's this thing and it's just so cute and so interesting. Just look at those ears. I wonder if they make good pets.",
+                        description: "Here's this thing and it's just so cute and so wow. Just look at those ears. I wonder if they make good pets.",
                         url: "/auctionId",
-                        sellerProfile: "/sellerProfile"
-
+                        sellerProfile: "/sellerProfile",
+                        category: ""
                     },
                     {
-                        title: "Jerboas",
+                        title: "Mouse lemurs - cute",
                         currBid: "400 SEK",
                         seller: "Daniel Radcliffe",
                         image: "https://i.pinimg.com/originals/62/db/ee/62dbee7f3c8ae9c12dffa59f7ded1dc9.jpg",
-                        description: "Here's this thing and it's just so cute and so interesting. Just look at those ears. I wonder if they make good pets.",
+                        description: "Here's this thing and it's just so cute and so fascinating. Just look at those ears. I wonder if they make good pets.",
                         url: "/auctionId",
-                        sellerProfile: "/sellerProfile"
+                        sellerProfile: "/sellerProfile",
+                        category: "pets"
                     }]
+            };
+        },
+        computed: {
+            filteredAuctions: function() {
+                return this.auctions.filter((auction) => {
+                    return auction.title.toLowerCase().match(this.searchAuctions) || auction.description.toLowerCase().match(this.searchAuctions);
+                })
+            }
+        },
+       methods: {
+            auctionsByCategory(category) {
+                this.category = category;
+                return this.auctions.filter(el => el.category.match(category));
             }
         }
     };
@@ -133,4 +143,7 @@
         font-size: 1.5em;
     }
 
+    .searchBox {
+        margin-bottom: 2em;
+    }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <nav class="navbar navbar-expand-lg">
-        <a class="navbar-brand" href="/" id="logo">Auction Site</a>
+        <a class="navbar-brand logo" href="/">Auction Site</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -35,7 +35,7 @@
                 <ul class="dropdown-menu" role="menu">
                     <div class="col-lg-12">
                         <div class="text-center">
-                            <p>Create an account</p></div>
+                            <p class="logo">Create an account</p></div>
                         <form role="form" autocomplete="off">
                             <div class="form-group">
                                 <input type="text" name="username" tabindex="1"
@@ -56,7 +56,8 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-6 col-xs-offset-3">
-                                        <input type="submit"id="register-submit" class="btn btn-dark btn-center" value="Register Now">
+                                        <input type="submit" id="register-submit" class="btn btn-center"
+                                               value="Register Now">
                                     </div>
                                 </div>
                             </div>
@@ -71,7 +72,7 @@
                 <ul class="dropdown-menu dropdown-menu-lg-left" role="menu">
                     <div class="col-lg-12">
                         <div class="text-center">
-                            <p>Log In</p></div>
+                            <p class="logo">Log In</p></div>
                         <form role="form" autocomplete="off">
                             <div class="form-group">
                                 <label for="username">Username</label>
@@ -88,7 +89,8 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-5">
-                                        <input type="submit" id="login-submit" class="btn btn-dark btn-center" value="Log In">
+                                        <input type="submit" id="login-submit" class="btn btn-center"
+                                               value="Log In">
                                     </div>
                                 </div>
                             </div>
@@ -142,22 +144,27 @@
 </script>
 
 <style scoped>
+
+    * {
+        color: rgb(32, 64, 96);
+    }
+
     a {
-        color: black;
+        color: rgb(32, 64, 96);
     }
 
     .navbar {
         background-color: rgb(126, 199, 199);
     }
 
-    #logo {
+    .logo {
         font-family: 'Bungee Inline', cursive;
         font-size: 2em;
-        color: black;
     }
 
     .fas {
         font-size: 1.75em;
+        color: rgb(32, 64, 96);
     }
 
     .spacing {
@@ -174,5 +181,7 @@
 
     .btn-center {
         margin-left: 1em;
+        background-color: rgb(32, 64, 96);
+        color:rgb(126, 199, 199);
     }
 </style>

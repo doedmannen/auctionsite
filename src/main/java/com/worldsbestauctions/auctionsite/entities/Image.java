@@ -10,15 +10,15 @@ public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int auctionId;
+    private int auctionid;
     private String path;
 
-    public void setAuctionId(int auctionId) {
-        this.auctionId = auctionId;
+    public void setAuctionid(int auctionid) {
+        this.auctionid = auctionid;
     }
 
-    public int getAuctionId() {
-        return auctionId;
+    public int getAuctionid() {
+        return auctionid;
     }
 
     public void setPath(String path) {

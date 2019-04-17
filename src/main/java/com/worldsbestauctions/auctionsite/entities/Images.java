@@ -8,8 +8,8 @@ import javax.persistence.Id;
 @Entity
 public class Images {
 
-    private int auctionid;
     @Id
+    private int auctionid;
     private String path;
 
     public void setAuctionid(int auctionid) {

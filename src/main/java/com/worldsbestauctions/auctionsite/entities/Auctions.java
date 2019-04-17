@@ -1,6 +1,7 @@
 package com.worldsbestauctions.auctionsite.entities;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,23 +17,29 @@ public class Auctions {
     private String description;
     private int category;
     private double startprice;
-    private Date starttime;
-    private Date endtime;
+    private LocalDateTime starttime;
+    private LocalDateTime endtime;
 
     @ManyToOne
-    @JoinColumn(name="auctionowner")
+    @JoinColumn(name = "auctionowner")
     private Users users;
 
+    public Users getUsers() {
+        return users;
+    }
+
+    @OneToMany(mappedBy = "auctionid")
+    private List<Bids> bids;
+
+    public List<Bids> getBids() {
+        return bids;
+    }
 
     @OneToMany(mappedBy = "auctionid")
     private List<Images> images;
 
     public String[] getImages() {
         return images.stream().map(Images::getPath).toArray(String[]::new);
-    }
-
-    public Users getUsers() {
-        return users;
     }
 
 
@@ -77,21 +84,19 @@ public class Auctions {
         return startprice;
     }
 
-    public void setStarttime(Date starttime) {
+    public void setStarttime(LocalDateTime starttime) {
         this.starttime = starttime;
     }
 
-    public Date getStarttime() {
+    public LocalDateTime getStarttime() {
         return starttime;
     }
 
-    public void setEndtime(Date endtime) {
+    public void setEndtime(LocalDateTime endtime) {
         this.endtime = endtime;
     }
 
-    public Date getEndtime() {
+    public LocalDateTime getEndtime() {
         return endtime;
     }
-
-
 }

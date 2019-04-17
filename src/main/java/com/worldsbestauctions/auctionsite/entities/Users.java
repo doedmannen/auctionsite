@@ -14,10 +14,6 @@ public class Users {
     private String lastname;
     private String password;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade={CascadeType.ALL})
-    @JoinColumn(name="auctionowner")
-    private Set<Auctions> roles;
-
     public void setUserid(long userid) {
         this.userid = userid;
     }

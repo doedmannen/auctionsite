@@ -1,6 +1,5 @@
 <template>
     <div>
-        <Header/>
         <b-container class="mainContainer" fluid>
             <b-row>
                 <b-col cols="2">
@@ -15,7 +14,7 @@
                                         v-for="slide in slides"
                                         class='slide'
                                         :key="slide.id">
-                                    <img alt="nope"/>
+                                    <img src="https://www.w3schools.com/w3css/img_lights.jpg" alt="nope"/>
                                 </div>
                             </transition-group>
                             <div class='carousel-controls'>
@@ -24,12 +23,12 @@
                             </div>
                         </div>
                     </template>
-                    <div v-for="auction in auctionPosts">
-                        {{auction.description}}</div></b-col>
+                    <div>
+                       </div></b-col>
                 <b-col cols="4"><div>
                     <b-jumbotron>
                         <template slot="lead">
-                            Leading bid {highestBid}
+                            Leading bid {{auctionPost.description}}
                         </template>
 
                         <hr class="my-4">
@@ -59,14 +58,12 @@
 </template>
 
 <script>
-    import Header from "../components/Header";
 
     export default {
         name: "SingleAuction",
-        components: {Header},
         computed: {
-            auctionPosts() {
-                return this.$store.state.auctionPosts;
+            auctionPost() {
+                return this.$store.state.auctionPosts.filter(auction => auction.auctionid == this.$route.params.auctionid)[0]
             }
         },
         data () {
@@ -104,6 +101,10 @@
                 const last = this.slides.pop()
                 this.slides = [last].concat(this.slides)
             }
+        },
+        mounted() {
+            console.log(this.$route.params)
+            console.log(this.auctionPost)
         }
     }
 </script>

@@ -11,16 +11,15 @@
     import Footer from "@/components/Footer.vue";
 
     export default {
-        name: "app",
+        name: "App",
         components: {
             Header,
             Footer
+        },
+        created() {
+            this.$store.dispatch("getPostsFromDb");
         }
-
-  created() {
-    this.$store.dispatch("getPostsFromDb");
-  }
-};
+    };
 
 </script>
 

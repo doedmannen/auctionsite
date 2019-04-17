@@ -12,7 +12,7 @@ public class Auctions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long auctionid;
-   // private int auctionowner;
+    private int auctionowner;
     private String title;
     private String description;
     private int category;
@@ -21,7 +21,7 @@ public class Auctions {
     private LocalDateTime endtime;
 
     @ManyToOne
-    @JoinColumn(name = "auctionowner")
+    @JoinColumn(name = "auctionowner", referencedColumnName = "userid", insertable = false, updatable = false)
     private Users users;
 
     public Users getUsers() {
@@ -34,10 +34,6 @@ public class Auctions {
     public List<Bids> getBids() {
         return bids;
     }
-
-    /*public double[] getBidAmount() {
-        return bids.stream().map(Bids::getBidamount).toArray(double[]::new);
-    }*/
 
     @OneToMany(mappedBy = "auctionid")
     private List<Images> images;

@@ -18,8 +18,8 @@
                         <a class="dropdown-item" href="#">Active</a>
                         <a class="dropdown-item" href="#">Completed</a>
                         <div class="dropdown-divider"></div>
-                        <div v-for="(category, index) in categories" :key="index">
-                            <a :href="category.url" class="dropdown-item">{{ category.name }}</a>
+                        <div v-for="(category, index) in auctionCategories" :key="index">
+                            <a href="" class="dropdown-item">{{ category.categoryname }}</a>
                         </div>
                     </div>
                 </li>
@@ -114,20 +114,13 @@
         data() {
             return {
                 searchAuctions: "",
-                categories: [
-                    {
-                        name: "Vehicles",
-                        url: "/vehicles"
-                    },
-                    {
-                        name: "Fashion",
-                        url: "/fashion"
-                    },
-                    {
-                        name: "Sporting Goods",
-                        url: "/health"
-                        //etc etc more categories from db
-                    }]
+            }
+        },
+        computed: {
+            auctionCategories() {
+                console.log(this.$store.state.auctionCategories);
+                return this.$store.state.auctionCategories;
+
             }
         },
         methods: {

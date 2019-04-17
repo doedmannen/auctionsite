@@ -18,6 +18,7 @@
         },
         created() {
             this.$store.dispatch("getPostsFromDb");
+            this.$store.dispatch("getCategoriesFromDb");
         }
     };
 

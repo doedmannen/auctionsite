@@ -38,26 +38,21 @@
                             <p class="logo">Create an account</p></div>
                         <form role="form" autocomplete="off">
                             <div class="form-group">
-                                <input type="text" name="username" tabindex="1"
-                                       class="form-control" placeholder="Username" value="">
+                                <input type="email" name="register_email" class="form-control"
+                                       placeholder="Email Address" value="curran.kate@gmail.com">
                             </div>
                             <div class="form-group">
-                                <input type="email" name="email" tabindex="1" class="form-control"
-                                       placeholder="Email Address" value="">
+                                <input type="password" name="register_pass"
+                                       class="form-control" placeholder="Password" value="test">
                             </div>
                             <div class="form-group">
-                                <input type="password" name="password" tabindex="2"
-                                       class="form-control" placeholder="Password">
-                            </div>
-                            <div class="form-group">
-                                <input type="password" name="confirm-password" id="confirm-password"
-                                       tabindex="2" class="form-control" placeholder="Confirm Password">
+                                <input type="password" name="confirm_pass"
+                                       class="form-control" placeholder="Confirm Password" value="test">
                             </div>
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-6 col-xs-offset-3">
-                                        <input type="submit" id="register-submit" class="btn btn-center"
-                                               value="Register Now">
+                                        <button v-on:click="createNewUser" type="button" class="btn btn-center">Register</button>
                                     </div>
                                 </div>
                             </div>
@@ -75,22 +70,21 @@
                             <p class="logo">Log In</p></div>
                         <form role="form" autocomplete="off">
                             <div class="form-group">
-                                <label for="username">Username</label>
-                                <input type="text" name="username" id="username" tabindex="1"
-                                       class="form-control" placeholder="Username" value="" autocomplete="off">
+                                <label for="userEmail">Username</label>
+                                <input type="text" name="login_user" id="userEmail" tabindex="1"
+                                       class="form-control" placeholder="Email" value="" autocomplete="off">
                             </div>
 
                             <div class="form-group">
                                 <label for="password">Password</label>
-                                <input type="password" name="password" id="password" tabindex="2"
+                                <input type="password" name="login_pass" id="password" tabindex="2"
                                        class="form-control" placeholder="Password" autocomplete="off">
                             </div>
 
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-5">
-                                        <input type="submit" id="login-submit" class="btn btn-center"
-                                               value="Log In">
+                                        <button v-on:click="loginUser" type="button" class="btn btn-center">Submit</button>
                                     </div>
                                 </div>
                             </div>
@@ -98,10 +92,7 @@
                     </div>
                 </ul>
             </li>
-
-
             <a href=""><i class="fas fa-envelope spacing"></i></a>
-            </ul>
         </div>
     </nav>
 </template>
@@ -122,22 +113,46 @@
                         url: "/fashion"
                     },
                     {
-                        name: "Electronics",
-                        url: "/health"
-                    },
-                    {
-                        name: "Collectibles",
-                        url: "/health"
-                    },
-                    {
-                        name: "Home and Garden",
-                        url: "/health"
-                    },
-                    {
                         name: "Sporting Goods",
                         url: "/health"
-                        //etc etc more categories
+                        //etc etc more categories from db
                     }]
+            }
+        },
+        methods: {
+            async createNewUser(){
+                let data = {
+                }
+                    data.email = document.getElementsByName('register_email').value;
+                    data.password = document.getElementsByName('register_pass').value;
+                    data.confirm_pass = document.getElementsByName('confirm_pass').value;
+
+                let responseFromBackend = await fetch('/api/user/login', {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: {
+                        "content-type": "application/json"
+                    }
+                });
+                responseFromBackend = await responseFromBackend.text();
+                console.log(responseFromBackend);
+            },
+
+            async loginUser(){
+                let data = {
+                }
+                data.email = document.getElementsByName('register_email').value;
+                data.password = document.getElementsByName('register_pass').value;
+
+                let responseFromBackend = await fetch('/api/user/login', {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: {
+                        "content-type": "application/json"
+                    }
+                });
+                responseFromBackend = await responseFromBackend.text();
+                console.log(responseFromBackend);
             }
         }
     };
@@ -182,6 +197,6 @@
     .btn-center {
         margin-left: 1em;
         background-color: rgb(32, 64, 96);
-        color:rgb(126, 199, 199);
+        color: rgb(126, 199, 199);
     }
 </style>

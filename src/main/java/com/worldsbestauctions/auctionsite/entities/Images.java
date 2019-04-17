@@ -8,17 +8,12 @@ import javax.persistence.Id;
 @Entity
 public class Images {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int auctionid;
+    @Id
     private String path;
 
     public void setAuctionid(int auctionid) {
         this.auctionid = auctionid;
-    }
-
-    public int getAuctionid() {
-        return auctionid;
     }
 
     public void setPath(String path) {

@@ -2,6 +2,8 @@ package com.worldsbestauctions.auctionsite.entities;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class Auctions {
@@ -22,12 +24,11 @@ public class Auctions {
     private Users users;
 
 
-    @ManyToOne
-    @JoinColumn(name="auctionid", referencedColumnName = "auctionid", insertable = false, updatable = false)
-    private Images images;
+    @OneToMany(mappedBy = "auctionid")
+    private List<Images> images;
 
-    public Images getImages() {
-        return images;
+    public String[] getImages() {
+        return images.stream().map(Images::getPath).toArray(String[]::new);
     }
 
     public Users getUsers() {

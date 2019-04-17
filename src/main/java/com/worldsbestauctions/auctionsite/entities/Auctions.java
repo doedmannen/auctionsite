@@ -35,14 +35,16 @@ public class Auctions {
         return bids;
     }
 
+    /*public double[] getBidAmount() {
+        return bids.stream().map(Bids::getBidamount).toArray(double[]::new);
+    }*/
+
     @OneToMany(mappedBy = "auctionid")
     private List<Images> images;
 
     public String[] getImages() {
         return images.stream().map(Images::getPath).toArray(String[]::new);
     }
-
-
 
     public void setAuctionid(long auctionid) {
         this.auctionid = auctionid;

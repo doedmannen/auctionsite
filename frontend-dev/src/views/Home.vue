@@ -6,18 +6,19 @@
             <p>Wow, an auction site! Check out some auctions below, select a category or search for exactly what you
                 want. </p>
             <input class="searchBox" type="text" v-model="searchAuctions" placeholder="Search">
-            <div class="mainFlex" v-for="(auction, index) in filteredAuctions" :key="index">
-                <a :href="auction.url" class="flexSection">
+            <div class="mainFlex" v-for="(auction, index) in auctionPosts" :key="index">
+               <a :href="'/auction/' + auction.auctionid" class="flexSection">
                     <div>
                         <p class="title">{{ auction.title }}</p>
                         <summary>{{ auction.description }}</summary>
                         <div class="flex">
-                            <a :href="auction.sellerProfile"><p>Seller: {{ auction.seller }}</p></a>
-                            <p class="currBid">{{ auction.currBid }}</p>
+                            <a :href="auction.sellerProfile"><p>Seller: {{ auction.users.firstname }} {{ auction.users.lastname }}</p></a>
+                            <p class="currBid" v-if="auction.bids.length > 0">Price: {{ auction.bids[auction.bids.length-1].bidamount }}$ ~ Bids: {{ auction.bids.length  }}</p>
+                            <p class="currBid" v-else>Price: {{auction.startprice }}$ ~ Bids: {{ auction.bids.length  }}</p>
                         </div>
                     </div>
-                    <img :src="auction.image" id="image">
-                </a>
+                    <img :src="'/assets/img/thumbnail/'+auction.images[0]" id="image">
+                </a> 
             </div>
         </div>
     </div>
@@ -32,14 +33,16 @@
             };
         },
         computed: {
+                auctionPosts()
+                {
+                    return this.$store.state.auctionPosts;
+                },
+
             filteredAuctions: function () {
                 return this.auctions.filter((auction) => {
                     return auction.title.toLowerCase().match(this.searchAuctions) || auction.description.toLowerCase().match(this.searchAuctions);
-                }),
-                    auctionPosts()
-                {
-                    return this.$store.state.auctionPosts;
-                }
+                })
+                
             }
         },
         methods: {
@@ -91,7 +94,8 @@
         border: 1px solid #ddd;
         border-radius: 4px;
         padding: 0.5em;
-        width: 15vw;
+        width: 200px;
+        height: 160px;
         margin: 0.2em;
     }
 

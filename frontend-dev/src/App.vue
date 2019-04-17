@@ -16,7 +16,12 @@
             Header,
             Footer
         }
-    };
+
+  created() {
+    this.$store.dispatch("getPostsFromDb");
+  }
+};
+
 </script>
 
 <style>

@@ -10,7 +10,7 @@
           <div>
             <p class="title">{{ auction.title }}</p>
             <summary>{{ auction.description }}</summary>
-            <p>{{auction.users.firstname}}</p>
+            <p>{{auction.users.userid}}</p>
             <p>{{auction.images[0]}}</p>
           </div>
       </div>

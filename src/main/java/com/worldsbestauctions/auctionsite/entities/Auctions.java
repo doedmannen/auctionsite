@@ -1,8 +1,10 @@
 package com.worldsbestauctions.auctionsite.entities;
 
 import javax.persistence.*;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class Auctions {
@@ -10,13 +12,39 @@ public class Auctions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long auctionid;
-    private int auctionowner;
+   // private int auctionowner;
     private String title;
     private String description;
     private int category;
     private double startprice;
-    private Date starttime;
-    private Date endtime;
+    private LocalDateTime starttime;
+    private LocalDateTime endtime;
+
+    @ManyToOne
+    @JoinColumn(name = "auctionowner")
+    private Users users;
+
+    public Users getUsers() {
+        return users;
+    }
+
+    @OneToMany(mappedBy = "auctionid")
+    private List<Bids> bids;
+
+    public List<Bids> getBids() {
+        return bids;
+    }
+
+    /*public double[] getBidAmount() {
+        return bids.stream().map(Bids::getBidamount).toArray(double[]::new);
+    }*/
+
+    @OneToMany(mappedBy = "auctionid")
+    private List<Images> images;
+
+    public String[] getImages() {
+        return images.stream().map(Images::getPath).toArray(String[]::new);
+    }
 
     public void setAuctionid(long auctionid) {
         this.auctionid = auctionid;
@@ -42,14 +70,6 @@ public class Auctions {
         return description;
     }
 
-    public void setAuctionowner(int auctionowner) {
-        this.auctionowner = auctionowner;
-    }
-
-    public int getAuctionowner() {
-        return auctionowner;
-    }
-
     public void setCategory(int category) {
         this.category = category;
     }
@@ -66,19 +86,19 @@ public class Auctions {
         return startprice;
     }
 
-    public void setStarttime(Date starttime) {
+    public void setStarttime(LocalDateTime starttime) {
         this.starttime = starttime;
     }
 
-    public Date getStarttime() {
+    public LocalDateTime getStarttime() {
         return starttime;
     }
 
-    public void setEndtime(Date endtime) {
+    public void setEndtime(LocalDateTime endtime) {
         this.endtime = endtime;
     }
 
-    public Date getEndtime() {
+    public LocalDateTime getEndtime() {
         return endtime;
     }
 }

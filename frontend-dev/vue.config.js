@@ -1,6 +1,7 @@
 module.exports = {
   outputDir: './../src/main/resources/static/',
   assetsDir: '/assets/',
+
   devServer: {
     proxy: {
       '/api': {
@@ -14,5 +15,11 @@ module.exports = {
         changeOrigin: true
       }
     }
-  }
+  },
+
+  publicPath: undefined,
+  runtimeCompiler: undefined,
+  productionSourceMap: undefined,
+  parallel: undefined,
+  css: undefined
 }

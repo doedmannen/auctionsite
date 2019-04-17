@@ -3,85 +3,61 @@
         <router-view/>
         <div class="body">
             <h1 class="logo">Sell your stuff!</h1>
-            <p>Wow, an auction site! Check out some auctions below, select a category or search for exactly what you want. </p>
+            <p>Wow, an auction site! Check out some auctions below, select a category or search for exactly what you
+                want. </p>
             <input class="searchBox" type="text" v-model="searchAuctions" placeholder="Search">
-            <div class="mainFlex" v-for="(auction, index) in filteredAuctions" :key="index">
-                <a :href="auction.url" class="flexSection">
+            <div class="mainFlex" v-for="(auction, index) in auctionPosts" :key="index">
+               <a :href="'/auction/' + auction.auctionid" class="flexSection">
                     <div>
                         <p class="title">{{ auction.title }}</p>
                         <summary>{{ auction.description }}</summary>
                         <div class="flex">
-                            <a :href="auction.sellerProfile"><p>Seller: {{ auction.seller }}</p></a>
-                            <p class="currBid">{{ auction.currBid }}</p>
+                            <a :href="auction.sellerProfile"><p>Seller: {{ auction.users.firstname }} {{ auction.users.lastname }}</p></a>
+                            <p class="currBid" v-if="auction.bids.length > 0">Price: {{ auction.bids[auction.bids.length-1].bidamount }}$ ~ Bids: {{ auction.bids.length  }}</p>
+                            <p class="currBid" v-else>Price: {{auction.startprice }}$ ~ Bids: {{ auction.bids.length  }}</p>
                         </div>
                     </div>
-                    <img :src="auction.image" id="image">
-                </a>
+                    <img :src="'/assets/img/thumbnail/'+auction.images[0]" id="image">
+                </a> 
             </div>
         </div>
-        <Footer/>
     </div>
 </template>
 
 <script>
-
     export default {
-        name: 'home',
+        name: "home",
         data() {
             return {
-                searchAuctions: "",
-                auctions: [
-                    {
-                        title: "Jerboas",
-                        currBid: "400 SEK",
-                        seller: "Daniel Radcliffe",
-                        image: "https://i.pinimg.com/originals/62/db/ee/62dbee7f3c8ae9c12dffa59f7ded1dc9.jpg",
-                        description: "Here's this thing and it's just so cute and so interesting. Just look at those ears. I wonder if they make good pets.",
-                        url: "/auctionId",
-                        sellerProfile: "/sellerProfile",
-                        category: ""
-                    },
-                    {
-                        title: "Very cute ocelots",
-                        currBid: "400 SEK",
-                        seller: "Daniel Radcliffe",
-                        image: "https://i.pinimg.com/originals/62/db/ee/62dbee7f3c8ae9c12dffa59f7ded1dc9.jpg",
-                        description: "Here's this thing and it's just so cute and so wow. Just look at those ears. I wonder if they make good pets.",
-                        url: "/auctionId",
-                        sellerProfile: "/sellerProfile",
-                        category: ""
-                    },
-                    {
-                        title: "Mouse lemurs - cute",
-                        currBid: "400 SEK",
-                        seller: "Daniel Radcliffe",
-                        image: "https://i.pinimg.com/originals/62/db/ee/62dbee7f3c8ae9c12dffa59f7ded1dc9.jpg",
-                        description: "Here's this thing and it's just so cute and so fascinating. Just look at those ears. I wonder if they make good pets.",
-                        url: "/auctionId",
-                        sellerProfile: "/sellerProfile",
-                        category: "pets"
-                    }]
+                searchAuctions: ""
             };
         },
         computed: {
-            filteredAuctions: function() {
+                auctionPosts()
+                {
+                    return this.$store.state.auctionPosts;
+                },
+
+            filteredAuctions: function () {
                 return this.auctions.filter((auction) => {
                     return auction.title.toLowerCase().match(this.searchAuctions) || auction.description.toLowerCase().match(this.searchAuctions);
                 })
+                
             }
         },
-       methods: {
+        methods: {
             auctionsByCategory(category) {
                 this.category = category;
                 return this.auctions.filter(el => el.category.match(category));
             }
         }
     };
+
 </script>
 
 <style scoped>
     .logo {
-        font-family: 'Bungee Inline', cursive;
+        font-family: "Bungee Inline", cursive;
     }
 
     a {
@@ -117,9 +93,10 @@
     #image {
         border: 1px solid #ddd;
         border-radius: 4px;
-        padding: .5em;
-        width: 15vw;
-        margin: .2em;
+        padding: 0.5em;
+        width: 200px;
+        height: 160px;
+        margin: 0.2em;
     }
 
     .flex {

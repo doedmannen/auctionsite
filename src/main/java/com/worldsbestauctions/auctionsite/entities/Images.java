@@ -8,9 +8,15 @@ import javax.persistence.Id;
 @Entity
 public class Images {
 
-    private int auctionid;
+    private long auctionid;
     @Id
     private String path;
+
+    public Images(){}
+    public Images(long auctionid, String path){
+        this.auctionid = auctionid;
+        this.path = path;
+    }
 
     public void setAuctionid(int auctionid) {
         this.auctionid = auctionid;

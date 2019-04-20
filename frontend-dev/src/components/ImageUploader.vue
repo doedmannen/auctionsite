@@ -1,6 +1,9 @@
 <template lang="html">
   <div>
-      <input type="file" name="files2upload" accept="image/*" multiple required @change="loadImages">
+      <label class="filePointer" for="poweif23">
+          <span>&#x1f4c1; Click here to upload pictures (max 5)</span>
+          <input type="file" name="files2upload" id="poweif23" accept="image/*" multiple required @change="loadImages" style="display: none">
+      </label>
 
       <div v-if="this.thumbnailPreview.length > 0" class="pictureFrame">
           <figure v-for="(elem) of this.thumbnailPreview" class="uploadPic" >
@@ -14,6 +17,10 @@
 <script>
 export default {
     name: 'ImageUploader',
+    mounted() {
+        this.pics = [];
+        this.$store.commit('clearUploads');
+    },
     methods: {
         async loadImages() {
             this.pics = [];
@@ -70,6 +77,8 @@ export default {
                 ix = ix * s;
                 iy = iy * s;
             }
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0,0,cx,cy)
             // Get image into canvas
             ctx.drawImage(image,
                 (cx / 2 - ix / 2),
@@ -125,7 +134,8 @@ export default {
 .uploadPic{
     display: inline-block;
 }
-.pictureFrame{
+.filePointer{
+    cursor: pointer;
 }
 img{
     width: 100%;

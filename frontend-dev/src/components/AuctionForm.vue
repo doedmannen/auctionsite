@@ -2,12 +2,12 @@
     <div>
         <div>
             <h2>Title</h2>
-            <span v-if="this.formErrors && this.formErrors.title">There are errors here</span>
+            <p class="errorText" v-if="this.formErrors && this.formErrors.title">You must provide a selling title</p>
             <input type="text" size="20" placeholder="A selling title" name="aucTitle">
         </div>
         <div>
             <h2>Description</h2>
-            <span v-if="this.formErrors && this.formErrors.description">There are errors here</span>
+            <p class="errorText" v-if="this.formErrors && this.formErrors.description">You must provide a selling description</p>
             <textarea name="aucDescription" placeholder="Some selling arguments for your item..." rows="8" cols="80"></textarea>
         </div>
         <div>
@@ -22,10 +22,11 @@
         </div>
         <div>
             <h2>Files</h2>
+            <span class="errorText" v-if="this.formErrors && this.formErrors.images">Auctions need pictures</span>
             <ImageUploader />
-            <p>max 5 files</p>
         </div>
         <div>
+            <p class="errorText" v-if="this.formErrors && this.formErrors.server">Something went terribly wrong. Please try again later... </p>
             <button type="button" name="auctionButton" @click="createAuction">Create auction</button>
         </div>
     </div>
@@ -42,8 +43,8 @@ export default {
             formErrors: null
         }
     },
-    methods:{
-        async createAuction(){
+    methods: {
+        async createAuction() {
             let images, data, responseFromServer;
             images = await this.uploadPictures();
 
@@ -52,12 +53,11 @@ export default {
             data.description = document.getElementsByName('aucDescription')[0].value;
             data.startprice = document.getElementsByName('aucPrice')[0].value;
             data.category = 12;
-            data.auctionowner = 3;
-            // data.images = images.map(o => o.path);
+            data.images = images;
 
             this.formErrors = this.checkForErrors(data);
             console.log(data);
-            if(!this.formErrors){
+            if (!this.formErrors) {
                 responseFromServer = await fetch('/api/auction', {
                     method: "POST",
                     body: JSON.stringify(data),
@@ -66,18 +66,24 @@ export default {
                     }
                 });
                 responseFromServer = await responseFromServer.text();
-                console.log(responseFromServer);
+                if (responseFromServer / 1 != NaN) {
+                    this.$router.push('/auction/' + responseFromServer);
+                } else {
+                    if(!this.formErrors) this.formErrors = {};
+                    this.formErrors.server = true;
+
+                }
             }
         },
-        async uploadPictures(){
+        async uploadPictures() {
             let imagePaths = [];
 
-            if(this.filestorage.length < 1){
+            if (this.filestorage.length < 1) {
                 return null;
             }
 
             // Upload files to the backend and get filenames
-            for(let file of this.filestorage){
+            for (let file of this.filestorage) {
                 // Append formdata
                 let data = new FormData();
                 data.append('fullsize', file.fullsize);
@@ -88,22 +94,26 @@ export default {
                     body: data
                 });
                 responseFromServer = await responseFromServer.text();
-                imagePaths.push( {'path': responseFromServer} );
+                imagePaths.push({
+                    'path': responseFromServer
+                });
             }
             // console.log(imagePaths);
             return imagePaths;
         },
-        checkForErrors(data){
+        checkForErrors(data) {
             let errors = {};
-            if(data.title.length < 1 || data.title.length > 20)
+            if (data.title.length < 1 || data.title.length > 20)
                 errors.title = true;
-            if(data.description.length < 1 || data.description.length > 255)
+            if (data.description.length < 1 || data.description.length > 255)
                 errors.description = true;
+            if (!data.images || data.images.length === 0)
+                errors.images = true;
             return Object.keys(errors).length === 0 ? null : errors;
         }
     },
     computed: {
-        filestorage(){
+        filestorage() {
             return this.$store.state.currentUploads;
         }
     }
@@ -111,5 +121,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
-
+.errorText{
+    color: red;
+}
 </style>

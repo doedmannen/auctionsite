@@ -1,11 +1,11 @@
 //package com.worldsbestauctions.auctionsite.repos;
 //
 //
-//import com.worldsbestauctions.auctionsite.entities.AuctionPost;
+//import com.worldsbestauctions.auctionsite.entities.Auctions;
 //import org.springframework.data.repository.CrudRepository;
 //import org.springframework.stereotype.Repository;
 //
 ////@Repository
-//public interface AuctionPostRepo extends CrudRepository<AuctionPost, Long> {
+//public interface AuctionPostRepo extends CrudRepository<Auctions, Long> {
 //
 //}

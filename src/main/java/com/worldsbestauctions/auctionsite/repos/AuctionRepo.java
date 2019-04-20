@@ -1,11 +1,11 @@
-//package com.worldsbestauctions.auctionsite.repos;
-//
-//
-//import com.worldsbestauctions.auctionsite.entities.Auctions;
-//import org.springframework.data.repository.CrudRepository;
-//import org.springframework.stereotype.Repository;
-//
-////@Repository
-//public interface AuctionPostRepo extends CrudRepository<Auctions, Long> {
-//
-//}
+package com.worldsbestauctions.auctionsite.repos;
+
+
+import com.worldsbestauctions.auctionsite.entities.Auctions;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface AuctionRepo extends CrudRepository<Auctions, Long> {
+    Iterable<Auctions> findTop10ById = null;
+}

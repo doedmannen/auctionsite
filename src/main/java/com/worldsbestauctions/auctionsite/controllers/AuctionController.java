@@ -34,9 +34,9 @@ public class AuctionController {
         return auctionPostsService.getAll();
     }
 
-    @PostMapping
+    @PostMapping //todo set route to only allow authorized users
     long createNewAuction(@RequestBody Auctions body){
-        // todo this is only used for testing, needs to get the user from session after login is made available 
+        // todo this is only used for testing, needs to get the user from session after login is made available
         body.setAuctionowner(userService.getMockUser().getUserid());
         long id = auctionPostsService.save(body).getAuctionid();
         for(String path : body.getImages()){
@@ -44,4 +44,5 @@ public class AuctionController {
         }
         return id;
     }
+
 }

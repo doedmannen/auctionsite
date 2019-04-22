@@ -12,7 +12,7 @@ public class Auctions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long auctionid;
-    private int auctionowner;
+    private long auctionowner;
     private String title;
     private String description;
     private int category;
@@ -96,5 +96,9 @@ public class Auctions {
 
     public LocalDateTime getEndtime() {
         return endtime;
+    }
+
+    public void setAuctionowner(long auctionowner) {
+        this.auctionowner = auctionowner;
     }
 }

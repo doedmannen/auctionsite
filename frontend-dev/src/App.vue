@@ -20,6 +20,8 @@
         },
         created() {
             this.$store.dispatch("getPostsFromDb");
+            this.$store.dispatch("getCategoriesFromDb");
+            // console.log(this.$store.state.categories);
         }
     };
 

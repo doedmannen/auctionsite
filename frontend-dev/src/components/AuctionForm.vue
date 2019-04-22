@@ -8,16 +8,17 @@
         <div>
             <h2>Description</h2>
             <p class="errorText" v-if="this.formErrors && this.formErrors.description">You must provide a selling description</p>
-            <textarea name="aucDescription" placeholder="Some selling arguments for your item..." rows="8" cols="80"></textarea>
+            <textarea name="aucDescription" placeholder="Some selling arguments for your item..." rows="6" cols="80" style="resize: none;"></textarea>
         </div>
         <div>
             <h2>Starting at price</h2>
-            <input type="text" size="20" placeholder="$100" name="aucPrice">
+            <p class="errorText" v-if="this.formErrors && this.formErrors.price">You must provide a starting price</p>
+            <input type="text" size="20" placeholder="$10" name="aucPrice" @change="numberInput">
         </div>
         <div>
             <h2>Category</h2>
             <select name="aucCat">
-                <option value="12">Stuff</option>
+                <option v-for="(cat) of this.categories" :value="cat.categoryid">{{cat.categoryname}}</option>
             </select>
         </div>
         <div>
@@ -44,6 +45,12 @@ export default {
         }
     },
     methods: {
+        numberInput(){
+            let input = document.getElementsByName('aucPrice')[0].value.replace(/^[^0-9]*0*|[^0-9]/g,"");
+            let output = "";
+            output = input.length > 0 ? "$ " + input : "";
+            document.getElementsByName('aucPrice')[0].value = output;
+        },
         async createAuction() {
             let images, data, responseFromServer;
             images = await this.uploadPictures();
@@ -51,12 +58,14 @@ export default {
             data = {};
             data.title = document.getElementsByName('aucTitle')[0].value;
             data.description = document.getElementsByName('aucDescription')[0].value;
-            data.startprice = document.getElementsByName('aucPrice')[0].value;
-            data.category = 12;
+            data.startprice = document.getElementsByName('aucPrice')[0].value.replace(/^[^0-9]*0*|[^0-9]/g,"");
+            data.startprice = data.startprice.replace(/[^0-9]/g, "")
+            data.category = document.getElementsByName('aucCat')[0]
+                .options[document.getElementsByName('aucCat')[0].selectedIndex].value;
             data.images = images;
 
+
             this.formErrors = this.checkForErrors(data);
-            console.log(data);
             if (!this.formErrors) {
                 responseFromServer = await fetch('/api/auction', {
                     method: "POST",
@@ -66,7 +75,7 @@ export default {
                     }
                 });
                 responseFromServer = await responseFromServer.text();
-                if (responseFromServer / 1 != NaN) {
+                if (!isNaN(responseFromServer)) {
                     this.$router.push('/auction/' + responseFromServer);
                 } else {
                     if(!this.formErrors) this.formErrors = {};
@@ -98,7 +107,6 @@ export default {
                     'path': responseFromServer
                 });
             }
-            // console.log(imagePaths);
             return imagePaths;
         },
         checkForErrors(data) {
@@ -109,12 +117,17 @@ export default {
                 errors.description = true;
             if (!data.images || data.images.length === 0)
                 errors.images = true;
+            if(data.startprice.length === 0 || isNaN(data.startprice) || data.startprice/1 === 0)
+                errors.price = true;
             return Object.keys(errors).length === 0 ? null : errors;
         }
     },
     computed: {
         filestorage() {
             return this.$store.state.currentUploads;
+        },
+        categories() {
+            return this.$store.state.categories;
         }
     }
 }

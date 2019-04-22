@@ -29,7 +29,6 @@ export default {
             for (let pic of uploads) {
                 if (!this.fileLimitIsReached) {
                     await this.cropAndResizeImage(pic);
-                    console.log(this.filestorage.length);
                 }
             }
         },

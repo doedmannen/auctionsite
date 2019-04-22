@@ -59,7 +59,6 @@ export default {
             data.title = document.getElementsByName('aucTitle')[0].value;
             data.description = document.getElementsByName('aucDescription')[0].value;
             data.startprice = document.getElementsByName('aucPrice')[0].value.replace(/^[^0-9]*0*|[^0-9]/g,"");
-            data.startprice = data.startprice.replace(/[^0-9]/g, "")
             data.category = document.getElementsByName('aucCat')[0]
                 .options[document.getElementsByName('aucCat')[0].selectedIndex].value;
             data.images = images;

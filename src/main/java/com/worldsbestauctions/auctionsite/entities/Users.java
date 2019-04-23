@@ -14,6 +14,8 @@ public class Users implements Serializable {
     private String firstname;
     private String lastname;
 
+    public Users(){}
+
     public void setUserid(long userid) {
         this.userid = userid;
     }
@@ -45,5 +47,6 @@ public class Users implements Serializable {
     public String getLastname() {
         return lastname;
     }
+
 
 }

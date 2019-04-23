@@ -1,202 +1,231 @@
 <template>
-<nav class="navbar navbar-expand-lg">
-    <a class="navbar-brand logo" href="/">Auction Site</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand logo" href="/">Auction Site</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
 
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Find auctions!
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Active</a>
-                    <a class="dropdown-item" href="#">Completed</a>
-                    <div class="dropdown-divider"></div>
-                    <div v-for="(category, index) in categories" :key="index">
-                        <a :href="category.url" class="dropdown-item">{{ category.name }}</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Find auctions!
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Active</a>
+                        <a class="dropdown-item" href="#">Completed</a>
+                        <div class="dropdown-divider"></div>
+                        <div v-for="(category, index) in categories" :key="index">
+                            <a :href="category.url" class="dropdown-item">{{ category.name }}</a>
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="/create">Create auction</a>
-            </li>
-        </ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="/create">Create auction</a>
+                </li>
+            </ul>
 
-        <!--Registration dropdown-->
-        <li class="dropleft" v-if="!this.loggedIn">
-            <a data-toggle="dropdown" class="spacing">Register</a>
-            <ul class="dropdown-menu" role="menu">
-                <div class="col-lg-12">
-                    <div class="text-center">
-                        <p class="logo">Create an account</p>
-                    </div>
-                    <form role="form" autocomplete="off">
-                        <div class="form-group">
-                            <input type="email" name="register_email" class="form-control" placeholder="Email Address" value="curran.kate@gmail.com">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" name="register_pass" class="form-control" placeholder="Password" value="test">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" name="confirm_pass" class="form-control" placeholder="Confirm Password" value="test">
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-xs-6 col-xs-offset-3">
-                                    <button v-on:click="createNewUser" type="button" class="btn btn-center">Register</button>
+            <!--Registration dropdown-->
+            <li class="dropleft" v-if="!this.loggedIn">
+                <a data-toggle="dropdown" class="spacing">Register</a>
+                <ul class="dropdown-menu" role="menu">
+                    <div class="col-lg-12">
+                        <div class="text-center">
+                            <p class="logo">Create an account</p></div>
+                        <form role="form" autocomplete="off">
+                            <div class="form-group">
+                                <input name="register_first" class="form-control"
+                                       placeholder="First Name">
+                            </div>
+                            <div class="form-group">
+                                <input name="register_last" class="form-control" placeholder="Last Name">
+                            </div>
+                            <div class="form-group">
+                                <input type="email" name="register_email" class="form-control"
+                                       placeholder="Email Address">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" name="register_pass"
+                                       class="form-control" placeholder="Password">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" name="confirm_pass"
+                                       class="form-control" placeholder="Confirm Password">
+                            </div>
+                            <div><p id="passError">Password must match!</p></div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-6 col-xs-offset-3">
+                                        <button v-on:click="createNewUser" type="button" class="btn btn-center">
+                                            Register
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-            </ul>
-        </li>
-
-        <!--Login dropdown-->
-        <li class="dropleft" v-if="!this.loggedIn">
-            <a data-toggle="dropdown"><i class="fas fa-user spacing"></i></a>
-            <ul class="dropdown-menu dropdown-menu-lg-left" role="menu">
-                <div class="col-lg-12">
-                    <div class="text-center">
-                        <p class="logo">Log In</p>
+                        </form>
                     </div>
-                    <form role="form" autocomplete="off">
-                        <div class="form-group">
-                            <label for="userEmail">Username</label>
-                            <input type="text" name="login_user" id="userEmail" tabindex="1" class="form-control" placeholder="Email" value="" autocomplete="off">
-                        </div>
+                </ul>
+            </li>
 
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" name="login_pass" id="password" tabindex="2" class="form-control" placeholder="Password" autocomplete="off">
-                        </div>
+            <!--Login dropdown-->
+            <li class="dropleft">
+                <a data-toggle="dropdown"><i class="fas fa-user spacing"></i></a>
+                <ul class="dropdown-menu dropdown-menu-lg-left" role="menu">
+                    <div class="col-lg-12">
+                        <div class="text-center">
+                            <p class="logo">Log In</p></div>
+                        <form role="form" autocomplete="off">
+                            <div class="form-group">
+                                <label for="userEmail">E-mail</label>
+                                <input type="text" name="login_email" id="userEmail" tabindex="1"
+                                       class="form-control" placeholder="Email" value="" autocomplete="off">
+                            </div>
 
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-xs-5">
-                                    <button @click="loginUser" type="button" class="btn btn-center">Submit</button>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" name="login_pass" id="password" tabindex="2"
+                                       class="form-control" placeholder="Password" autocomplete="off">
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <button @click="loginUser" type="button" class="btn btn-center">Submit</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-            </ul>
-        </li>
-        <a href=""><i class="fas fa-envelope spacing"></i></a>
-    </div>
-</nav>
+                        </form>
+                    </div>
+                </ul>
+            </li>
+            <a href=""><i class="fas fa-envelope spacing"></i></a>
+        </div>
+    </nav>
 </template>
 
 <script>
-export default {
-    name: "Header",
-    data() {
-        return {
-            searchAuctions: "",
-            categories: [{
-                    name: "Vehicles",
-                    url: "/vehicles"
-                },
-                {
-                    name: "Fashion",
-                    url: "/fashion"
-                },
-                {
-                    name: "Sporting Goods",
-                    url: "/health"
-                    //etc etc more categories from db
-                }
-            ]
-        }
-    },
-    methods: {
-        async createNewUser() {
-            let data = {}
-            data.email = document.getElementsByName('register_email').value;
-            data.password = document.getElementsByName('register_pass').value;
-            data.confirm_pass = document.getElementsByName('confirm_pass').value;
-
-            let responseFromBackend = await fetch('/login', {
-                method: "POST",
-                body: JSON.stringify(data),
-                headers: {
-                    "content-type": "application/json"
-                }
-            });
-            responseFromBackend = await responseFromBackend.text();
-            console.log(responseFromBackend);
+    export default {
+        name: "Header",
+        data() {
+            return {
+                searchAuctions: "",
+                categories: [
+                    {
+                        name: "Vehicles",
+                        url: "/vehicles"
+                    },
+                    {
+                        name: "Fashion",
+                        url: "/fashion"
+                    },
+                    {
+                        name: "Sporting Goods",
+                        url: "/health"
+                        //etc etc more categories from db
+                    }]
+            }
         },
-        async loginUser() {
-            let data = `username=${document.getElementsByName('login_user')[0].value}&password=${document.getElementsByName('login_pass')[0].value}`;
-            try {
-                await fetch('/login', {
+        methods: {
+            async createNewUser() {
+                document.getElementById("passError").style.visibility = "hidden";
+
+                let data = {}
+                let password = document.getElementsByName('register_pass')[0].value;
+                let confirm_pass = document.getElementsByName('confirm_pass')[0].value;
+
+                if(password == confirm_pass){
+                    data.firstname = document.getElementsByName('register_first')[0].value;
+                    data.lastname = document.getElementsByName('register_last')[0].value;
+                    data.email = document.getElementsByName('register_email')[0].value;
+                    data.password = document.getElementsByName('register_pass')[0].value;;
+                } else {
+                    document.getElementById("passError").style.visibility = "visible";
+                }
+
+                let responseFromBackend = await fetch('/api/user', {
                     method: "POST",
-                    body: data,
+                    body: JSON.stringify(data),
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
+                        "content-type": "application/json"
                     }
                 });
-            }catch(e){
-                console.log("something shit");
+                responseFromBackend = await responseFromBackend.text();
+            },
+            async loginUser() {
+                let data, username, password;
+                username = document.getElementsByName('login_email')[0].value;
+                password = document.getElementsByName('login_pass')[0].value;
+                data = `username=${username}&password=${password}`;
+                try{
+                    console.log(data);
+                    await fetch('/login', {
+                        method: "POST",
+                        body: data,
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    });
+                } catch(e){
+                    console.log("HERE WAS ERRORS");
+                }
+                this.$store.dispatch("whoami");
+                console.log(this.$store.state.me);
+            },
+        },
+        computed: {
+            loggedIn() {
+                return this.$store.state.me != null;
             }
-            this.$store.dispatch("whoami");
         }
-    },
-    computed: {
-        loggedIn() {
-            return this.$store.state.me != null;
-        }
-    }
-};
+    };
 </script>
 
 <style scoped>
-* {
-    color: rgb(32, 64, 96);
-}
 
-a {
-    color: rgb(32, 64, 96);
-}
+    * {
+        color: rgb(32, 64, 96);
+    }
 
-.dropleft{
-    cursor: pointer;
-}
+    a {
+        color: rgb(32, 64, 96);
+    }
 
-.navbar {
-    background-color: rgb(126, 199, 199);
-}
+    .navbar {
+        background-color: rgb(126, 199, 199);
+    }
 
-.logo {
-    font-family: 'Bungee Inline', cursive;
-    font-size: 2em;
-}
+    .logo {
+        font-family: 'Bungee Inline', cursive;
+        font-size: 2em;
+    }
 
-.fas {
-    font-size: 1.75em;
-    color: rgb(32, 64, 96);
-}
+    .fas {
+        font-size: 1.75em;
+        color: rgb(32, 64, 96);
+    }
 
-.spacing {
-    margin: 0 1em;
-}
+    .spacing {
+        margin: 0 1em;
+    }
 
-li {
-    list-style: none;
-}
+    li {
+        list-style: none;
+    }
 
-.dropdown-menu {
-    width: 300px;
-}
+    .dropdown-menu {
+        width: 300px;
+    }
 
-.btn-center {
-    margin-left: 1em;
-    background-color: rgb(32, 64, 96);
-    color: rgb(126, 199, 199);
-}
+    .btn-center {
+        margin-left: 1em;
+        background-color: rgb(32, 64, 96);
+        color: rgb(126, 199, 199);
+    }
+
+    #passError {
+        color: red;
+        visibility: hidden;
+    }
 </style>

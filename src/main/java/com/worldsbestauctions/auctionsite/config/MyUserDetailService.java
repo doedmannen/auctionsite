@@ -3,6 +3,7 @@ package com.worldsbestauctions.auctionsite.config;
 import com.worldsbestauctions.auctionsite.entities.SecretUser;
 import com.worldsbestauctions.auctionsite.entities.Users;
 import com.worldsbestauctions.auctionsite.repos.SecretUserRepo;
+import com.worldsbestauctions.auctionsite.services.SecretUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.User;
@@ -16,26 +17,22 @@ import javax.annotation.PostConstruct;
 @Configuration
 public class MyUserDetailService implements UserDetailsService {
 
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-    public BCryptPasswordEncoder getEncoder() {
-        return encoder;
-    }
 
     @Autowired
-    SecretUserRepo secretUserRepo;
+    SecretUserService secretUserService;
 
     @PostConstruct
     private void createDefaultUser(){
-        if(secretUserRepo.findDistinctFirstByEmailIgnoreCase("something@something.com") == null){
+        if(secretUserService.getSecretUserByEmail("something@something.com") == null){
             addUser("something@something.com", "Kenneth", "Boman", "password123");
         }
     }
 
     public void addUser(String email, String firstname, String lastname, String password){
-        if(secretUserRepo.findDistinctFirstByEmailIgnoreCase(email) == null){
-            SecretUser secretUser = new SecretUser(email, firstname, lastname, encoder.encode(password));
+        if(secretUserService.getSecretUserByEmail(email) == null){
+            SecretUser secretUser = new SecretUser(email, firstname, lastname, secretUserService.getEncoder().encode(password));
             try{
-                secretUserRepo.save(secretUser);
+                secretUserService.save(secretUser);
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -51,7 +48,7 @@ public class MyUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        SecretUser secretUser = secretUserRepo.findDistinctFirstByEmailIgnoreCase(email);
+        SecretUser secretUser = secretUserService.getSecretUserByEmail(email);
         if(secretUser == null){
             throw new UsernameNotFoundException("User not found with email " + email);
         }

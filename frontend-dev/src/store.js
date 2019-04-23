@@ -35,15 +35,5 @@ export default new Vuex.Store({
             let categories = await (await fetch(API_URL + 'category')).json();
             this.commit('setCategories', categories);
         },
-        async addBid(state, reqBody) {
-            await fetch(API_URL + 'bid', {
-                    method: "POST",
-                    body: JSON.stringify(reqBody)
-                }
-            );
-
-            this.dispatch('getPostsFromDb');
-
-        }
     }
 })

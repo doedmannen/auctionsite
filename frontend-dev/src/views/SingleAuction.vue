@@ -30,23 +30,14 @@
 
                             <hr class="my-4">
 
-                            <template>
+
                                 <div>
-                                    <b-form-group
-                                            id="fieldset-1"
-                                            label="Enter your bid"
-                                            label-for="input-1"
-                                            invalid-feedback="invalidFeedback"
-                                            valid-feedback="validFeedback"
-                                            state="state"
-                                    >
-                                        <b-form-input id="input-1" v-model="name" state="state" trim></b-form-input>
-                                    </b-form-group>
+                                    <h2>Description</h2>
+                                    <textarea name="bidAmount" placeholder="Place your bid" rows="6" cols="80" style="resize: none;"></textarea>
                                 </div>
-                            </template>
                             <p>{{auctionPost.endtime.toString().replace(/T/g," ")}}</p>
                             <p>{{'Seller '+ auctionPost.users.firstname+' '+auctionPost.users.lastname}}</p>
-                            <b-button variant="primary" href="#">Place bid</b-button>
+                            <b-button variant="primary" @click="placeBid">Place bid</b-button>
                         </b-jumbotron>
                     </div>
                 </b-col>
@@ -69,16 +60,28 @@
                 imgPath: '/assets/img/',
                 thumbnail: '/assets/img/thumbnail/',
                 arrayNum: 0,
-                bidAmount: ''
+
             }
         },
         methods: {
             changeMainPic(index){
                 this.arrayNum=index;
+            },
+            async placeBid(){
+               let data = {};
+               data.bidamount=document.getElementsByName('bidAmount')[0].value;
+               data.auctionid=this.$route.params.auctionid;
+
+                await fetch('/api/bid', {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: {
+                        "content-type": "application/json"
+                    }
+                });
             }
         },
        created(){
-            this.$store.dispatch("addBid",{auctionid: 1534, bidamount:199})
        }
     }
 </script>
@@ -90,5 +93,8 @@
     .thumbNailHolder{
         padding:10px;
         cursor:pointer;
+    }
+    .row{
+        justify-content: center;
     }
 </style>

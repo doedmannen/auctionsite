@@ -14,7 +14,7 @@
                                         v-for="slide in slides"
                                         class='slide'
                                         :key="slide.id">
-                                    <img src="https://www.w3schools.com/w3css/img_lights.jpg" alt="nope"/>
+                                    <p>{{slide.title}}</p>
                                 </div>
                             </transition-group>
                             <div class='carousel-controls'>
@@ -24,11 +24,16 @@
                         </div>
                     </template>
                     <div>
+                        {{auctionPost.description}}
+                    </div>
+                    <div>
                        </div></b-col>
                 <b-col cols="4"><div>
                     <b-jumbotron>
                         <template slot="lead">
-                            Leading bid {{auctionPost.description}}
+                            Leading bid!
+                            <span v-if="auctionPost.bids.length>0">{{auctionPost.bids[auctionPost.bids.length-1].bidamount}}</span>
+                            <span v-else>No bids</span>
                         </template>
 
                         <hr class="my-4">
@@ -39,11 +44,11 @@
                                         id="fieldset-1"
                                         label="Enter your bid"
                                         label-for="input-1"
-                                        :invalid-feedback="invalidFeedback"
-                                        :valid-feedback="validFeedback"
-                                        :state="state"
+                                        invalid-feedback="invalidFeedback"
+                                        valid-feedback="validFeedback"
+                                        state="state"
                                 >
-                                    <b-form-input id="input-1" v-model="name" :state="state" trim></b-form-input>
+                                    <b-form-input id="input-1" v-model="name" state="state" trim></b-form-input>
                                 </b-form-group>
                             </div>
                         </template>
@@ -103,7 +108,7 @@
             }
         },
         mounted() {
-            console.log(this.$route.params)
+            console.log(this.$route.params),
             console.log(this.auctionPost)
         }
     }

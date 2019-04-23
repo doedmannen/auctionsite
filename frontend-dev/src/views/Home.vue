@@ -6,6 +6,8 @@
         <p>Wow, an auction site! Check out some auctions below, select a category or search for exactly what you
             want. </p>
         <input class="searchBox" type="text" v-model="searchAuctions" placeholder="Search">
+        
+        
         <div class="mainFlex" v-for="(auction, index) in auctionPosts" :key="index">
             <a :href="'/auction/' + auction.auctionid" class="flexSection">
              <img :src="'/assets/img/thumbnail/'+auction.images[0]" id="image">
@@ -32,6 +34,10 @@
 <script>
 export default {
     name: "home",
+    mounted(){
+        console.log();
+        console.log();
+    },
     data() {
         return {
             searchAuctions: ""
@@ -39,6 +45,12 @@ export default {
     },
     computed: {
         auctionPosts() {
+            let path = this.$route.path.split("/");
+            if(path[1] != '' && path[2]){
+                console.log(path)
+                let cat = this.$store.state.categories.filter(c => c.categoryname == this.$route.params.cat);
+                return this.$store.state.auctionPosts.filter(auction => auction.category == cat[0].categoryid);
+            }
             return this.$store.state.auctionPosts;
         },
 

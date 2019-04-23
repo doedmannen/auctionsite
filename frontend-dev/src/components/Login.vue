@@ -6,7 +6,7 @@
                 <div class="text-center">
                     <p class="logo">Log In</p>
                 </div>
-                <form role="form" autocomplete="off" @submit.stop.prevent>
+                <form role="form" autocomplete="off">
                     <div class="form-group">
                         <label for="userEmail">E-mail</label>
                         <input type="text" name="login_email" id="userEmail" tabindex="1"

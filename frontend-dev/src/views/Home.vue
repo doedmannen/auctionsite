@@ -6,6 +6,14 @@
         <p>Wow, an auction site! Check out some auctions below, select a category or search for exactly what you
             want. </p>
         <input class="searchBox" type="text" v-model="searchAuctions" placeholder="Search">
+      
+        <div class="flexActivComp">
+           
+                  <p class="filterby">Show:</p>
+      
+             <span @click="toggleActive" class="filterby" style="cursor: pointer;">Active</span>
+                        <span @click="toggleComplete" class="filterby" style="cursor: pointer;">Completed</span>
+        </div>
         
         
         <div class="mainFlex" v-for="(auction, index) in auctionPosts" :key="index">
@@ -20,7 +28,7 @@
                         </a>
                         <div>
                         <p class="currBid" v-if="auction.bids.length > 0">Price: {{ auction.bids[auction.bids.length-1].bidamount }}$ ~ Bids: {{ auction.bids.length  }}</p>
-                        <p class="currBid" v-else>Price: {{auction.startprice }}$ ~ Bids: {{ auction.bids.length  }}</p>
+                        <p class="currBid" v-else>Price: {{auction.startprice }}$ ~ Bids: {{ auction.bids.length }}</p>
                         </div>
                     </div>
                 </div>
@@ -40,18 +48,37 @@ export default {
     },
     data() {
         return {
-            searchAuctions: ""
+            searchAuctions: "",
+            showActive: true,
+            showCompleted: true 
         };
     },
     computed: {
         auctionPosts() {
+            let ap = this.$store.state.auctionPosts;
+            let active = [];
+            let complete = []
+            let timeNow = new Date();
             let path = this.$route.path.split("/");
             if(path[1] != '' && path[2]){
                 console.log(path)
                 let cat = this.$store.state.categories.filter(c => c.categoryname == this.$route.params.cat);
-                return this.$store.state.auctionPosts.filter(auction => auction.category == cat[0].categoryid);
+                ap = this.$store.state.auctionPosts.filter(auction => auction.category == cat[0].categoryid);
             }
-            return this.$store.state.auctionPosts;
+            if(this.showActive){
+                active = ap.filter(auction => {
+                    let dat = auction.endtime.replace(/T/g, " ");
+                    return timeNow > new Date(dat);
+                    })
+            }
+            if(this.showCompleted){
+                complete = ap.filter(auction => {
+                    let dat = auction.endtime.replace(/T/g, " ");
+                    return timeNow <= new Date(dat);
+                    })
+            }
+            
+            return active.concat(complete);
         },
 
         filteredAuctions: function() {
@@ -65,6 +92,12 @@ export default {
         auctionsByCategory(category) {
             this.category = category;
             return this.auctions.filter(el => el.category.match(category));
+        },
+        toggleActive(){
+            this.showActive = !this.showActive;
+        },
+        toggleComplete(){
+            this.showCompleted = !this.showCompleted;
         }
     }
 };
@@ -117,6 +150,17 @@ a:hover {
     margin: 1em;
 }
 
+.flexActivComp{
+    display: flex;
+    width: 20vw;
+    margin-left: 43vw;
+    margin-bottom: 32px;
+}
+
+.filterby{
+    padding-right: 0.5rem;
+}
+
 summary {
     text-align: left;
     text-indent: 1em;
@@ -133,6 +177,6 @@ summary {
 }
 
 .searchBox {
-    margin-bottom: 2em;
+    margin-bottom: 0;
 }
 </style>

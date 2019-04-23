@@ -15,9 +15,6 @@
                         Find auctions!
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Active</a>
-                        <a class="dropdown-item" href="#">Completed</a>
-                        <div class="dropdown-divider"></div>
                         <div v-for="(category, index) in categories" :key="index">
                             <a :href="'/category/' + category.categoryname" class="dropdown-item">{{ category.categoryname }}</a>
                         </div>
@@ -103,20 +100,6 @@
         data() {
             return {
                 searchAuctions: "",
-               /* categories: [
-                    {
-                        name: "Vehicles",
-                        url: "/vehicles"
-                    },
-                    {
-                        name: "Fashion",
-                        url: "/fashion"
-                    },
-                    {
-                        name: "Sporting Goods",
-                        url: "/health"
-                        //etc etc more categories from db
-                    }]*/
             }
         },
          computed: {

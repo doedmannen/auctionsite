@@ -35,9 +35,6 @@ public class AuctionController {
         return auctionPostsService.getAll();
     }
 
-   /* @GetMapping
-    Iterable<Auctions>getCategorys(){return auctionPostsService.getCategorys();}*/
-
     @PostMapping //todo set route to only allow authorized users
     long createNewAuction(@RequestBody Auctions body){
         // todo this is only used for testing, needs to get the user from session after login is made available

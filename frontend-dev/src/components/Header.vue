@@ -38,23 +38,15 @@
                             <p class="logo">Create an account</p></div>
                         <form role="form" autocomplete="off">
                             <div class="form-group">
-                                <input type="name" name="register_first" class="form-control"
-                                       placeholder="First name" value="Kate">
-                            </div>
-                            <div class="form-group">
-                                <input type="name" name="register_last" class="form-control"
-                                       placeholder="Last name" value="Curran">
-                            </div>
-                            <div class="form-group">
-                                <input type="email" name="register_email" class="form-control"
+                                <input type="email" ref="register_email" class="form-control"
                                        placeholder="Email Address" value="curran.kate@gmail.com">
                             </div>
                             <div class="form-group">
-                                <input type="password" name="register_pass"
+                                <input type="password" ref="register_pass"
                                        class="form-control" placeholder="Password" value="test">
                             </div>
                             <div class="form-group">
-                                <input type="password" name="confirm_pass"
+                                <input type="password" ref="confirm_pass"
                                        class="form-control" placeholder="Confirm Password" value="test">
                             </div>
                             <div class="form-group">
@@ -81,13 +73,13 @@
                         <form role="form" autocomplete="off">
                             <div class="form-group">
                                 <label for="userEmail">Username</label>
-                                <input type="text" name="login_user" id="userEmail" tabindex="1"
+                                <input type="text" ref="login_user" id="userEmail" tabindex="1"
                                        class="form-control" placeholder="Email" value="" autocomplete="off">
                             </div>
 
                             <div class="form-group">
                                 <label for="password">Password</label>
-                                <input type="password" name="login_pass" id="password" tabindex="2"
+                                <input type="password" ref="login_pass" id="password" tabindex="2"
                                        class="form-control" placeholder="Password" autocomplete="off">
                             </div>
 
@@ -126,11 +118,9 @@
         methods: {
             async createNewUser() {
                 let data = {}
-                data.first = document.getElementsByName('register_first').value;
-                data.last = document.getElementsByName('register_last').value;
-                data.email = document.getElementsByName('register_email').value;
-                data.password = document.getElementsByName('register_pass').value;
-                data.confirm_pass = document.getElementsByName('confirm_pass').value;
+                data.email = this.$refs.register_email.value;
+                data.password = this.$refs.register_pass.value;
+                data.confirm_pass = this.$refs.confirm_pass.value;
 
                 let responseFromBackend = await fetch('/api/user/login', {
                     method: "POST",
@@ -140,13 +130,13 @@
                     }
                 });
                 responseFromBackend = await responseFromBackend.text();
-                console.log(responseFromBackend);
             },
 
             async loginUser() {
                 let data = {}
-                data.email = document.getElementsByName('register_email').value;
-                data.password = document.getElementsByName('register_pass').value;
+                data.email = this.$refs.login_user.value;
+                data.password = this.$refs.login_pass.value;
+                console.log(data);
 
                 let responseFromBackend = await fetch('/api/user/login', {
                     method: "POST",
@@ -156,7 +146,6 @@
                     }
                 });
                 responseFromBackend = await responseFromBackend.text();
-                console.log(responseFromBackend);
             },
         }
     };

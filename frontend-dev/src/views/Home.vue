@@ -11,8 +11,8 @@
            
                   <p class="filterby">Show:</p>
       
-             <span @click="toggleActive" class="filterby" style="cursor: pointer;">Active</span>
-                        <span @click="toggleComplete" class="filterby" style="cursor: pointer;">Completed</span>
+             <span @click="toggleActive" class="filterby hover" :style="this.showActive ? 'color:black':'color:red'" style="cursor: pointer;">Active</span>
+                        <span @click="toggleComplete" class="filterby hover" :style="this.showCompleted? 'color:black':'color:red'" style="cursor: pointer;">Completed</span>
         </div>
         
         
@@ -179,4 +179,9 @@ summary {
 .searchBox {
     margin-bottom: 0;
 }
+
+.hover:hover{
+    color: blue;
+}
+
 </style>

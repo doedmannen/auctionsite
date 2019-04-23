@@ -16,5 +16,7 @@ public class UserService {
     public Users getUserByEmail(String email){
         return userRepo.findDistinctFirstByEmailIgnoreCase(email);
     }
-
+    public Users save(Users u){
+        return userRepo.save(u);
+    }
 }

@@ -38,6 +38,14 @@
                             <p class="logo">Create an account</p></div>
                         <form role="form" autocomplete="off">
                             <div class="form-group">
+                                <input name="register_first" class="form-control"
+                                       placeholder="First Name" value="SpongeBob">
+                            </div>
+                            <div class="form-group">
+                                <input name="register_last" class="form-control" placeholder="Last Name"
+                                       value="Squarepants">
+                            </div>
+                            <div class="form-group">
                                 <input type="email" name="register_email" class="form-control"
                                        placeholder="Email Address" value="curran.kate@gmail.com">
                             </div>
@@ -49,10 +57,13 @@
                                 <input type="password" name="confirm_pass"
                                        class="form-control" placeholder="Confirm Password" value="test">
                             </div>
+                            <div><p id="passError">Password must match!</p></div>
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-6 col-xs-offset-3">
-                                        <button v-on:click="createNewUser" type="button" class="btn btn-center">Register</button>
+                                        <button v-on:click="createNewUser" type="button" class="btn btn-center">
+                                            Register
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -63,7 +74,8 @@
 
             <!--Login dropdown-->
             <li class="dropleft">
-                <a data-toggle="dropdown"><i class="fas fa-user spacing" :style="this.loggedIn ? 'color:green':'color:red'"></i></a>
+                <a data-toggle="dropdown"><i class="fas fa-user spacing"
+                                             :style="this.loggedIn ? 'color:green':'color:red'"></i></a>
                 <ul class="dropdown-menu dropdown-menu-lg-left" role="menu">
                     <div class="col-lg-12">
                         <div class="text-center">
@@ -120,13 +132,23 @@
             }
         },
         methods: {
-            async createNewUser(){
-                let data = {}
-                    data.email = document.getElementsByName('register_email').value;
-                    data.password = document.getElementsByName('register_pass').value;
-                    data.confirm_pass = document.getElementsByName('confirm_pass').value;
+            async createNewUser() {
+                document.getElementById("passError").style.visibility = "hidden";
 
-                let responseFromBackend = await fetch('/login', {
+                let data = {}
+                let password = document.getElementsByName('register_pass')[0].value;
+                let confirm_pass = document.getElementsByName('confirm_pass')[0].value;
+
+                if(password == confirm_pass){
+                    data.firstName = document.getElementsByName('register_first')[0].value;
+                    data.lastName = document.getElementsByName('register_last')[0].value;
+                    data.email = document.getElementsByName('register_email')[0].value;
+                    data.password = password;
+                } else {
+                    document.getElementById("passError").style.visibility = "visible";
+                }
+
+                let responseFromBackend = await fetch('/api/user', {
                     method: "POST",
                     body: JSON.stringify(data),
                     headers: {
@@ -134,9 +156,8 @@
                     }
                 });
                 responseFromBackend = await responseFromBackend.text();
-                console.log(responseFromBackend);
             },
-            async loginUser(){
+            async loginUser() {
                 let data = {}
                 data.username = document.getElementsByName('register_email').value;
                 data.password = document.getElementsByName('register_pass').value;
@@ -150,10 +171,10 @@
                 });
                 responseFromBackend = await responseFromBackend.text();
                 console.log(responseFromBackend);
-            }
+            },
         },
-        computed:{
-            loggedIn(){
+        computed: {
+            loggedIn() {
                 return this.$store.state.me != null;
             }
         }
@@ -200,5 +221,10 @@
         margin-left: 1em;
         background-color: rgb(32, 64, 96);
         color: rgb(126, 199, 199);
+    }
+
+    #passError {
+        color: red;
+        visibility: hidden;
     }
 </style>

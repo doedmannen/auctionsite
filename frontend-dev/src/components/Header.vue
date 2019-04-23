@@ -44,25 +44,14 @@
         data() {
             return {
                 searchAuctions: "",
-               /* categories: [
-                    {
-                        name: "Vehicles",
-                        url: "/vehicles"
-                    },
-                    {
-                        name: "Fashion",
-                        url: "/fashion"
-                    },
-                    {
-                        name: "Sporting Goods",
-                        url: "/health"
-                        //etc etc more categories from db
-                    }]*/
             }
         },
         computed: {
             loggedIn(){
                 return this.$store.state.me != null;
+            },
+            categories(){
+                return this.$store.state.categories;
             }
         },
         components: {

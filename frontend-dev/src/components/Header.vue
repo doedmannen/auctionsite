@@ -27,6 +27,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/create">Create auction</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Profile">Profile</a>
+                </li>
             </ul>
 
             <!--Registration dropdown-->

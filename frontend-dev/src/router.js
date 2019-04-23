@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
 
 Vue.use(Router)
 
@@ -22,6 +21,11 @@ export default new Router({
       path: '/createauction',
       name: 'CreateAuction',
       component: () => import('./views/CreateAuction.vue')
+    },
+    {
+      path:'/profile',
+      name: 'ProfilePage',
+      component: () => import ('./views/ProfilePage.vue')
     }
   ]
 })

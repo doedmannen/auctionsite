@@ -5,28 +5,9 @@
                 <b-col cols="2">
                 </b-col>
                 <b-col cols="6">
-                    <!--                    <template>-->
-                    <!--                        <div class='carousel-view'>-->
-                    <!--                            <transition-group-->
-                    <!--                                    class='carousel'-->
-                    <!--                                    tag="div">-->
-                    <!--                                <div-->
-                    <!--                                        v-for="slide in slides"-->
-                    <!--                                        class='slide'-->
-                    <!--                                        :key="slide.id">-->
-                    <!--                                    <img :src="imgPath + auctionPost.images[0] " alt="nej">-->
-                    <!--                                </div>-->
-                    <!--                            </transition-group>-->
-                    <!--                            <div class='carousel-controls'>-->
-                    <!--                                <button class='carousel-controls__button' @click="previous">prev</button>-->
-                    <!--                                <button class='carousel-controls__button' @click="next">next</button>-->
-                    <!--                            </div>-->
-                    <!--                        </div>-->
-                    <!--                    </template>-->
-
-                    <img :src="imgPath + auctionPost.images[0] " alt="nej">
+                    <img :src="imgPath + auctionPost.images[arrayNum] " alt="nej">
                     <div class="row">
-                        <div v-for="image in auctionPost.images">
+                        <div class="thumbNailHolder" v-for="(image, index) in auctionPost.images" @click="changeMainPic(index)">
                             <img :src="thumbnail + image">
                         </div>
                         <div>
@@ -86,41 +67,15 @@
         },
         data() {
             return {
-                slides: [
-                    {
-                        title: 'I am Slide A',
-                        id: 1
-                    },
-                    {
-                        title: 'I am Slide B',
-                        id: 2
-                    },
-                    {
-                        title: 'I am Slide C',
-                        id: 3
-                    },
-                    {
-                        title: 'I am Slide D',
-                        id: 4
-                    },
-                    {
-                        title: 'I am Slide E',
-                        id: 5
-                    }
-                ],
                 imgPath: '/assets/img/',
-                thumbnail: '/assets/img/thumbnail/'
+                thumbnail: '/assets/img/thumbnail/',
+                arrayNum: 0
             }
         },
         methods: {
-            next() {
-                const first = this.slides.shift()
-                this.slides = this.slides.concat(first)
-            },
-            previous() {
-                const last = this.slides.pop()
-                this.slides = [last].concat(this.slides)
-            },
+            changeMainPic(index){
+                this.arrayNum=index;
+            }
         },
         mounted() {
         }
@@ -131,38 +86,7 @@
     .mainContainer {
         margin-top: 10px;
     }
-
-    .carousel-view {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .carousel {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-
-        width: 24em;
-        min-height: 25em;
-    }
-
-    .slide {
-        flex: 0 0 20em;
-        height: 20em;
-        margin: 1em;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: transform 0.3s ease-in-out;
-    }
-
-    .slide:first-of-type {
-        opacity: 0;
-    }
-
-    .slide:last-of-type {
-        opacity: 0;
+    .thumbNailHolder{
+        cursor:pointer;
     }
 </style>

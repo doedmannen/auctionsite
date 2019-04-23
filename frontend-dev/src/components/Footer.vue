@@ -16,8 +16,12 @@
 </script>
 
 <style scoped>
+    * {
+        color:rgb(32, 64, 96);
+    }
+
     a {
-        color: black;
+        color: rgb(32, 64, 96);
     }
 
     .navbar {
@@ -35,7 +39,6 @@
     #logo {
         font-family: 'Bungee Inline', cursive;
         font-size: 1.25em;
-        color: black;
     }
 
 </style>

@@ -23,7 +23,7 @@
                     </div>
                 </li>
             </ul>
-            <a href=""><i class="fas fa-user"></i></a>
+            <a href=""><i class="fas fa-user" :style="(loggedIn ? 'color:green':'color:black')"></i></a>
             <a href=""><i class="fas fa-envelope"></i></a>
         </div>
     </nav>
@@ -61,6 +61,11 @@
                         url: "/health"
                         //etc etc more categories
                     }]
+            }
+        },
+        computed: {
+            loggedIn(){
+                return this.$store.state.me != null;
             }
         }
     };

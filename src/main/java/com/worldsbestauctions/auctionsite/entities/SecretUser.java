@@ -1,11 +1,11 @@
 package com.worldsbestauctions.auctionsite.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 
 @Entity
-public class Users implements Serializable {
+@Table(name = "Users")
+public class SecretUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,6 +13,15 @@ public class Users implements Serializable {
     private String email;
     private String firstname;
     private String lastname;
+    private String password;
+
+    public SecretUser(){}
+    public SecretUser(String email, String firstname, String lastname, String password){
+        this.email = email;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.password = password;
+    }
 
     public void setUserid(long userid) {
         this.userid = userid;
@@ -46,4 +55,11 @@ public class Users implements Serializable {
         return lastname;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }

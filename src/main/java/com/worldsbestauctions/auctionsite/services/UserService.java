@@ -13,8 +13,8 @@ public class UserService {
     @Autowired
     UserRepo userRepo;
 
-    public Users getMockUser(){
-        List<Users> userlist = (List) userRepo.findAll();
-        return userlist.get(0);
+    public Users getUserByEmail(String email){
+        return userRepo.findDistinctFirstByEmailIgnoreCase(email);
     }
+
 }

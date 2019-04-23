@@ -20,8 +20,11 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,"/api/**").hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/api/**").permitAll()
                 .antMatchers("/").denyAll()
-                .and().formLogin().permitAll()
-                .and().logout().permitAll()
+                .and().formLogin()
+                .failureUrl("http://localhost:8888/?loginfailure")
+                .defaultSuccessUrl("http://localhost:8888/").permitAll()
+                .and().logout().logoutSuccessUrl("http://localhost:8888/")
+                .deleteCookies("JSESSIONID").permitAll()
                 .and().csrf().disable();
     }
     @Override

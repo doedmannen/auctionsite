@@ -1,8 +1,6 @@
 package com.worldsbestauctions.auctionsite.services;
 
-import com.worldsbestauctions.auctionsite.config.MyUserDetailService;
 import com.worldsbestauctions.auctionsite.entities.SecretUser;
-import com.worldsbestauctions.auctionsite.entities.Users;
 import com.worldsbestauctions.auctionsite.repos.SecretUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

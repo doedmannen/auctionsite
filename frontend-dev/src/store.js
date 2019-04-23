@@ -21,7 +21,7 @@ export default new Vuex.Store({
         setPosts(state, value) {
             state.auctionPosts = value;
         },
-        setCategories(state, value){
+        setCategories(state, value) {
             state.categories = value;
         }
 
@@ -34,6 +34,16 @@ export default new Vuex.Store({
         async getCategoriesFromDb() {
             let categories = await (await fetch(API_URL + 'category')).json();
             this.commit('setCategories', categories);
+        },
+        async addBid(state, reqBody) {
+            await fetch(API_URL + 'bid', {
+                    method: "POST",
+                    body: JSON.stringify(reqBody)
+                }
+            );
+
+            this.dispatch('getPostsFromDb');
+
         }
     }
 })

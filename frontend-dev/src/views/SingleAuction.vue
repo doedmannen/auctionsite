@@ -7,7 +7,7 @@
                 <b-col cols="6">
                     <img :src="imgPath + auctionPost.images[arrayNum] " alt="nej">
                     <div class="row">
-                        <div class="thumbNailHolder" v-for="(image, index) in auctionPost.images" @click="changeMainPic(index)">
+                        <div class="thumbNailHolder" v-for="(image, index) in auctionPost.images" :key="image.id" @click="changeMainPic(index)">
                             <img :src="thumbnail + image">
                         </div>
                         <div>
@@ -44,9 +44,8 @@
                                     </b-form-group>
                                 </div>
                             </template>
-
                             <p>{{auctionPost.endtime.toString().replace(/T/g," ")}}</p>
-
+                            <p>{{'Seller '+ auctionPost.users.firstname+' '+auctionPost.users.lastname}}</p>
                             <b-button variant="primary" href="#">Place bid</b-button>
                         </b-jumbotron>
                     </div>
@@ -69,7 +68,8 @@
             return {
                 imgPath: '/assets/img/',
                 thumbnail: '/assets/img/thumbnail/',
-                arrayNum: 0
+                arrayNum: 0,
+                bidAmount: ''
             }
         },
         methods: {
@@ -77,8 +77,9 @@
                 this.arrayNum=index;
             }
         },
-        mounted() {
-        }
+       created(){
+            this.$store.dispatch("addBid",{auctionid: 1534, bidamount:199})
+       }
     }
 </script>
 
@@ -87,6 +88,7 @@
         margin-top: 10px;
     }
     .thumbNailHolder{
+        padding:10px;
         cursor:pointer;
     }
 </style>

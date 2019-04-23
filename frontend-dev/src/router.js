@@ -21,6 +21,11 @@ export default new Router({
       path: '/user/login',
       name: 'user',
       component: () => import('./views/Home.vue')
+    },
+    {
+      path: '/createauction',
+      name: 'CreateAuction',
+      component: () => import('./views/CreateAuction.vue')
     }
   ]
 })

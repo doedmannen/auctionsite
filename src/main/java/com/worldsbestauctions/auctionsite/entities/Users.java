@@ -13,6 +13,14 @@ public class Users implements Serializable {
     private String email;
     private String firstname;
     private String lastname;
+    private String password;
+
+    public Users(String email, String firstname, String lastname, String password){
+        this.email = email;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.password = password;
+    }
 
     public void setUserid(long userid) {
         this.userid = userid;
@@ -44,6 +52,14 @@ public class Users implements Serializable {
 
     public String getLastname() {
         return lastname;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
 }

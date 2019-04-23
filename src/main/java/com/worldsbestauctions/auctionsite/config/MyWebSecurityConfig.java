@@ -16,6 +16,7 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers(HttpMethod.POST,"/api/user").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/**").hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/api/**").permitAll()
                 .antMatchers("/").denyAll()

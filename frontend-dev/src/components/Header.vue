@@ -39,23 +39,22 @@
                         <form role="form" autocomplete="off">
                             <div class="form-group">
                                 <input name="register_first" class="form-control"
-                                       placeholder="First Name" value="SpongeBob">
+                                       placeholder="First Name">
                             </div>
                             <div class="form-group">
-                                <input name="register_last" class="form-control" placeholder="Last Name"
-                                       value="Squarepants">
+                                <input name="register_last" class="form-control" placeholder="Last Name">
                             </div>
                             <div class="form-group">
                                 <input type="email" name="register_email" class="form-control"
-                                       placeholder="Email Address" value="curran.kate@gmail.com">
+                                       placeholder="Email Address">
                             </div>
                             <div class="form-group">
                                 <input type="password" name="register_pass"
-                                       class="form-control" placeholder="Password" value="test">
+                                       class="form-control" placeholder="Password">
                             </div>
                             <div class="form-group">
                                 <input type="password" name="confirm_pass"
-                                       class="form-control" placeholder="Confirm Password" value="test">
+                                       class="form-control" placeholder="Confirm Password">
                             </div>
                             <div><p id="passError">Password must match!</p></div>
                             <div class="form-group">
@@ -140,10 +139,10 @@
                 let confirm_pass = document.getElementsByName('confirm_pass')[0].value;
 
                 if(password == confirm_pass){
-                    data.firstName = document.getElementsByName('register_first')[0].value;
-                    data.lastName = document.getElementsByName('register_last')[0].value;
+                    data.firstname = document.getElementsByName('register_first')[0].value;
+                    data.lastname = document.getElementsByName('register_last')[0].value;
                     data.email = document.getElementsByName('register_email')[0].value;
-                    data.password = password;
+                    data.password = document.getElementsByName('register_pass')[0].value;;
                 } else {
                     document.getElementById("passError").style.visibility = "visible";
                 }

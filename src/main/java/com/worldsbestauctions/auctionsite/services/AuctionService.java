@@ -1,5 +1,6 @@
 package com.worldsbestauctions.auctionsite.services;
 
+import com.worldsbestauctions.auctionsite.entities.Auctions;
 import com.worldsbestauctions.auctionsite.repos.AuctionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,5 +17,9 @@ public class AuctionService {
 
     public Iterable getAll(){
         return auctionPostRepo.findAll();
+    }
+
+    public Auctions save(Auctions s){
+        return auctionPostRepo.save(s);
     }
 }

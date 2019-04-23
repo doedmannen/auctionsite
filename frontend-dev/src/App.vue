@@ -1,7 +1,9 @@
 <template>
     <div id="app">
         <Header/>
-        <router-view/>
+            <main>
+                <router-view/>
+            </main>
         <Footer/>
     </div>
 </template>
@@ -18,12 +20,14 @@
         },
         created() {
             this.$store.dispatch("getPostsFromDb");
+            this.$store.dispatch("getCategoriesFromDb");
+            // console.log(this.$store.state.categories);
         }
     };
 
 </script>
 
-<style>
+<style scoped>
     #app {
         font-family: 'Oxygen', sans-serif;
         background-color: whitesmoke;
@@ -31,5 +35,12 @@
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
         color: #2c3e50;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+    main{
+        flex: 1;
+        padding-bottom: 75px;
     }
 </style>

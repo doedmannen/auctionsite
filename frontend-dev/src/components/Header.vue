@@ -63,7 +63,7 @@
 
             <!--Login dropdown-->
             <li class="dropleft">
-                <a data-toggle="dropdown"><i class="fas fa-user spacing"></i></a>
+                <a data-toggle="dropdown"><i class="fas fa-user spacing" :style="this.loggedIn ? 'color:green':'color:red'"></i></a>
                 <ul class="dropdown-menu dropdown-menu-lg-left" role="menu">
                     <div class="col-lg-12">
                         <div class="text-center">
@@ -84,7 +84,7 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-5">
-                                        <button v-on:click="loginUser" type="button" class="btn btn-center">Submit</button>
+                                        <button @click="loginUser" type="button" class="btn btn-center">Submit</button>
                                     </div>
                                 </div>
                             </div>
@@ -121,13 +121,12 @@
         },
         methods: {
             async createNewUser(){
-                let data = {
-                }
+                let data = {}
                     data.email = document.getElementsByName('register_email').value;
                     data.password = document.getElementsByName('register_pass').value;
                     data.confirm_pass = document.getElementsByName('confirm_pass').value;
 
-                let responseFromBackend = await fetch('/api/user/login', {
+                let responseFromBackend = await fetch('/login', {
                     method: "POST",
                     body: JSON.stringify(data),
                     headers: {
@@ -137,11 +136,9 @@
                 responseFromBackend = await responseFromBackend.text();
                 console.log(responseFromBackend);
             },
-
             async loginUser(){
-                let data = {
-                }
-                data.email = document.getElementsByName('register_email').value;
+                let data = {}
+                data.username = document.getElementsByName('register_email').value;
                 data.password = document.getElementsByName('register_pass').value;
 
                 let responseFromBackend = await fetch('/api/user/login', {
@@ -153,6 +150,11 @@
                 });
                 responseFromBackend = await responseFromBackend.text();
                 console.log(responseFromBackend);
+            }
+        },
+        computed:{
+            loggedIn(){
+                return this.$store.state.me != null;
             }
         }
     };

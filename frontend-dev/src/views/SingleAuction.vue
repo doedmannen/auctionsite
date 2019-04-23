@@ -5,58 +5,71 @@
                 <b-col cols="2">
                 </b-col>
                 <b-col cols="6">
-                    <template>
-                        <div class='carousel-view'>
-                            <transition-group
-                                    class='carousel'
-                                    tag="div">
-                                <div
-                                        v-for="slide in slides"
-                                        class='slide'
-                                        :key="slide.id">
-                                    <p>{{slide.title}}</p>
-                                </div>
-                            </transition-group>
-                            <div class='carousel-controls'>
-                                <button class='carousel-controls__button' @click="previous">prev</button>
-                                <button class='carousel-controls__button' @click="next">next</button>
-                            </div>
+                    <!--                    <template>-->
+                    <!--                        <div class='carousel-view'>-->
+                    <!--                            <transition-group-->
+                    <!--                                    class='carousel'-->
+                    <!--                                    tag="div">-->
+                    <!--                                <div-->
+                    <!--                                        v-for="slide in slides"-->
+                    <!--                                        class='slide'-->
+                    <!--                                        :key="slide.id">-->
+                    <!--                                    <img :src="imgPath + auctionPost.images[0] " alt="nej">-->
+                    <!--                                </div>-->
+                    <!--                            </transition-group>-->
+                    <!--                            <div class='carousel-controls'>-->
+                    <!--                                <button class='carousel-controls__button' @click="previous">prev</button>-->
+                    <!--                                <button class='carousel-controls__button' @click="next">next</button>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                    </template>-->
+
+                    <img :src="imgPath + auctionPost.images[0] " alt="nej">
+                    <div class="row">
+                        <div v-for="image in auctionPost.images">
+                            <img :src="thumbnail + image">
                         </div>
-                    </template>
+                        <div>
+                        </div>
+                    </div>
                     <div>
                         {{auctionPost.description}}
                     </div>
+                </b-col>
+                <b-col cols="4">
                     <div>
-                       </div></b-col>
-                <b-col cols="4"><div>
-                    <b-jumbotron>
-                        <template slot="lead">
-                            Leading bid!
-                            <span v-if="auctionPost.bids.length>0">{{auctionPost.bids[auctionPost.bids.length-1].bidamount}}</span>
-                            <span v-else>No bids</span>
-                        </template>
+                        <b-jumbotron>
+                            <template slot="lead">
+                                <br>
+                                <span v-if="auctionPost.bids.length>0">Leading bid at: {{auctionPost.bids[auctionPost.bids.length-1].bidamount}}$</span>
+                                <span v-else>Be the first to bid!</span>
+                                <br>
+                                <span>Asking price: {{auctionPost.startprice}}$ </span>
+                            </template>
 
-                        <hr class="my-4">
+                            <hr class="my-4">
 
-                        <template>
-                            <div>
-                                <b-form-group
-                                        id="fieldset-1"
-                                        label="Enter your bid"
-                                        label-for="input-1"
-                                        invalid-feedback="invalidFeedback"
-                                        valid-feedback="validFeedback"
-                                        state="state"
-                                >
-                                    <b-form-input id="input-1" v-model="name" state="state" trim></b-form-input>
-                                </b-form-group>
-                            </div>
-                        </template>
+                            <template>
+                                <div>
+                                    <b-form-group
+                                            id="fieldset-1"
+                                            label="Enter your bid"
+                                            label-for="input-1"
+                                            invalid-feedback="invalidFeedback"
+                                            valid-feedback="validFeedback"
+                                            state="state"
+                                    >
+                                        <b-form-input id="input-1" v-model="name" state="state" trim></b-form-input>
+                                    </b-form-group>
+                                </div>
+                            </template>
 
+                            <p>{{auctionPost.endtime.toString().replace(/T/g," ")}}</p>
 
-                        <b-button variant="primary" href="#">Place bid</b-button>
-                    </b-jumbotron>
-                </div></b-col>
+                            <b-button variant="primary" href="#">Place bid</b-button>
+                        </b-jumbotron>
+                    </div>
+                </b-col>
             </b-row>
         </b-container>
     </div>
@@ -71,7 +84,7 @@
                 return this.$store.state.auctionPosts.filter(auction => auction.auctionid == this.$route.params.auctionid)[0]
             }
         },
-        data () {
+        data() {
             return {
                 slides: [
                     {
@@ -94,57 +107,62 @@
                         title: 'I am Slide E',
                         id: 5
                     }
-                ]
+                ],
+                imgPath: '/assets/img/',
+                thumbnail: '/assets/img/thumbnail/'
             }
         },
         methods: {
-            next () {
+            next() {
                 const first = this.slides.shift()
                 this.slides = this.slides.concat(first)
             },
-            previous () {
+            previous() {
                 const last = this.slides.pop()
                 this.slides = [last].concat(this.slides)
-            }
+            },
         },
         mounted() {
-            console.log(this.$route.params),
-            console.log(this.auctionPost)
         }
     }
 </script>
 
 <style scoped>
-.mainContainer{
-    margin-top: 10px;
-}
-.carousel-view {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.carousel {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+    .mainContainer {
+        margin-top: 10px;
+    }
 
-    width: 24em;
-    min-height: 25em;
-}
-.slide {
-    flex: 0 0 20em;
-    height: 20em;
-    margin: 1em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: transform 0.3s ease-in-out;
-}
-.slide:first-of-type {
-    opacity: 0;
-}
-.slide:last-of-type {
-    opacity: 0;
-}
+    .carousel-view {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .carousel {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+
+        width: 24em;
+        min-height: 25em;
+    }
+
+    .slide {
+        flex: 0 0 20em;
+        height: 20em;
+        margin: 1em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .slide:first-of-type {
+        opacity: 0;
+    }
+
+    .slide:last-of-type {
+        opacity: 0;
+    }
 </style>

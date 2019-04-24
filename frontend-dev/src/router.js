@@ -14,6 +14,11 @@ export default new Router({
       component: () => import('./views/Home.vue')
     },
     {
+      path: '/category/:cat?',
+      name: 'cat',
+      component: () => import('./views/Home.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       component: () => import('./views/About.vue')

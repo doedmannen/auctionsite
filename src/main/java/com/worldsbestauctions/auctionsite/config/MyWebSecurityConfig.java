@@ -21,9 +21,9 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/**").permitAll()
                 .antMatchers("/").denyAll()
                 .and().formLogin()
-                .failureUrl("http://localhost:8888/?loginfailure")
-                .defaultSuccessUrl("http://localhost:8888/").permitAll()
-                .and().logout().logoutSuccessUrl("http://localhost:8888/")
+                .failureUrl("http://localhost:8081/?loginfailure")
+                .defaultSuccessUrl("http://localhost:8081/").permitAll()
+                .and().logout().logoutSuccessUrl("http://localhost:8081/")
                 .deleteCookies("JSESSIONID").permitAll()
                 .and().csrf().disable();
     }

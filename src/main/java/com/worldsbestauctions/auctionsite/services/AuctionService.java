@@ -19,9 +19,6 @@ public class AuctionService {
         return auctionPostRepo.findAll();
     }
 
-   /* public Iterable getCategorys(){
-       return auctionPostRepo.findAllByCategory();
-    }*/
 
     public Auctions save(Auctions s){
         return auctionPostRepo.save(s);

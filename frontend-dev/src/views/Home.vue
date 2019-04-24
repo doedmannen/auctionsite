@@ -28,6 +28,7 @@
                         <div>
                         <p class="currBid" v-if="auction.bids.length > 0">Price: ${{ auction.bids[auction.bids.length-1].bidamount }} ~ Bids: {{ auction.bids.length  }}</p>
                         <p class="currBid" v-else>Price: ${{auction.startprice }} ~ Bids: {{ auction.bids.length }}</p>
+                        <p> EndTime: {{auction.endtime.replace(/T/g, " ")}} </p>
 
                     </div>
                 </div>
@@ -60,7 +61,6 @@ export default {
             let timeNow = new Date();
             let path = this.$route.path.split("/");
             if(path[1] != '' && path[2]){
-                console.log(path)
                 let cat = this.$store.state.categories.filter(c => c.categoryname == this.$route.params.cat);
                 ap = this.$store.state.auctionPosts.filter(auction => auction.category == cat[0].categoryid);
             }

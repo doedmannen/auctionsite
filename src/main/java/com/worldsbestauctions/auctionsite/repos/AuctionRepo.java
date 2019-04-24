@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AuctionRepo extends CrudRepository<Auctions, Long> {
-    Iterable<Auctions> findTop10ById = null;
+    //Iterable<Auctions> findAllByCategory();
 }

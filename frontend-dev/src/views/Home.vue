@@ -8,18 +8,21 @@
         <input class="searchBox" type="text" v-model="searchAuctions" placeholder="Search">
         <div class="mainFlex" v-for="(auction, index) in auctionPosts" :key="index">
             <a :href="'/auction/' + auction.auctionid" class="flexSection">
+             <img :src="'/assets/img/thumbnail/'+auction.images[0]" id="image">
                 <div>
                     <p class="title">{{ auction.title }}</p>
                     <summary>{{ auction.description }}</summary>
-                    <div class="flex">
+                    <div>
                         <a :href="auction.sellerProfile">
                             <p>Seller: {{ auction.users.firstname }} {{ auction.users.lastname }}</p>
                         </a>
+                        <div>
                         <p class="currBid" v-if="auction.bids.length > 0">Price: {{ auction.bids[auction.bids.length-1].bidamount }}$ ~ Bids: {{ auction.bids.length  }}</p>
                         <p class="currBid" v-else>Price: {{auction.startprice }}$ ~ Bids: {{ auction.bids.length  }}</p>
+                        </div>
                     </div>
                 </div>
-                <img :src="'/assets/img/thumbnail/'+auction.images[0]" id="image">
+               
             </a>
         </div>
     </div>

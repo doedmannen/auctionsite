@@ -9,7 +9,8 @@ export default new Vuex.Store({
     state: {
         currentUploads: [],
         auctionPosts: [],
-        categories: []
+        categories: [],
+        me: null
     },
     mutations: {
         addUpload(state, value) {
@@ -23,6 +24,9 @@ export default new Vuex.Store({
         },
         setCategories(state, value) {
             state.categories = value;
+        },
+        setMe(state, value){
+            state.me = value;
         }
 
     },
@@ -34,6 +38,15 @@ export default new Vuex.Store({
         async getCategoriesFromDb() {
             let categories = await (await fetch(API_URL + 'category')).json();
             this.commit('setCategories', categories);
+        },
+        async whoami() {
+            let me = await fetch(API_URL + 'user/whoami');
+            try{
+                me = await me.json();
+            }catch(e){
+                me = null;
+            }
+            this.commit('setMe', me);
         },
     }
 })

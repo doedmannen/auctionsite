@@ -9,8 +9,8 @@ import com.worldsbestauctions.auctionsite.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 @RestController
 @RequestMapping("/api/auction")
@@ -35,10 +35,9 @@ public class AuctionController {
         return auctionPostsService.getAll();
     }
 
-    @PostMapping //todo set route to only allow authorized users
-    long createNewAuction(@RequestBody Auctions body){
-        // todo this is only used for testing, needs to get the user from session after login is made available
-        body.setAuctionowner(userService.getMockUser().getUserid());
+    @PostMapping
+    long createNewAuction(@RequestBody Auctions body, HttpServletRequest request){
+        body.setAuctionowner(userService.getUserByEmail(request.getUserPrincipal().getName()).getUserid());
         body.setStarttime(LocalDateTime.now());
         body.setEndtime(LocalDateTime.now().plusDays(2));
         long id = auctionPostsService.save(body).getAuctionid();

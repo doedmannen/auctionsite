@@ -30,14 +30,13 @@
 
                             <hr class="my-4">
 
-
-                                <div>
+                                <div v-if="loggedIn">
                                     <h2>Place your bid</h2>
-                                    <textarea name="bidAmount" placeholder="Place your bid" rows="2" cols="30" style="resize: none;"></textarea>
+                                    <textarea name="bidAmount" placeholder="Place your bid" rows="2" cols="30" style="resize: none;"></textarea><br>
+                                    <b-button variant="primary" @click="placeBid">Place bid</b-button>
                                 </div>
                             <p>{{auctionPost.endtime.toString().replace(/T/g," ")}}</p>
                             <p>Seller {{ auctionPost.users.firstname+' '+auctionPost.users.lastname}}</p>
-                            <b-button variant="primary" @click="placeBid">Place bid</b-button>
                         </b-jumbotron>
                     </div>
                 </b-col>
@@ -58,6 +57,9 @@
         computed: {
             auctionPost() {
                 return this.$store.state.auctionPosts.filter(auction => auction.auctionid == this.$route.params.auctionid)[0]
+            },
+            loggedIn(){
+                return this.$store.state.me!=null;
             }
         },
         data() {
@@ -85,6 +87,7 @@
                         "content-type": "application/json"
                     }
                 });
+                this.$store.dispatch("getPostsFromDb");
                 this.modalShow=true;
             }
         },

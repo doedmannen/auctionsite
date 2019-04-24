@@ -18,7 +18,7 @@
                         <input type="password" name="login_pass" id="password" tabindex="2"
                         class="form-control" placeholder="Password" autocomplete="off">
                     </div>
-
+                    <div><p id="loginError">Incorrect username or password!</p></div>
                     <div class="form-group">
                         <div class="row">
                             <div class="col-xs-5">
@@ -45,6 +45,8 @@ export default {
     },
     methods: {
         async loginUser() {
+            document.getElementById("loginError").style.visibility = "hidden";
+
             let data, username, password;
             username = document.getElementsByName('login_email')[0].value;
             password = document.getElementsByName('login_pass')[0].value;
@@ -56,7 +58,9 @@ export default {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
             });
-            console.log(!responseFromBackend.url.includes("fail"));
+            if(responseFromBackend.url.includes("fail")) {
+                document.getElementById("loginError").style.visibility = "visible";
+            }
             this.$store.dispatch("whoami");
         },
     }
@@ -66,5 +70,10 @@ export default {
 <style lang="css" scoped>
 i{
     cursor: pointer;
+}
+
+#loginError {
+    color:red;
+    visibility: hidden;
 }
 </style>

@@ -19,20 +19,19 @@
         <div class="mainFlex" v-for="(auction, index) in auctionPosts" :key="index">
             <a :href="'/auction/' + auction.auctionid" class="flexSection">
              <img :src="'/assets/img/thumbnail/'+auction.images[0]" id="image">
-                <div>
+                <div class="flex">
                     <p class="title">{{ auction.title }}</p>
-                    <summary>{{ auction.description }}</summary>
-                    <div>
+                    <p>{{ auction.description }}</p>
                         <a :href="auction.sellerProfile">
                             <p>Seller: {{ auction.users.firstname }} {{ auction.users.lastname }}</p>
                         </a>
                         <div>
-                        <p class="currBid" v-if="auction.bids.length > 0">Price: {{ auction.bids[auction.bids.length-1].bidamount }}$ ~ Bids: {{ auction.bids.length  }}</p>
-                        <p class="currBid" v-else>Price: {{auction.startprice }}$ ~ Bids: {{ auction.bids.length }}</p>
-                        </div>
+                        <p class="currBid" v-if="auction.bids.length > 0">Price: ${{ auction.bids[auction.bids.length-1].bidamount }} ~ Bids: {{ auction.bids.length  }}</p>
+                        <p class="currBid" v-else>Price: ${{auction.startprice }} ~ Bids: {{ auction.bids.length }}</p>
+
                     </div>
                 </div>
-               
+
             </a>
         </div>
     </div>
@@ -144,12 +143,6 @@ a:hover {
     margin: 0.2em;
 }
 
-.flex {
-    display: flex;
-    justify-content: space-between;
-    margin: 1em;
-}
-
 .flexActivComp{
     display: flex;
     width: 20vw;
@@ -159,12 +152,6 @@ a:hover {
 
 .filterby{
     padding-right: 0.5rem;
-}
-
-summary {
-    text-align: left;
-    text-indent: 1em;
-    margin: 1em;
 }
 
 .title {
@@ -178,5 +165,12 @@ summary {
 
 .searchBox {
     margin-bottom: 0;
+}
+
+.flex {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 3em;
 }
 </style>

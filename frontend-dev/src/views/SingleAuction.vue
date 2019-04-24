@@ -22,21 +22,21 @@
                         <b-jumbotron>
                             <template slot="lead">
                                 <br>
-                                <span v-if="auctionPost.bids.length>0">Leading bid at: {{auctionPost.bids[auctionPost.bids.length-1].bidamount}}$</span>
+                                <span v-if="auctionPost.bids.length>0">Leading bid at: ${{auctionPost.bids[auctionPost.bids.length-1].bidamount}}</span>
                                 <span v-else>Be the first to bid!</span>
                                 <br>
-                                <span>Asking price: {{auctionPost.startprice}}$ </span>
+                                <span>Asking price: ${{auctionPost.startprice}} </span>
                             </template>
 
                             <hr class="my-4">
 
                                 <div v-if="loggedIn">
-                                    <h2>Place your bid</h2>
-                                    <textarea name="bidAmount" placeholder="Place your bid" rows="2" cols="30" style="resize: none;"></textarea><br>
+                                    <h3>Place your bid</h3>
+                                    <input type="text" name="bidAmount" placeholder="Place your bid" @change="parseNumbers"><br>
                                     <b-button variant="primary" @click="placeBid">Place bid</b-button>
                                 </div>
                             <p>{{auctionPost.endtime.toString().replace(/T/g," ")}}</p>
-                            <p>Seller {{ auctionPost.users.firstname+' '+auctionPost.users.lastname}}</p>
+                            <p>Seller: {{ auctionPost.users.firstname+' '+auctionPost.users.lastname}}</p>
                         </b-jumbotron>
                     </div>
                 </b-col>
@@ -77,7 +77,7 @@
             },
             async placeBid(){
                let data = {};
-               data.bidamount=document.getElementsByName('bidAmount')[0].value;
+               data.bidamount=document.getElementsByName('bidAmount')[0].value.replace(/[^0-9]/g,"");
                data.auctionid=this.$route.params.auctionid;
 
                 await fetch('/api/bid', {
@@ -89,6 +89,11 @@
                 });
                 this.$store.dispatch("getPostsFromDb");
                 this.modalShow=true;
+            },
+            parseNumbers(){
+                let input=document.getElementsByName('bidAmount')[0].value.replace(/^[^0-9]*0*|[^0-9]/g,'');
+                let output= input.length>0? '$ ' + input:'';
+                document.getElementsByName('bidAmount')[0].value=output
             }
         },
        created(){

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="auctionPost">
         <b-container class="mainContainer" fluid>
             <b-row>
                 <b-col cols="2">
@@ -79,7 +79,9 @@
                let data = {};
                data.bidamount=document.getElementsByName('bidAmount')[0].value.replace(/[^0-9]/g,"");
                data.auctionid=this.$route.params.auctionid;
+               let currentBid=this.auctionPost.bids[this.auctionPost.bids.length-1].bidamount;
 
+               if(data.bidamount>currentBid){
                 await fetch('/api/bid', {
                     method: "POST",
                     body: JSON.stringify(data),
@@ -88,7 +90,8 @@
                     }
                 });
                 this.$store.dispatch("getPostsFromDb");
-                this.modalShow=true;
+                this.modalShow=true;}
+
             },
             parseNumbers(){
                 let input=document.getElementsByName('bidAmount')[0].value.replace(/^[^0-9]*0*|[^0-9]/g,'');

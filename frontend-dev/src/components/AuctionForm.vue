@@ -74,12 +74,12 @@ export default {
                     }
                 });
                 responseFromServer = await responseFromServer.text();
+                this.$store.dispatch('getPostsFromDb');
                 if (!isNaN(responseFromServer)) {
                     this.$router.push('/auction/' + responseFromServer);
                 } else {
                     if(!this.formErrors) this.formErrors = {};
                     this.formErrors.server = true;
-
                 }
             }
         },

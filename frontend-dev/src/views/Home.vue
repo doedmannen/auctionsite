@@ -127,7 +127,6 @@ a:hover {
 
 .flexSection {
     display: flex;
-    height: 30vh;
     width: 70vw;
     margin: 1vh;
     border: 2px gray solid;

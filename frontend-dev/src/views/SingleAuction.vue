@@ -32,7 +32,7 @@
 
 
                                 <div>
-                                    <h2>Description</h2>
+                                    <h2>Place your bid</h2>
                                     <textarea name="bidAmount" placeholder="Place your bid" rows="2" cols="30" style="resize: none;"></textarea>
                                 </div>
                             <p>{{auctionPost.endtime.toString().replace(/T/g," ")}}</p>

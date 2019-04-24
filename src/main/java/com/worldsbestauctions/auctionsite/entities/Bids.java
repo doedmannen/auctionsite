@@ -10,17 +10,17 @@ import java.util.Date;
 public class Bids {
 
 
-    private int userid;
+    private  long userid;
     private int auctionid;
     private double bidamount;
     @Id
     private LocalDateTime bidtime;
 
-    public void setUserid(int userid) {
+    public void setUserid(long userid) {
         this.userid = userid;
     }
 
-    public int getUserid() {
+    public long getUserid() {
         return userid;
     }
 

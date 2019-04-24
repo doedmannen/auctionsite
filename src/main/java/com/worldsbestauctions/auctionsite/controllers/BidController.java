@@ -18,10 +18,9 @@ public class BidController {
     BidService bidService;
 
     @PostMapping
-    long createNewBid(@RequestBody Bids body) {
+    void createNewBid(@RequestBody Bids body) {
         body.setBidtime(LocalDateTime.now());
         body.setUserid(2);
-        long id = bidService.save(body).getAuctionid();
-        return id;
+        bidService.save(body);
     }
 }

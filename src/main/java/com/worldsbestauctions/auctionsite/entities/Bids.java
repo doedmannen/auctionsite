@@ -1,6 +1,7 @@
 package com.worldsbestauctions.auctionsite.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -8,10 +9,11 @@ import java.util.Date;
 @Entity
 public class Bids {
 
-    @Id
+
     private int userid;
     private int auctionid;
     private double bidamount;
+    @Id
     private LocalDateTime bidtime;
 
     public void setUserid(int userid) {

@@ -33,16 +33,21 @@
 
                                 <div>
                                     <h2>Description</h2>
-                                    <textarea name="bidAmount" placeholder="Place your bid" rows="6" cols="80" style="resize: none;"></textarea>
+                                    <textarea name="bidAmount" placeholder="Place your bid" rows="2" cols="30" style="resize: none;"></textarea>
                                 </div>
                             <p>{{auctionPost.endtime.toString().replace(/T/g," ")}}</p>
-                            <p>{{'Seller '+ auctionPost.users.firstname+' '+auctionPost.users.lastname}}</p>
+                            <p>Seller {{ auctionPost.users.firstname+' '+auctionPost.users.lastname}}</p>
                             <b-button variant="primary" @click="placeBid">Place bid</b-button>
                         </b-jumbotron>
                     </div>
                 </b-col>
             </b-row>
         </b-container>
+        <template>
+            <div>
+                <b-modal v-model="modalShow">Bid Placed!</b-modal>
+            </div>
+        </template>
     </div>
 </template>
 
@@ -60,6 +65,7 @@
                 imgPath: '/assets/img/',
                 thumbnail: '/assets/img/thumbnail/',
                 arrayNum: 0,
+                modalShow: false
 
             }
         },
@@ -79,6 +85,7 @@
                         "content-type": "application/json"
                     }
                 });
+                this.modalShow=true;
             }
         },
        created(){

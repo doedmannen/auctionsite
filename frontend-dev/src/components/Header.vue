@@ -21,74 +21,15 @@
                     </div>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="/create">Create auction</a>
+                <li class="nav-item" v-if="this.loggedIn">
+                    <a class="nav-link" href="/createauction">Create auction</a>
                 </li>
             </ul>
 
-            <!--Registration dropdown-->
-            <li class="dropleft">
-                <a data-toggle="dropdown" class="spacing">Register</a>
-                <ul class="dropdown-menu" role="menu">
-                    <div class="col-lg-12">
-                        <div class="text-center">
-                            <p class="logo">Create an account</p></div>
-                        <form role="form" autocomplete="off">
-                            <div class="form-group">
-                                <input type="email" name="register_email" class="form-control"
-                                       placeholder="Email Address" value="curran.kate@gmail.com">
-                            </div>
-                            <div class="form-group">
-                                <input type="password" name="register_pass"
-                                       class="form-control" placeholder="Password" value="test">
-                            </div>
-                            <div class="form-group">
-                                <input type="password" name="confirm_pass"
-                                       class="form-control" placeholder="Confirm Password" value="test">
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-xs-6 col-xs-offset-3">
-                                        <button v-on:click="createNewUser" type="button" class="btn btn-center">Register</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </ul>
-            </li>
+            <Register />
 
-            <!--Login dropdown-->
-            <li class="dropleft">
-                <a data-toggle="dropdown"><i class="fas fa-user spacing"></i></a>
-                <ul class="dropdown-menu dropdown-menu-lg-left" role="menu">
-                    <div class="col-lg-12">
-                        <div class="text-center">
-                            <p class="logo">Log In</p></div>
-                        <form role="form" autocomplete="off">
-                            <div class="form-group">
-                                <label for="userEmail">Username</label>
-                                <input type="text" name="login_user" id="userEmail" tabindex="1"
-                                       class="form-control" placeholder="Email" value="" autocomplete="off">
-                            </div>
+            <Login />
 
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <input type="password" name="login_pass" id="password" tabindex="2"
-                                       class="form-control" placeholder="Password" autocomplete="off">
-                            </div>
-
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-xs-5">
-                                        <button v-on:click="loginUser" type="button" class="btn btn-center">Submit</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </ul>
-            </li>
             <a href=""><i class="fas fa-envelope spacing"></i></a>
         </div>
     </nav>
@@ -102,51 +43,22 @@
                 searchAuctions: "",
             }
         },
-         computed: {
-        categories() {
-            return this.$store.state.categories;
-         }
-        },
-        methods: {
-            async createNewUser(){
-                let data = {
-                }
-                    data.email = document.getElementsByName('register_email').value;
-                    data.password = document.getElementsByName('register_pass').value;
-                    data.confirm_pass = document.getElementsByName('confirm_pass').value;
-
-                let responseFromBackend = await fetch('/api/user/login', {
-                    method: "POST",
-                    body: JSON.stringify(data),
-                    headers: {
-                        "content-type": "application/json"
-                    }
-                });
-                responseFromBackend = await responseFromBackend.text();
-                console.log(responseFromBackend);
+        computed: {
+            loggedIn(){
+                return this.$store.state.me != null;
             },
-
-            async loginUser(){
-                let data = {
-                }
-                data.email = document.getElementsByName('register_email').value;
-                data.password = document.getElementsByName('register_pass').value;
-
-                let responseFromBackend = await fetch('/api/user/login', {
-                    method: "POST",
-                    body: JSON.stringify(data),
-                    headers: {
-                        "content-type": "application/json"
-                    }
-                });
-                responseFromBackend = await responseFromBackend.text();
-                console.log(responseFromBackend);
+            categories(){
+                return this.$store.state.categories;
             }
+        },
+        components: {
+            Login: () => import('@/components/Login.vue'),
+            Register: () => import('@/components/Register.vue')
         }
     };
 </script>
 
-<style scoped>
+<style>
 
     * {
         color: rgb(32, 64, 96);
@@ -186,5 +98,10 @@
         margin-left: 1em;
         background-color: rgb(32, 64, 96);
         color: rgb(126, 199, 199);
+    }
+
+    #passError {
+        color: red;
+        visibility: hidden;
     }
 </style>

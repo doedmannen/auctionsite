@@ -1,4 +1,4 @@
-package com.worldsbestauctions.auctionsite;
+package com.worldsbestauctions.auctionsite.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.CacheControl;

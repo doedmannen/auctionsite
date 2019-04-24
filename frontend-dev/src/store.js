@@ -22,7 +22,7 @@ export default new Vuex.Store({
         setPosts(state, value) {
             state.auctionPosts = value;
         },
-        setCategories(state, value){
+        setCategories(state, value) {
             state.categories = value;
         },
         setMe(state, value){

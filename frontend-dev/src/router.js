@@ -27,6 +27,11 @@ export default new Router({
       path: '/createauction',
       name: 'CreateAuction',
       component: () => import('./views/CreateAuction.vue')
+    },
+    {
+      path: '/auction/:auctionid',
+      name: 'auction',
+      component: () => import('./views/SingleAuction.vue')
     }
   ]
 })

@@ -16,7 +16,7 @@
         </div>
         
         
-        <div class="mainFlex" v-for="(auction, index) in auctionPosts" :key="index">
+        <div class="mainFlex" v-for="(auction, index) in filteredAuctions" :key="index">
             <a :href="'/auction/' + auction.auctionid" class="flexSection">
              <img :src="'/assets/img/thumbnail/'+auction.images[0]" id="image">
                 <div class="flex">
@@ -81,7 +81,7 @@ export default {
         },
 
         filteredAuctions: function() {
-            return this.auctions.filter((auction) => {
+            return this.auctionPosts.filter((auction) => {
                 return auction.title.toLowerCase().match(this.searchAuctions) || auction.description.toLowerCase().match(this.searchAuctions);
             })
 

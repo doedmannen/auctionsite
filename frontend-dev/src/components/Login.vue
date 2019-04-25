@@ -26,7 +26,7 @@
                             ></b-form-input>
                         </b-form-group>
                         <button @click="loginUser" type="button" class="btn btn-center">Submit</button>
-                        <div><p style="color:red">{{this.formError}}</p></div>
+                        <div><p style="color:red">{{formErrorLogin}}</p></div>
                     </b-dropdown-form>
                 </div>
                 <div v-else>
@@ -46,7 +46,7 @@ export default {
     name: 'Login',
     data(){
         return{
-            formError: ""
+            formErrorLogin: ""
         }
     },
     computed: {
@@ -59,16 +59,16 @@ export default {
     },
     methods: {
         async loginUser() {
-            this.formError = "";
+            let error = "";
             let data, username, password;
             username = document.getElementById('login-email').value;
             password = document.getElementById('login-pass').value;
             data = `username=${username}&password=${password}`;
 
             if(!username.match(/^[a-z]{3,}@[a-z]{3,}\.[a-z]{2,10}$/)){
-                this.formError = "Please enter an email";
+                error = "Please enter an email";
             } else if(!password) {
-                this.formError = "Please enter a password";
+                error = "Please enter a password";
             } else {
                 let responseFromBackend = await fetch('/login', {
                     method: "POST",
@@ -78,17 +78,21 @@ export default {
                     }
                 });
                 if (responseFromBackend.url.includes("fail")) {
-                    this.formError = "Incorrect email and/or password";
+                    error = "Incorrect email and/or password";
                 } else {
                     this.$refs.dropdownlogin.hide(true)
                     this.$store.dispatch("whoami");
                 }
             }
+            this.setError(error);
         },
         async logoutUser() {
             this.$refs.dropdownlogin.hide(true)
             await fetch("/logout");
             this.$store.dispatch("whoami");
+        },
+        setError(error){
+            this.formErrorLogin = error;
         }
     }
 }
@@ -97,11 +101,6 @@ export default {
 <style lang="css" scoped>
 i{
     cursor: pointer;
-}
-
-#loginError {
-    color:red;
-    visibility: hidden;
 }
 .loggedInUser{
     margin: 0;

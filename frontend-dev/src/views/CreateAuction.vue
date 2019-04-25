@@ -20,6 +20,10 @@ export default {
         loggedIn(){
             return this.$store.state.me != null;
         }
+    },
+    mounted(){
+        if(!this.loggedIn)
+            this.$router.push("/");
     }
 }
 </script>

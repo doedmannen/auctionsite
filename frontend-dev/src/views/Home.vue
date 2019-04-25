@@ -8,11 +8,9 @@
         <input class="searchBox" type="text" v-model="searchAuctions" placeholder="Search">
       
         <div class="flexActivComp">
-           
                   <p class="filterby">Show:</p>
-      
-             <span @click="toggleActive" class="filterby" :style="this.showActive ? 'color:black':'color:red'" style="cursor: pointer;">Active</span>
-                        <span @click="toggleComplete" class="filterby" :style="this.showCompleted? 'color:black':'color:red'" style="cursor: pointer;">Completed</span>
+             <span @click="toggleActive" class="filterby filter" :style="this.showActive ? 'color:black':'color:green'" style="cursor: pointer;">Active</span>
+             <span @click="toggleComplete" class="filterby filter" :style="this.showCompleted? 'color:black':'color:green'" style="cursor: pointer;">Completed</span>
         </div>
         
         
@@ -94,10 +92,6 @@ export default {
         }
     },
     methods: {
-        auctionsByCategory(category) {
-            this.category = category;
-            return this.auctions.filter(el => el.category.match(category));
-        },
         toggleActive(){
             this.showActive = !this.showActive;
         },
@@ -160,6 +154,15 @@ a:hover {
 
 .filterby{
     padding-right: 0.5rem;
+    margin-top: 5px;
+}
+
+.filter{
+    border: 1px solid  rgb(206, 206, 206);
+    border-radius: 4px;
+    background-color: rgb(206, 206, 206);
+    padding: 10px;
+    margin-right: 5px;
 }
 
 .title {

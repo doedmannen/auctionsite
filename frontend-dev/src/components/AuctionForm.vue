@@ -1,17 +1,19 @@
 <template lang="html">
     <div>
         <div>
-            <p class="labelForm">Title</p>
+            <p class="labelForm">Title
+                <span class="lengthCount">[{{currentLength.title}}/{{maxLength.title}}]</span></p>
             <p class="errorText" v-if="this.formErrors && this.formErrors.title">{{formErrors.title}}</p>
-            <input
+            <input id="auctiontitle" v-on:keyup="parseText" v-on:click="parseText" @change="parseText"
             :class="(this.formErrors && this.formErrors.title) ? 'errorMarker':'inputClass'"
              type="text" size="20" placeholder="A selling title" name="aucTitle">
         </div>
         <div>
-            <p class="labelForm">Description</p>
+            <p class="labelForm">Description
+                <span class="lengthCount">[{{currentLength.description}}/{{maxLength.description}}]</span></p>
             <p class="errorText" v-if="this.formErrors && this.formErrors.description">
             {{formErrors.description}}</p>
-            <textarea
+            <textarea v-on:keyup="parseText" v-on:click="parseText" @change="parseText"
             :class="(this.formErrors && this.formErrors.description) ? 'errorMarker':'inputClass'"
             name="aucDescription" placeholder="Some selling arguments for your item..." rows="6" cols="80" style="resize: none;"></textarea>
         </div>
@@ -19,9 +21,9 @@
             <p class="labelForm">Starting at price</p>
             <p class="errorText" v-if="this.formErrors && this.formErrors.price">
             {{formErrors.price}}</p>
-            <input
+            <input v-on:keyup="parseDollar" v-on:click="parseDollar" @change="parseDollar"
             :class="(this.formErrors && this.formErrors.price) ? 'errorMarker':'inputClass'"
-            type="text" size="20" placeholder="$10" name="aucPrice" @change="numberInput">
+            type="text" size="20" placeholder="$10" name="aucPrice">
         </div>
         <div>
             <p class="labelForm">Category</p>
@@ -53,11 +55,19 @@ export default {
     },
     data() {
         return {
-            formErrors: null
+            formErrors: null,
+            currentLength: {
+                title: 0,
+                description: 0
+            },
+            maxLength: {
+                title: 30,
+                description: 1000
+            }
         }
     },
     methods: {
-        numberInput(){
+        parseDollar(){
             let input = document.getElementsByName('aucPrice')[0].value.replace(/^[^0-9]*0*|[^0-9]/g,"");
             let output = "";
             output = input.length > 0 ? "$ " + input : "";
@@ -66,7 +76,6 @@ export default {
         async createAuction() {
             let images, data, responseFromServer;
             images = await this.uploadPictures();
-            console.log(images);
 
             data = {};
             data.title = document.getElementsByName('aucTitle')[0].value;
@@ -88,7 +97,6 @@ export default {
                 });
                 responseFromServer = await responseFromServer.text();
                 this.$store.dispatch('getPostsFromDb');
-                console.log("our response", responseFromServer);
                 if (!isNaN(responseFromServer)) {
                     this.$router.push('/auction/' + responseFromServer);
                 } else {
@@ -124,10 +132,10 @@ export default {
         },
         checkForErrors(data) {
             let errors = {};
-            if (data.title.length < 1 || data.title.length > 20)
+            if (data.title.length < 1 || data.title.length > 30)
                 errors.title = data.title.length < 1 ?
                 'Title can not be empty' : 'Title can not be longer than 30 letters (including spaces)';
-            if (data.description.length < 1 || data.description.length > 255)
+            if (data.description.length < 1 || data.description.length > 1000)
                 errors.description = data.description.length < 1 ?
                 'Description can not be empty' : 'Description can not be longer than 1000 letters (including spaces)';
             if (!data.images || data.images.length === 0)
@@ -135,6 +143,20 @@ export default {
             if(data.startprice.length === 0 || isNaN(data.startprice) || data.startprice/1 === 0)
                 errors.price = 'Please provide a starting price';
             return Object.keys(errors).length === 0 ? null : errors;
+        },
+        parseText(e){
+            e.target.value = e.target.value.replace(/\n{2,}/g,"\n").replace(/ {2,}/g," ").replace(/^ $/g,"");
+            e.target.value = !e.target.value.match(/.*[a-z].*/i) ? '' : e.target.value;
+            let max = e.target.id === 'auctiontitle' ?
+            this.maxLength.title : this.maxLength.description;
+            if(e.target.value.length > max){
+                e.target.value = e.target.value.substring(0, max);
+            }
+            if(max == this.maxLength.title){
+                this.currentLength.title = e.target.value.length;
+            } else {
+                this.currentLength.description = e.target.value.length;
+            }
         }
     },
     computed: {
@@ -180,5 +202,8 @@ export default {
 }
 .submitbtn{
     margin-top: 20px;
+}
+.lengthCount{
+    font-size: 10pt;
 }
 </style>

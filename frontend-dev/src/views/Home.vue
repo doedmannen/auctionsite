@@ -94,10 +94,10 @@ export default {
         }
     },
     methods: {
-        auctionsByCategory(category) {
+        /*auctionsByCategory(category) {
             this.category = category;
             return this.auctions.filter(el => el.category.match(category));
-        },
+        },*/
         toggleActive(){
             this.showActive = !this.showActive;
         },

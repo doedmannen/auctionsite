@@ -1,12 +1,15 @@
 package com.worldsbestauctions.auctionsite.entities;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Indexed
 @Entity
 public class Auctions {
 
@@ -14,8 +17,11 @@ public class Auctions {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long auctionid;
     private long auctionowner;
+    @Field
     private String title;
+    @Field
     private String description;
+    @Field
     private int category;
     private double startprice;
     private LocalDateTime starttime;

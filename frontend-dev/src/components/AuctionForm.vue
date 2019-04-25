@@ -1,34 +1,43 @@
 <template lang="html">
     <div>
         <div>
-            <h2>Title</h2>
+            <p class="labelForm">Title</p>
             <p class="errorText" v-if="this.formErrors && this.formErrors.title">You must provide a selling title</p>
-            <input type="text" size="20" placeholder="A selling title" name="aucTitle">
+            <input
+            :class="(this.formErrors && this.formErrors.title) ? 'errorMarker':'inputClass'"
+             type="text" size="20" placeholder="A selling title" name="aucTitle">
         </div>
         <div>
-            <h2>Description</h2>
-            <p class="errorText" v-if="this.formErrors && this.formErrors.description">You must provide a selling description</p>
-            <textarea name="aucDescription" placeholder="Some selling arguments for your item..." rows="6" cols="80" style="resize: none;"></textarea>
+            <p class="labelForm">Description</p>
+            <p class="errorText" v-if="this.formErrors && this.formErrors.description">
+            You must provide a selling description</p>
+            <textarea
+            :class="(this.formErrors && this.formErrors.title) ? 'errorMarker':'inputClass'"
+            name="aucDescription" placeholder="Some selling arguments for your item..." rows="6" cols="80" style="resize: none;"></textarea>
         </div>
         <div>
-            <h2>Starting at price</h2>
+            <p class="labelForm">Starting at price</p>
             <p class="errorText" v-if="this.formErrors && this.formErrors.price">You must provide a starting price</p>
-            <input type="text" size="20" placeholder="$10" name="aucPrice" @change="numberInput">
+            <input
+            :class="(this.formErrors && this.formErrors.title) ? 'errorMarker':'inputClass'"
+            type="text" size="20" placeholder="$10" name="aucPrice" @change="numberInput">
         </div>
         <div>
-            <h2>Category</h2>
-            <select name="aucCat">
+            <p class="labelForm">Category</p>
+            <select class="inputClass" name="aucCat">
                 <option v-for="(cat) of this.categories" :value="cat.categoryid">{{cat.categoryname}}</option>
             </select>
         </div>
-        <div>
-            <h2>Files</h2>
+        <div class="uploadContainer">
+            <p class="labelForm">Files</p>
             <span class="errorText" v-if="this.formErrors && this.formErrors.images">Auctions need pictures</span>
-            <ImageUploader />
+            <div :class="(this.formErrors && this.formErrors.title && !this.filestorage.length) ? 'errorMarkerImg':''">
+                <ImageUploader />
+            </div>
         </div>
         <div>
             <p class="errorText" v-if="this.formErrors && this.formErrors.server">Something went terribly wrong. Please try again later... </p>
-            <button type="button" name="auctionButton" @click="createAuction">Create auction</button>
+            <b-button class="submitbtn" type="submit" variant="primary" @click="createAuction">Submit</b-button>
         </div>
     </div>
 </template>
@@ -137,5 +146,34 @@ export default {
 <style lang="css" scoped>
 .errorText{
     color: red;
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+.inputClass{
+    width: 40vw;
+    border: 2px solid blue;
+    padding: 5px;
+}
+.labelForm{
+    font-size: 14pt;
+    margin: 0;
+    padding: 10px 0 0 0;
+}
+.errorMarker{
+    width: 40vw;
+    border: 2px solid red;
+    padding: 5px;
+}
+.errorMarkerImg{
+    border: 2px solid red;
+    width: 40vw;
+    display: inline-block;
+}
+.uploadContainer{
+    justify-content: center;
+}
+.submitbtn{
+    margin-top: 20px;
 }
 </style>

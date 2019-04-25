@@ -179,6 +179,7 @@ img{
 .arrow{
     display: inline;
     padding: 0 5px 0 5px;
+    cursor: pointer;
 }
 .primaryDisplay{
     font-size: 10pt;

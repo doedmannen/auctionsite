@@ -29,6 +29,11 @@ public class AuctionController {
     Iterable<Auctions> getAll(){
         return auctionPostsService.getTopTen();
     }*/
+
+    @GetMapping("/search/{title}")
+    Iterable<Auctions> search(@PathVariable String title){
+        return auctionPostsService.search(title);
+    }
     
     @GetMapping
     Iterable<Auctions> getAll(){

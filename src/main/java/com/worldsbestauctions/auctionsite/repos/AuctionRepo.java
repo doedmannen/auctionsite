@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AuctionRepo extends CrudRepository<Auctions, Long> {
     Iterable<Auctions> findTop10ByOrderByAuctionidDesc();
+
+    Iterable<Auctions> findByTitleContaining(String title);
 }

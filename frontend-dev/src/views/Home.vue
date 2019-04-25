@@ -68,6 +68,7 @@ export default {
                 let cat = this.$store.state.categories.filter(c => c.categoryname == this.$route.params.cat);
                 ap = this.$store.state.auctionPosts.filter(auction => auction.category == cat[0].categoryid);
             }
+
             if(this.showActive){
                 active = ap.filter(auction => {
                     let dat = auction.endtime.replace(/T/g, " ");

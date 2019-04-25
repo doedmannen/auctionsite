@@ -5,7 +5,8 @@
             <div class="flexSection" id="namePic">
                 <img src="http://www.atabjkpg.se/wp-content/uploads/2017/12/default-user-image.png" id="profileIcon">
                 <h3>{{indivProfile.users.firstname}} {{indivProfile.users.lastname}}</h3>
-                <div v-if="indivProfile.users.userid = 4">
+                <div v-if="this.me != null">
+                    <div v-if="indivProfile.users.userid = this.me.userid">
                     <button type="button" class="btn btnStyle" data-toggle="modal" data-target="#exampleModal"> Edit details</button>
 
                     <!-- Change details modal -->
@@ -36,22 +37,23 @@
                                 </div>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
+
 
                 <button class="btn btnStyle">Contact</button>
             </div>
             <div class="flexSection">
-                <div class="flex" v-for="auction in indivProfile">
+               <div class="flex" v-for="auction in indivAuctions">
                     <a :href="'/auction/' + auction.auctionid">
-                        <p>Auction: {{auction.name}}</p>
-                        <p>Current Bid: {{auction.currentBid}}</p>
-                        <p>Ending: {{auction.endingTime}}</p>
+                        <p>Auction: {{auction.title}}</p>
+                        <p>Ending: {{auction.endtime.toString().replace(/T/g," ")}}</p>
                     </a>
                 </div>
             </div>
         </div>
-    </div>
+        </div>
 </template>
 
 <script>
@@ -62,7 +64,14 @@
         },
         computed: {
             indivProfile() {
-                return this.$store.state.auctionPosts.filter(auction => auction.users.userid == this.$route.params.userid)[0]
+                console.log(this.$store.state.auctionPosts.filter(auction => auction.users.userid == this.$route.params.userid)[0])
+
+                return this.$store.state.auctionPosts.filter(auction => auction.users.userid == this.$route.params.userid)[0];
+            },
+            indivAuctions() {
+                console.log(this.$store.state.auctionPosts.filter(auction => auction.users.userid == this.$route.params.userid))
+
+                return this.$store.state.auctionPosts.filter(auction => auction.users.userid == this.$route.params.userid);
             },
             me(){
                 return this.$store.state.me;

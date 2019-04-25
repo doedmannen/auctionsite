@@ -66,7 +66,6 @@ export default {
             } else {
                 document.getElementById("passError").style.visibility = "visible";
             }
-
             let responseFromBackend = await fetch('/api/user', {
                 method: "POST",
                 body: JSON.stringify(data),
@@ -74,6 +73,21 @@ export default {
                     "content-type": "application/json"
                 }
             });
+            responseFromBackend = await responseFromBackend.text();
+            if(responseFromBackend > 0){
+                this.autoLogin(data);
+            }
+        },
+        async autoLogin(data){
+            data = `username=${data.email}&password=${data.password}`;
+            let responseFromBackend = await fetch('/login', {
+                method: "POST",
+                body: data,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+            this.$store.dispatch("whoami");
         }
     }
 

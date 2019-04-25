@@ -1,42 +1,40 @@
 <template lang="html">
-    <div>
-        <div v-if="!loggedIn">
+    <div class="main">
+        <p v-if="loggedIn">{{me.firstname}} {{me.lastname}}</p>
+        <div class="contentMenu">
             <b-dropdown variant="link" id="dropdown-offset" offset="-230" ref="dropdown" class="m-2" no-caret>
-                <template slot="button-content"><i class="fas fa-user spacing"></i>
-                </template>
-                <b-dropdown-form>
-                    <p class="logo">Log In</p>
-                    <b-form-group @submit.stop.prevent>
-                        <b-form-input
-                        id="login-email"
-                        size="md"
-                        placeholder="Email Address"
-                        ></b-form-input>
-                    </b-form-group>
 
-                    <b-form-group>
-                        <b-form-input
-                        id="login-pass"
-                        type="password"
-                        size="md"
-                        placeholder="Password"
-                        ></b-form-input>
-                    </b-form-group>
-                    <button @click="loginUser" type="button" class="btn btn-center">Submit</button>
-                    <div><p id="loginError">Incorrect email and/or password!</p></div>
-                </b-dropdown-form>
-            </b-dropdown>
-        </div>
-        <div v-else>
-            <p class="loggedInUser" v-if="this.loggedIn">{{me.firstname +" "+ me.lastname}}</p>
-            <b-dropdown variant="link" id="dropdown-offset" offset="-230" ref="dropdown" class="m-2" no-caret>
                 <template slot="button-content"><i class="fas fa-user spacing"></i>
                 </template>
+                <div v-if="!loggedIn">
+                    <b-dropdown-form>
+                        <p class="logo">Log In</p>
+                        <b-form-group @submit.stop.prevent>
+                            <b-form-input
+                            id="login-email"
+                            size="md"
+                            placeholder="Email Address"
+                            ></b-form-input>
+                        </b-form-group>
+
+                        <b-form-group>
+                            <b-form-input
+                            id="login-pass"
+                            type="password"
+                            size="md"
+                            placeholder="Password"
+                            ></b-form-input>
+                        </b-form-group>
+                        <button @click="loginUser" type="button" class="btn btn-center">Submit</button>
+                        <div><p id="loginError">Incorrect email and/or password!</p></div>
+                    </b-dropdown-form>
+                </div>
+                <div v-else>
                     <div class="text-center">
                         <p class="logo">User menu</p>
                     </div>
                     <button @click="logoutUser" type="button" class="btn btn-center">Logout</button>
-                </b-dropdown-form>
+                </div>
             </b-dropdown>
         </div>
     </div>
@@ -79,6 +77,7 @@ export default {
             }
         },
         async logoutUser() {
+            this.$refs.dropdown.hide(true)
             await fetch("/logout");
             this.$store.dispatch("whoami");
         }

@@ -1,40 +1,43 @@
 <template lang="html">
-    <div class="main">
-        <p class="loggedInUser" v-if="this.loggedIn">{{me.firstname +" "+ me.lastname}}</p>
-        <div class="dropleft">
-            <a data-toggle="dropdown"><i class="fas fa-user spacing"></i></a>
-            <div class="dropdown-menu dropdown-menu-lg-left contentMenu" role="menu">
-                <div class="col-lg-12">
-                    <div v-if="!loggedIn">
-                        <div class="text-center">
-                            <p class="logo">Log In</p>
-                        </div>
-                        <form role="form" autocomplete="off">
-                            <div class="form-group">
-                                <label for="userEmail">E-mail</label>
-                                <input type="text" name="login_email" id="userEmail" tabindex="1"
-                                class="form-control" placeholder="Email" value="" autocomplete="off">
-                            </div>
+    <div>
+        <div v-if="!loggedIn">
+            <b-dropdown variant="link" id="dropdown-offset" offset="-230" ref="dropdown" class="m-2" no-caret>
+                <template slot="button-content"><i class="fas fa-user spacing"></i>
+                </template>
+                <b-dropdown-form>
+                    <p class="logo">Log In</p>
+                    <b-form-group @submit.stop.prevent>
+                        <b-form-input
+                        id="login-email"
+                        size="md"
+                        placeholder="Email Address"
+                        ></b-form-input>
+                    </b-form-group>
 
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <input type="password" name="login_pass" id="password" tabindex="2"
-                                class="form-control" placeholder="Password" autocomplete="off">
-                            </div>
-                            <div><p id="loginError">Incorrect username or password!</p></div>
-                            <div class="form-group">
-                                <button @click="loginUser" type="button" class="btn btn-center">Submit</button>
-                            </div>
-                        </form>
+                    <b-form-group>
+                        <b-form-input
+                        id="login-pass"
+                        type="password"
+                        size="md"
+                        placeholder="Password"
+                        ></b-form-input>
+                    </b-form-group>
+                    <button @click="loginUser" type="button" class="btn btn-center">Submit</button>
+                    <div><p id="loginError">Incorrect email and/or password!</p></div>
+                </b-dropdown-form>
+            </b-dropdown>
+        </div>
+        <div v-else>
+            <p class="loggedInUser" v-if="this.loggedIn">{{me.firstname +" "+ me.lastname}}</p>
+            <b-dropdown variant="link" id="dropdown-offset" offset="-230" ref="dropdown" class="m-2" no-caret>
+                <template slot="button-content"><i class="fas fa-user spacing"></i>
+                </template>
+                    <div class="text-center">
+                        <p class="logo">User menu</p>
                     </div>
-                    <div v-else>
-                        <div class="text-center">
-                            <p class="logo">User menu</p>
-                        </div>
-                        <button @click="logoutUser" type="button" class="btn btn-center">Logout</button>
-                    </div>
-                </div>
-            </div>
+                    <button @click="logoutUser" type="button" class="btn btn-center">Logout</button>
+                </b-dropdown-form>
+            </b-dropdown>
         </div>
     </div>
 
@@ -56,22 +59,26 @@ export default {
             document.getElementById("loginError").style.visibility = "hidden";
 
             let data, username, password;
-            username = document.getElementsByName('login_email')[0].value;
-            password = document.getElementsByName('login_pass')[0].value;
+            username = document.getElementById('login-email').value;
+            password = document.getElementById('login-pass').value;
             data = `username=${username}&password=${password}`;
-            let responseFromBackend = await fetch('/login', {
-                method: "POST",
-                body: data,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+            if(username && password){
+                let responseFromBackend = await fetch('/login', {
+                    method: "POST",
+                    body: data,
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                });
+                if (responseFromBackend.url.includes("fail")) {
+                    document.getElementById("loginError").style.visibility = "visible";
+                } else {
+                    this.$refs.dropdown.hide(true)
+                    this.$store.dispatch("whoami");
                 }
-            });
-            if(responseFromBackend.url.includes("fail")) {
-                document.getElementById("loginError").style.visibility = "visible";
             }
-            this.$store.dispatch("whoami");
         },
-        async logoutUser(){
+        async logoutUser() {
             await fetch("/logout");
             this.$store.dispatch("whoami");
         }

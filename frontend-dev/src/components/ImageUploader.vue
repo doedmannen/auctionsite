@@ -8,14 +8,17 @@
       <div v-if="this.thumbnailPreview.length > 0" class="imageFrame">
           <div v-for="(elem, index) of this.thumbnailPreview" :class="['isolatedImage', index == 0 ? 'primaryImage':'']">
               <div :id="'imageContainer'+index">
-                  <span v-if="index != 0" class="arrow" @click="moveImage">< </span>
-                  <span v-if="index+1 != thumbnailPreview.length" class="arrow" @click="moveImage"> ></span>
+                  <i class="fas fa-arrow-circle-left arrow" v-if="index != 0" @click="moveImage"></i>
+                  <i class="fas fa-arrow-circle-right arrow" v-if="index+1 != thumbnailPreview.length" @click="moveImage"></i>
               </div>
               <figure class="uploadPic">
                   <img :src="elem">
               </figure>
-              <span v-if="index == 0">Primary</span>
+              <span class="primaryDisplay" v-if="index == 0">Primary image</span>
           </div>
+      </div>
+      <div v-else>
+          <p>No pictures have been chosen</p>
       </div>
 
   </div>
@@ -156,7 +159,7 @@ export default {
     display: inline-block;
 }
 .primaryImage{
-    border: 1px solid red;
+    border: 3px solid blue;
 }
 .filePointer{
     cursor: pointer;
@@ -176,5 +179,9 @@ img{
 }
 .arrow{
     display: inline;
+}
+.primaryDisplay{
+    font-size: 10pt;
+    font-weight: bold;
 }
 </style>

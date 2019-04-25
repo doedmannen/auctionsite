@@ -4,7 +4,7 @@
         <b-row>
             <b-col cols="2">
             </b-col>
-            <b-col cols="6">
+            <b-col cols="7" class="contentContainer">
                 <h1>{{auctionPost.title}}</h1>
                 <img :src="imgPath + auctionPost.images[arrayNum] " alt="nej">
                 <div class="row">
@@ -14,11 +14,8 @@
                     <div>
                     </div>
                 </div>
-                <div>
-                    {{auctionPost.description}}
-                </div>
             </b-col>
-            <b-col cols="4">
+            <b-col cols="3">
                 <div>
                     <b-jumbotron>
                         <template slot="lead">
@@ -29,6 +26,15 @@
                             <span>Asking price: ${{auctionPost.startprice}} </span>
                         </template>
 
+                        <hr class="my-4">
+                        <div>
+                            <h4>Description: </h4>
+                            <p>{{description}}
+                                <span class="showToggle" v-if="auctionPost.description.length > 50" @click="showMoreToggle">[
+                                    {{(this.showMore ? 'Show less' : 'Show more')}}
+                                ]</span>
+                            </p>
+                        </div>
                         <hr class="my-4">
                         <div v-if="loggedIn">
                             <div v-if="auctionPost.users.userid != this.me.userid">
@@ -71,6 +77,13 @@ export default {
         },
         me(){
             return this.$store.state.me;
+        },
+        description(){
+            let d = this.auctionPost.description;
+            if(this.auctionPost.description.length > 50 && !this.showMore){
+                d = this.auctionPost.description.substring(0,50)+"...";
+            }
+            return d;
         }
     },
     data() {
@@ -79,7 +92,8 @@ export default {
             thumbnail: '/assets/img/thumbnail/',
             arrayNum: 0,
             modalShow: false,
-            modalText: ""
+            modalText: "",
+            showMore: false
         }
     },
     methods: {
@@ -112,6 +126,9 @@ export default {
             let input = document.getElementsByName('bidAmount')[0].value.replace(/^[^0-9]*0*|[^0-9]/g, '');
             let output = input.length > 0 ? '$ ' + input : '';
             document.getElementsByName('bidAmount')[0].value = output
+        },
+        showMoreToggle(){
+            this.showMore = !this.showMore;
         }
     },
     created() {}
@@ -124,11 +141,20 @@ export default {
 }
 
 .thumbNailHolder {
-    padding: 10px;
+    padding: 10px 0 10px 0;
     cursor: pointer;
 }
 
 .row {
     justify-content: center;
+}
+.contentContainer{
+    background: white;
+}
+.showToggle{
+    font-size: 10pt;
+    font-weight: bold;
+    display: block;
+    cursor: pointer;
 }
 </style>

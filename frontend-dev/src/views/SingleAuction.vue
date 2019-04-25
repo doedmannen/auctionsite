@@ -20,7 +20,7 @@
                     </div>
                 </b-col>
                 <b-col cols="4">
-                    <div>
+                    <div v-if="Date.now()<=Date.parse(auctionPost.endtime.toString())">
                         <b-jumbotron>
                             <template slot="lead">
                                 <br>
@@ -67,9 +67,30 @@
                                     </b-container>
                                 </b-modal>
                             </div>
-                            {{getUsers}}
+                            <div v-if="Date.parse(auctionPost.endtime.toString()) - oneDayInMS < Date.now()">
+                                <countdown :end-time="auctionPost.endtime">
+                                <span slot="process"
+                                      slot-scope="{timeObj}">{{`Time left: ${timeObj.h}:${timeObj.m}:${timeObj.s}` }}</span>
+                                    <span slot="finish">Done!</span>
+                                </countdown>
+                            </div>
                         </b-jumbotron>
                     </div>
+                        <div v-else>
+                            <b-jumbotron>
+                                <template slot="header">SOLD</template>
+
+                                <template slot="lead">
+                                    This is an ended auction
+                                </template>
+
+                                <hr class="my-4">
+
+                                <p>
+                                     sold for: ${{auctionPost.bids[0].bidamount}}
+                                </p>
+                            </b-jumbotron>
+                        </div>
                 </b-col>
             </b-row>
         </b-container>
@@ -88,7 +109,7 @@
             auctionPost() {
                 return this.$store.state.auctionPosts.filter(auction => auction.auctionid == this.$route.params.auctionid)[0]
             },
-            auctionPosts(){
+            auctionPosts() {
                 return this.$store.state.auctionPosts;
             },
 
@@ -103,7 +124,7 @@
             },
             getUsers() {
                 return this.$store.state.allUsers;
-            }
+            },
         },
         data() {
             return {
@@ -113,8 +134,7 @@
                 modalShow: false,
                 modalText: "",
                 limit: 5,
-                date: '',
-                time: '',
+                oneDayInMS: 86400000
             }
         },
         methods: {
@@ -122,7 +142,7 @@
                 this.arrayNum = index;
             },
             loadFiveMore() {
-                if(this.auctionPost.bids.length>this.limit){
+                if (this.auctionPost.bids.length > this.limit) {
                     this.limit += 5
                 }
 

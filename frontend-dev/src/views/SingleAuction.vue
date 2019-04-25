@@ -67,6 +67,7 @@
                                     </b-container>
                                 </b-modal>
                             </div>
+                            {{getUsers}}
                         </b-jumbotron>
                     </div>
                 </b-col>
@@ -87,15 +88,21 @@
             auctionPost() {
                 return this.$store.state.auctionPosts.filter(auction => auction.auctionid == this.$route.params.auctionid)[0]
             },
+            auctionPosts(){
+                return this.$store.state.auctionPosts;
+            },
 
             loggedIn() {
                 return this.$store.state.me != null;
             },
             highestBid() {
-                return this.auctionPost.bids.length > 0 ? this.auctionPost.bids[this.auctionPost.bids.length - 1].bidamount / 1 : this.auctionPost.startprice / 1;
+                return this.auctionPost.bids.length > 0 ? this.auctionPost.bids[0].bidamount / 1 : this.auctionPost.startprice / 1;
             },
             me() {
                 return this.$store.state.me;
+            },
+            getUsers() {
+                return this.$store.state.allUsers;
             }
         },
         data() {
@@ -105,7 +112,9 @@
                 arrayNum: 0,
                 modalShow: false,
                 modalText: "",
-                limit: 5
+                limit: 5,
+                date: '',
+                time: '',
             }
         },
         methods: {
@@ -147,8 +156,6 @@
                 let input = document.getElementsByName('bidAmount')[0].value.replace(/^[^0-9]*0*|[^0-9]/g, '');
                 let output = input.length > 0 ? '$ ' + input : '';
                 document.getElementsByName('bidAmount')[0].value = output
-            },
-            updateLimit() {
             }
 
         },

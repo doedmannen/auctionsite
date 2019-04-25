@@ -19,5 +19,9 @@ public class UserService {
     public Users getUserByEmail(String email) {
         return userRepo.findDistinctFirstByEmailIgnoreCase(email);
     }
+
+    public Iterable findAll() {
+        return userRepo.findAll();
+    }
 }
 

@@ -3,7 +3,6 @@ package com.worldsbestauctions.auctionsite.entities;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +39,7 @@ public class Auctions {
     private List<Images> images;
 
     public String[] getImages() {
-        return images.stream().map(Images::getPath).toArray(String[]::new);
+        return images.stream().sorted(Comparator.comparing(Images::getOrder)).map(Images::getPath).toArray(String[]::new);
     }
 
     public void setAuctionid(long auctionid) {

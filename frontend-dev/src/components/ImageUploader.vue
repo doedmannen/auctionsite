@@ -5,10 +5,17 @@
           <input type="file" name="files2upload" id="poweif23" accept="image/*" multiple required @change="loadImages" style="display: none">
       </label>
 
-      <div v-if="this.thumbnailPreview.length > 0" class="pictureFrame">
-          <figure v-for="(elem) of this.thumbnailPreview" class="uploadPic" >
-              <img :src="elem" alt="picture">
-          </figure>
+      <div v-if="this.thumbnailPreview.length > 0" class="imageFrame">
+          <div v-for="(elem, index) of this.thumbnailPreview" :class="['isolatedImage', index == 0 ? 'primaryImage':'']">
+              <div :id="'imageContainer'+index">
+                  <span v-if="index != 0" class="arrow" @click="moveImage">< </span>
+                  <span v-if="index+1 != thumbnailPreview.length" class="arrow" @click="moveImage"> ></span>
+              </div>
+              <figure class="uploadPic">
+                  <img :src="elem">
+              </figure>
+              <span v-if="index == 0">Primary</span>
+          </div>
       </div>
 
   </div>
@@ -108,6 +115,21 @@ export default {
                 ui8a[i] = byteString.charCodeAt(i);
             }
             return ui8a;
+        },
+        moveImage(e){
+            let dir, index, newIndex, tmp;
+            dir = e.originalTarget.textContent.replace(" ", "") == ">" ? 1 : -1;
+            index = e.originalTarget.parentElement.id.replace(/[^0-9]/g,"");
+            dir = dir / 1;
+            index = index / 1;
+            newIndex = index + dir;
+            tmp = this.pics.splice(index, 1)[0];
+            this.pics.splice(newIndex,0,tmp);
+            this.$store.commit('orderUploads', {
+                index: index,
+                newIndex: newIndex
+            })
+            console.log(this.$store.state.currentUploads);
         }
     },
     data() {
@@ -133,11 +155,26 @@ export default {
 .uploadPic{
     display: inline-block;
 }
+.primaryImage{
+    border: 1px solid red;
+}
 .filePointer{
     cursor: pointer;
 }
 img{
     width: 100%;
 }
-
+.imageFrame{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.isolatedImage{
+    display: inline-block;
+    display: flex;
+    flex-direction: column;
+}
+.arrow{
+    display: inline;
+}
 </style>

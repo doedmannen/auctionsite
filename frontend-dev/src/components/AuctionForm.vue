@@ -54,6 +54,7 @@ export default {
         async createAuction() {
             let images, data, responseFromServer;
             images = await this.uploadPictures();
+            console.log(images);
 
             data = {};
             data.title = document.getElementsByName('aucTitle')[0].value;
@@ -75,6 +76,7 @@ export default {
                 });
                 responseFromServer = await responseFromServer.text();
                 this.$store.dispatch('getPostsFromDb');
+                console.log("our response", responseFromServer);
                 if (!isNaN(responseFromServer)) {
                     this.$router.push('/auction/' + responseFromServer);
                 } else {
@@ -103,7 +105,7 @@ export default {
                 });
                 responseFromServer = await responseFromServer.text();
                 imagePaths.push({
-                    'path': responseFromServer
+                    'path': responseFromServer,
                 });
             }
             return imagePaths;

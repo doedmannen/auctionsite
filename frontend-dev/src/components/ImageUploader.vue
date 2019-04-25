@@ -8,8 +8,8 @@
       <div v-if="this.thumbnailPreview.length > 0" class="imageFrame">
           <div v-for="(elem, index) of this.thumbnailPreview" :class="['isolatedImage', index == 0 ? 'primaryImage':'']">
               <div :id="'imageContainer'+index">
-                  <i class="fas fa-arrow-circle-left arrow" v-if="index != 0" @click="moveImage"></i>
-                  <i class="fas fa-arrow-circle-right arrow" v-if="index+1 != thumbnailPreview.length" @click="moveImage"></i>
+                  <i class="fas fa-arrow-circle-left arrow" v-if="index != 0" @click="moveImage"> </i>
+                  <i class="fas fa-arrow-circle-right arrow" v-if="index+1 != thumbnailPreview.length" @click="moveImage"> </i>
               </div>
               <figure class="uploadPic">
                   <img :src="elem">
@@ -121,7 +121,7 @@ export default {
         },
         moveImage(e){
             let dir, index, newIndex, tmp;
-            dir = e.originalTarget.textContent.replace(" ", "") == ">" ? 1 : -1;
+            dir = e.originalTarget.className.includes("right") ? 1 : -1;
             index = e.originalTarget.parentElement.id.replace(/[^0-9]/g,"");
             dir = dir / 1;
             index = index / 1;
@@ -132,7 +132,6 @@ export default {
                 index: index,
                 newIndex: newIndex
             })
-            console.log(this.$store.state.currentUploads);
         }
     },
     data() {
@@ -179,6 +178,7 @@ img{
 }
 .arrow{
     display: inline;
+    padding: 0 5px 0 5px;
 }
 .primaryDisplay{
     font-size: 10pt;

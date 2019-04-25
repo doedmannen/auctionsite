@@ -16,7 +16,7 @@
         </div>
         
         
-        <div class="mainFlex" v-for="(auction, index) in filteredAuctions" :key="index">
+        <div class="mainFlex" v-for="(auction, index) in filteredAuctions.slice(0,auctionsShown)" :key="index">
             <a :href="'/auction/' + auction.auctionid" class="flexSection">
              <img :src="'/assets/img/thumbnail/'+auction.images[0]" id="image">
                 <div class="flex">
@@ -35,6 +35,11 @@
 
             </a>
         </div>
+
+         <div class="showMoreButton">
+        <b-button class="showMore mt-2" v-on:click="loadMore">Load more</b-button>
+    </div>
+    
     </div>
 </div>
 </template>
@@ -50,7 +55,8 @@ export default {
         return {
             searchAuctions: "",
             showActive: true,
-            showCompleted: true 
+            showCompleted: true,
+            auctionsShown: 5
         };
     },
     computed: {
@@ -97,6 +103,9 @@ export default {
         },
         toggleComplete(){
             this.showCompleted = !this.showCompleted;
+        },
+         loadMore() {
+            this.auctionsShown += 5;
         }
     }
 };

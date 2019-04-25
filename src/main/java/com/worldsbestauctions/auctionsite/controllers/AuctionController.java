@@ -25,11 +25,16 @@ public class AuctionController {
     @Autowired
     UserService userService;
 
-    @GetMapping
-    Iterable<Auctions> getAll(){
+   @GetMapping
+    Iterable<Auctions> getTopTen(){
         return auctionPostsService.getTopTen();
     }
-    
+
+   /*@GetMapping
+   Iterable<Auctions> getActivePosts(Auctions a) {
+        return auctionPostsService.getActivePosts(a.getEndtime());
+    }*/
+
     /*@GetMapping
     Iterable<Auctions> getAll(){
         return auctionPostsService.getAll();

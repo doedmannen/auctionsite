@@ -5,6 +5,8 @@ import com.worldsbestauctions.auctionsite.repos.AuctionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class AuctionService {
 
@@ -12,8 +14,12 @@ public class AuctionService {
     AuctionRepo auctionPostRepo;
 
     public Iterable getTopTen() {
-        return auctionPostRepo.findTop10ByOrderByAuctionidDesc();
+        return auctionPostRepo.findTop10ByOrderByEndtimeAsc();
     }
+
+    /* public Iterable getActivePosts(LocalDateTime endTime) {
+        return auctionPostRepo.findByEndtimeGreaterThanOrderByEndtimeDesc(endTime);
+    }*/
 
     /*public Iterable getAll(){
         return auctionPostRepo.findAll();

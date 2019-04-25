@@ -1,43 +1,43 @@
 <template lang="html">
-    <li class="dropleft">
-        <a data-toggle="dropdown"><span v-if="this.loggedIn">{{me.firstname +" "+ me.lastname}}</span><i class="fas fa-user spacing"></i></a>
-        <ul class="dropdown-menu dropdown-menu-lg-left" role="menu">
-            <div class="col-lg-12">
-                <div v-if="!loggedIn">
-                    <div class="text-center">
-                        <p class="logo">Log In</p>
-                    </div>
-                    <form role="form" autocomplete="off">
-                        <div class="form-group">
-                            <label for="userEmail">E-mail</label>
-                            <input type="text" name="login_email" id="userEmail" tabindex="1"
-                            class="form-control" placeholder="Email" value="" autocomplete="off">
+    <div class="main">
+        <p class="loggedInUser" v-if="this.loggedIn">{{me.firstname +" "+ me.lastname}}</p>
+        <div class="dropleft">
+            <a data-toggle="dropdown"><i class="fas fa-user spacing"></i></a>
+            <div class="dropdown-menu dropdown-menu-lg-left contentMenu" role="menu">
+                <div class="col-lg-12">
+                    <div v-if="!loggedIn">
+                        <div class="text-center">
+                            <p class="logo">Log In</p>
                         </div>
-
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" name="login_pass" id="password" tabindex="2"
-                            class="form-control" placeholder="Password" autocomplete="off">
-                        </div>
-                        <div><p id="loginError">Incorrect username or password!</p></div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-xs-5">
-                                    <button @click="loginUser" type="button" class="btn btn-center">Submit</button>
-                                </div>
+                        <form role="form" autocomplete="off">
+                            <div class="form-group">
+                                <label for="userEmail">E-mail</label>
+                                <input type="text" name="login_email" id="userEmail" tabindex="1"
+                                class="form-control" placeholder="Email" value="" autocomplete="off">
                             </div>
-                        </div>
-                    </form>
-                </div>
-                <div v-else>
-                    <div class="text-center">
-                        <p class="logo">User menu</p>
+
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" name="login_pass" id="password" tabindex="2"
+                                class="form-control" placeholder="Password" autocomplete="off">
+                            </div>
+                            <div><p id="loginError">Incorrect username or password!</p></div>
+                            <div class="form-group">
+                                <button @click="loginUser" type="button" class="btn btn-center">Submit</button>
+                            </div>
+                        </form>
                     </div>
-                    <button @click="logoutUser" type="button" class="btn btn-center">Logout</button>
+                    <div v-else>
+                        <div class="text-center">
+                            <p class="logo">User menu</p>
+                        </div>
+                        <button @click="logoutUser" type="button" class="btn btn-center">Logout</button>
+                    </div>
                 </div>
             </div>
-        </ul>
-    </li>
+        </div>
+    </div>
+
 </template>
 
 <script>
@@ -87,5 +87,18 @@ i{
 #loginError {
     color:red;
     visibility: hidden;
+}
+.main{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+.loggedInUser{
+    margin: 0;
+    padding: 0;
+}
+
+.contentMenu * {
+    text-align: center;
 }
 </style>

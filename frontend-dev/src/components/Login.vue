@@ -14,6 +14,7 @@
                             id="login-email"
                             size="md"
                             placeholder="Email Address"
+                            v-on:keyup.enter="loginUser"
                             ></b-form-input>
                         </b-form-group>
 
@@ -23,6 +24,7 @@
                             type="password"
                             size="md"
                             placeholder="Password"
+                            v-on:keyup.enter="loginUser"
                             ></b-form-input>
                         </b-form-group>
                         <button @click="loginUser" type="button" class="btn btn-center">Submit</button>

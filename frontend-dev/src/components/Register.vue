@@ -13,6 +13,7 @@
                             id="registration-firstname"
                             size="md"
                             placeholder="Firstname"
+                            v-on:keyup.enter="createNewUser"
                             ></b-form-input>
                         </b-form-group>
 
@@ -21,6 +22,7 @@
                             id="registration-lastname"
                             size="md"
                             placeholder="Lastname"
+                            v-on:keyup.enter="createNewUser"
                             ></b-form-input>
                         </b-form-group>
 
@@ -29,6 +31,7 @@
                             id="registration-email"
                             size="md"
                             placeholder="Email Address"
+                            v-on:keyup.enter="createNewUser"
                             ></b-form-input>
                         </b-form-group>
 
@@ -38,6 +41,7 @@
                             type="password"
                             size="md"
                             placeholder="Password"
+                            v-on:keyup.enter="createNewUser"
                             ></b-form-input>
                         </b-form-group>
 
@@ -47,6 +51,7 @@
                             type="password"
                             size="md"
                             placeholder="Password"
+                            v-on:keyup.enter="createNewUser"
                             ></b-form-input>
                         </b-form-group>
 
@@ -80,7 +85,7 @@ export default {
             this.formError = "";
 
             let data = {}
-            let confirm_pass = document.getElementsByName('register_password-repeat').value;
+            let confirm_pass = document.getElementById('registration-password-repeat').value;
             data.firstname = document.getElementById('registration-firstname').value;
             data.lastname = document.getElementById('registration-lastname').value;
             data.email = document.getElementById('registration-email').value;
@@ -88,7 +93,7 @@ export default {
 
             if(!data.firstname || !data.lastname || !data.email || !data.password){
                 this.formError = "All fields need to be filled out!";
-            }else if(data.email.match(/^[a-z]{3,}@[a-z]{3,}\.[a-z]{2,10}$/)){
+            }else if(!data.email.match(/^[a-z]{3,}@[a-z]{3,}\.[a-z]{2,10}$/)){
                 this.formError = "Invalid email";
             } else if (data.password != confirm_pass){
                 this.formError = "Passwords do not match!";

@@ -25,15 +25,15 @@ public class AuctionController {
     @Autowired
     UserService userService;
 
-    /*@GetMapping
-    Iterable<Auctions> getTopTenAuctionPosts(){
-        return auctionPostsService.getTopTen();
-    }*/
-
     @GetMapping
     Iterable<Auctions> getAll(){
-        return auctionPostsService.getAll();
+        return auctionPostsService.getTopTen();
     }
+    
+    /*@GetMapping
+    Iterable<Auctions> getAll(){
+        return auctionPostsService.getAll();
+    }*/
 
     @PostMapping
     long createNewAuction(@RequestBody Auctions body, HttpServletRequest request){

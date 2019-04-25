@@ -2,7 +2,7 @@
     <div>
         <div>
             <p class="labelForm">Title</p>
-            <p class="errorText" v-if="this.formErrors && this.formErrors.title">You must provide a selling title</p>
+            <p class="errorText" v-if="this.formErrors && this.formErrors.title">{{formErrors.title}}</p>
             <input
             :class="(this.formErrors && this.formErrors.title) ? 'errorMarker':'inputClass'"
              type="text" size="20" placeholder="A selling title" name="aucTitle">
@@ -10,16 +10,17 @@
         <div>
             <p class="labelForm">Description</p>
             <p class="errorText" v-if="this.formErrors && this.formErrors.description">
-            You must provide a selling description</p>
+            {{formErrors.description}}</p>
             <textarea
-            :class="(this.formErrors && this.formErrors.title) ? 'errorMarker':'inputClass'"
+            :class="(this.formErrors && this.formErrors.description) ? 'errorMarker':'inputClass'"
             name="aucDescription" placeholder="Some selling arguments for your item..." rows="6" cols="80" style="resize: none;"></textarea>
         </div>
         <div>
             <p class="labelForm">Starting at price</p>
-            <p class="errorText" v-if="this.formErrors && this.formErrors.price">You must provide a starting price</p>
+            <p class="errorText" v-if="this.formErrors && this.formErrors.price">
+            {{formErrors.price}}</p>
             <input
-            :class="(this.formErrors && this.formErrors.title) ? 'errorMarker':'inputClass'"
+            :class="(this.formErrors && this.formErrors.price) ? 'errorMarker':'inputClass'"
             type="text" size="20" placeholder="$10" name="aucPrice" @change="numberInput">
         </div>
         <div>
@@ -30,13 +31,15 @@
         </div>
         <div class="uploadContainer">
             <p class="labelForm">Files</p>
-            <span class="errorText" v-if="this.formErrors && this.formErrors.images">Auctions need pictures</span>
+            <span class="errorText" v-if="this.formErrors && this.formErrors.images">
+            {{formErrors.images}}</span>
             <div :class="(this.formErrors && this.formErrors.title && !this.filestorage.length) ? 'errorMarkerImg':''">
                 <ImageUploader />
             </div>
         </div>
         <div>
-            <p class="errorText" v-if="this.formErrors && this.formErrors.server">Something went terribly wrong. Please try again later... </p>
+            <p class="errorText" v-if="this.formErrors && this.formErrors.server">
+            {{formErrors.server}}</p>
             <b-button class="submitbtn" type="submit" variant="primary" @click="createAuction">Submit</b-button>
         </div>
     </div>
@@ -90,7 +93,7 @@ export default {
                     this.$router.push('/auction/' + responseFromServer);
                 } else {
                     if(!this.formErrors) this.formErrors = {};
-                    this.formErrors.server = true;
+                    this.formErrors.server = 'Our auction servers are currently not responding. Please try again later';
                 }
             }
         },
@@ -122,13 +125,15 @@ export default {
         checkForErrors(data) {
             let errors = {};
             if (data.title.length < 1 || data.title.length > 20)
-                errors.title = true;
+                errors.title = data.title.length < 1 ?
+                'Title can not be empty' : 'Title can not be longer than 30 letters (including spaces)';
             if (data.description.length < 1 || data.description.length > 255)
-                errors.description = true;
+                errors.description = data.description.length < 1 ?
+                'Description can not be empty' : 'Description can not be longer than 1000 letters (including spaces)';
             if (!data.images || data.images.length === 0)
-                errors.images = true;
+                errors.images = 'You must provice at least one picture';
             if(data.startprice.length === 0 || isNaN(data.startprice) || data.startprice/1 === 0)
-                errors.price = true;
+                errors.price = 'Please provide a starting price';
             return Object.keys(errors).length === 0 ? null : errors;
         }
     },

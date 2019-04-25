@@ -94,7 +94,6 @@ export default {
 
             // Upload files to the backend and get filenames
             for (let file of this.filestorage) {
-                let index = 0;
                 // Append formdata
                 let data = new FormData();
                 data.append('fullsize', file.fullsize);
@@ -107,7 +106,6 @@ export default {
                 responseFromServer = await responseFromServer.text();
                 imagePaths.push({
                     'path': responseFromServer,
-                    'order': index++
                 });
             }
             return imagePaths;

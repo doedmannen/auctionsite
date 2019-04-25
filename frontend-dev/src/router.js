@@ -32,6 +32,11 @@ export default new Router({
       path: '/auction/:auctionid',
       name: 'auction',
       component: () => import('./views/SingleAuction.vue')
+    },
+    {
+      path:'/profile/:userid',
+      name: 'ProfilePage',
+      component: () => import ('./views/ProfilePage.vue')
     }
   ]
 })

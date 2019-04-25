@@ -3,13 +3,47 @@
         <h1>Profile</h1>
         <div class="mainFlex">
             <div class="flexSection" id="namePic">
-                <img :src=mockPerson.picture id="profilePic">
-                <h3>{{mockPerson.firstname}} {{mockPerson.lastname}}</h3>
-                <button class="btn" id="btnContact">Contact</button>
+                <img src="http://www.atabjkpg.se/wp-content/uploads/2017/12/default-user-image.png" id="profileIcon">
+                <h3>{{indivProfile.users.firstname}} {{indivProfile.users.lastname}}</h3>
+                <div v-if="indivProfile.users.userid = 4">
+                    <button type="button" class="btn btnStyle" data-toggle="modal" data-target="#exampleModal"> Edit details</button>
+
+                    <!-- Change details modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">My details</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Save changes"></button>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <h5>Change icon</h5>
+                                    <i class="far fa-smile"></i>
+                                    <i class="fas fa-cat"></i>
+                                    <i class="fas fa-dragon"></i>
+                                    <i class="fas fa-hippo"></i>
+                                    <hr>
+                                    <h5>Change color</h5>
+                                    <span class="color"></span>
+                                    <span class="color"></span>
+                                    <span class="color"></span>
+                                    <span class="color"></span>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btnStyle" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btnStyle">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btnStyle">Contact</button>
             </div>
             <div class="flexSection">
-                <div class="flex" v-for="auction in mockPerson.auctions">
-                    <a :href="auction.url">
+                <div class="flex" v-for="auction in indivProfile">
+                    <a :href="'/auction/' + auction.auctionid">
                         <p>Auction: {{auction.name}}</p>
                         <p>Current Bid: {{auction.currentBid}}</p>
                         <p>Ending: {{auction.endingTime}}</p>
@@ -24,18 +58,23 @@
     export default {
         name: 'Profile',
         data() {
-            return {
-                mockPerson:
-                    {
-                        firstname: "Leroy",
-                        lastname: "Jenkins",
-                        auctions: [
-                            {name: 'Really cool things', url: '/auction/1', currentBid: '50', endingTime: "sometime"},
-                            {name: 'auction 2', url: '/auction/2', currentBid: '50'},
-                            {name: 'auction 3', url: '/auction/3', currentBid: '50'}
-                        ],
-                        picture: "http://www.atabjkpg.se/wp-content/uploads/2017/12/default-user-image.png",
-                    }
+            return {}
+        },
+        computed: {
+            indivProfile() {
+                return this.$store.state.auctionPosts.filter(auction => auction.users.userid == this.$route.params.userid)[0]
+            },
+            me(){
+                return this.$store.state.me;
+            },
+            loggedIn() {
+                return this.$store.state.me != null;
+            }
+        },
+        methods: {
+            showModal() {
+                let element = this.$refs.modal.$el;
+                $(element).modal('show');
             }
         }
     };
@@ -63,11 +102,11 @@
         width: 30%;
     }
 
-    #profilePic {
+    #profileIcon {
         height: 50%;
     }
 
-    #btnContact {
+    .btnStyle {
         background-color: rgb(32, 64, 96);
         color: rgb(126, 199, 199);
         width: 30%;
@@ -79,7 +118,21 @@
         flex-direction: row;
     }
 
-    p{
+    p {
         margin-right: 2em;
+    }
+
+    .far, .fas {
+        padding: 0.5em;
+        font-size: 2em;
+    }
+
+    .color {
+        height: 30px;
+        width: 30px;
+        background-color: cornflowerblue;
+        border-radius: 50%;
+        display: inline-block;
+        margin: 1em;
     }
 </style>

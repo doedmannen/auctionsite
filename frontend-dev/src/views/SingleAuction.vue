@@ -72,7 +72,7 @@
                                     </b-container>
                                 </b-modal>
                             </div>
-                            <div v-if="Date.parse(auctionPost.endtime.toString()) - oneDayInMS*2 < Date.now()">
+                            <div v-if="Date.parse(auctionPost.endtime.toString()) - oneDayInMS < Date.now()">
                                 <countdown :end-time="auctionPost.endtime">
                                 <span slot="process"
                                       slot-scope="{timeObj}">{{`Time left: ${timeObj.h}:${timeObj.m}:${timeObj.s}` }}</span>

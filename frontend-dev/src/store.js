@@ -11,7 +11,6 @@ export default new Vuex.Store({
         auctionPosts: [],
         categories: [],
         me: null,
-        allUsers: [],
     },
     mutations: {
         addUpload(state, value) {
@@ -28,9 +27,6 @@ export default new Vuex.Store({
         },
         setMe(state, value){
             state.me = value;
-        },
-        setUsers(state, value){
-            state.allUsers = value;
         },
 
     },
@@ -51,11 +47,6 @@ export default new Vuex.Store({
                 me = null;
             }
             this.commit('setMe', me);
-        },
-
-        async getAllUsersFromDb() {
-            let users = await (await fetch(API_URL + 'user/getall')).json();
-            this.commit('setUsers', users)
         },
     }
 })

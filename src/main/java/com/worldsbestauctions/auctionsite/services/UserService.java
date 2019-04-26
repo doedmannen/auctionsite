@@ -20,8 +20,5 @@ public class UserService {
         return userRepo.findDistinctFirstByEmailIgnoreCase(email);
     }
 
-    public Iterable findAll() {
-        return userRepo.findAll();
-    }
 }
 

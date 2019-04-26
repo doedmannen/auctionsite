@@ -59,7 +59,7 @@
                                     </b-container>
                                     <b-container class="bv-example-row">
                                         <b-row v-for="bid in auctionPost.bids.slice(limit-5,limit)">
-                                            <b-col>{{bid.userid}}</b-col>
+                                            <b-col>{{bid.user.firstname}}</b-col>
                                             <b-col>${{bid.bidamount}}</b-col>
                                             <b-col>{{bid.bidtime.toString().replace(/T/g," ")}}</b-col>
                                         </b-row>
@@ -67,7 +67,7 @@
                                     </b-container>
                                 </b-modal>
                             </div>
-                            <div v-if="Date.parse(auctionPost.endtime.toString()) - oneDayInMS < Date.now()">
+                            <div v-if="Date.parse(auctionPost.endtime.toString()) - oneDayInMS*2 < Date.now()">
                                 <countdown :end-time="auctionPost.endtime">
                                 <span slot="process"
                                       slot-scope="{timeObj}">{{`Time left: ${timeObj.h}:${timeObj.m}:${timeObj.s}` }}</span>
@@ -122,9 +122,7 @@
             me() {
                 return this.$store.state.me;
             },
-            getUsers() {
-                return this.$store.state.allUsers;
-            },
+
         },
         data() {
             return {
@@ -180,6 +178,7 @@
 
         },
         created() {
+
         }
     }
 </script>

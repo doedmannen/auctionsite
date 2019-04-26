@@ -1,6 +1,7 @@
 <template lang="html">
     <div>
         <h1>Chat with</h1>
+        <p>KENNETH</p>
         <div v-if>
 
         </div>
@@ -11,7 +12,7 @@
 export default {
     name: 'Chat',
     props:{
-        
+
     },
     computed: {
         messages(){

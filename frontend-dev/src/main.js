@@ -28,6 +28,7 @@ function connect() {
     ws.onopen = (e) => {
         sendSomething();
         isConnected = true;
+        store.commit('setSocket', isConnected)
     };
 
     ws.onclose = (e) => {
@@ -42,6 +43,7 @@ function disconnect() {
         ws.close();
     }
     isConnected = false;
+    store.commit('setSocket', isConnected)
     console.log("Disconnected");
 }
 

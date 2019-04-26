@@ -30,7 +30,9 @@
 
             <Login />
 
-            <a href=""><i class="fas fa-envelope spacing" :style="'color:'+socketConnected?'green':'red'"></i></a>
+            <ChatMenu />
+
+            <a href=""><i class="fas fa-envelope spacing"></i></a>
         </div>
     </nav>
 </template>
@@ -56,7 +58,8 @@
         },
         components: {
             Login: () => import('@/components/Login.vue'),
-            Register: () => import('@/components/Register.vue')
+            Register: () => import('@/components/Register.vue'),
+            ChatMenu: () => import('@/components/ChatMenu.vue')
         }
     };
 </script>

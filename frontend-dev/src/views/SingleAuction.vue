@@ -1,47 +1,51 @@
 <template>
-<div v-if="auctionPost">
-    <b-container class="mainContainer" fluid>
-        <b-row>
-            <b-col cols="2">
-            </b-col>
-            <b-col cols="7" class="contentContainer">
-                <h1>{{auctionPost.title}}</h1>
-                <img :src="imgPath + auctionPost.images[arrayNum] " alt="nej">
-                <div class="row">
-                    <div class="thumbNailHolder" v-for="(image, index) in auctionPost.images" :key="image.id" @click="changeMainPic(index)">
-                        <img :src="thumbnail + image">
-                    </div>
-                    <div>
-                        {{auctionPost.description}}
-                    </div>
-                </div>
-            </b-col>
-            <b-col cols="3">
-                <div>
-                    <b-jumbotron>
-                        <template slot="lead">
-                            <br>
-                            <span v-else>Be the first to bid!</span>
-                            <br>
-                            <span>Asking price: ${{auctionPost.startprice}} </span>
-                        </template>
-                                <span v-if="auctionPost.bids.length>0">Leading bid at: ${{auctionPost.bids[0].bidamount}}</span>
-
-                        <hr class="my-4">
+    <div v-if="auctionPost">
+        <b-container class="mainContainer" fluid>
+            <b-row>
+                <b-col cols="2">
+                </b-col>
+                <b-col class="contentContainer" cols="7">
+                    <h1>{{auctionPost.title}}</h1>
+                    <img :src="imgPath + auctionPost.images[arrayNum] " alt="nej">
+                    <div class="row">
+                        <div class="thumbNailHolder" v-for="(image, index) in auctionPost.images" :key="image.id"
+                             @click="changeMainPic(index)">
+                            <img :src="thumbnail + image">
+                        </div>
                         <div>
-                            <h4>Description: </h4>
-                            <p>{{description}}
-                                <span class="showToggle" v-if="auctionPost.description.length > 50" @click="showMoreToggle">[
+                        </div>
+                    </div>
+                </b-col>
+                <b-col cols="3">
+                    <div v-if="Date.now()<=Date.parse(auctionPost.endtime.toString())">
+                        <b-jumbotron>
+                            <template slot="lead">
+                                <br>
+                                <span v-if="auctionPost.bids.length>0">Leading bid at: ${{auctionPost.bids[0].bidamount}}</span>
+                                <span v-else>Be the first to bid!</span>
+                                <br>
+                                <span>Asking price: ${{auctionPost.startprice}} </span>
+                            </template>
+                            <hr class="my-4">
+                            <div>
+                                <h4>Description: </h4>
+                                <p>{{description}}
+                                    <span class="showToggle" v-if="auctionPost.description.length > 50" @click="showMoreToggle">[
                                     {{(this.showMore ? 'Show less' : 'Show more')}}
                                 ]</span>
-                            </p>
-                        </div>
-                        <hr class="my-4">
-                        <div v-if="loggedIn">
-                            <div v-if="auctionPost.users.userid != this.me.userid">
-                                <h3>Place your bid</h3>
-                                <input type="text" name="bidAmount" placeholder="Place your bid" @change="parseNumbers"><br>
-                                <b-button variant="primary" @click="placeBid">Place bid</b-button>
+                                </p>
+                            </div>
+                            <hr class="my-4">
+                            <div v-if="loggedIn">
+                                <div v-if="auctionPost.users.userid != this.me.userid">
+                                    <h3>Place your bid</h3>
+                                    <input type="text" name="bidAmount" placeholder="Place your bid"
+                                           @change="parseNumbers"><br>
+                                    <b-button variant="primary" @click="placeBid">Place bid</b-button>
+                                </div>
+                                <div v-else>
+                                    <h3>You can't bid on your own auctions</h3>
+                                </div>
                             </div>
 
                             <p>{{auctionPost.endtime.toString().replace(/T/g," ")}}</p>
@@ -77,21 +81,21 @@
                             </div>
                         </b-jumbotron>
                     </div>
-                        <div v-else>
-                            <b-jumbotron>
-                                <template slot="header">SOLD</template>
+                    <div v-else>
+                        <b-jumbotron>
+                            <template slot="header">SOLD</template>
 
-                                <template slot="lead">
-                                    This is an ended auction
-                                </template>
+                            <template slot="lead">
+                                This is an ended auction
+                            </template>
 
-                                <hr class="my-4">
+                            <hr class="my-4">
 
-                                <p>
-                                     sold for: ${{auctionPost.bids[0].bidamount}}
-                                </p>
-                            </b-jumbotron>
-                        </div>
+                            <p>
+                                sold for: ${{auctionPost.bids[0].bidamount}}
+                            </p>
+                        </b-jumbotron>
+                    </div>
                 </b-col>
             </b-row>
         </b-container>
@@ -123,6 +127,13 @@
             me() {
                 return this.$store.state.me;
             },
+            description(){
+                let d = this.auctionPost.description;
+                if(this.auctionPost.description.length > 50 && !this.showMore){
+                    d = this.auctionPost.description.substring(0,50)+"...";
+                }
+                return d;
+            }
 
         },
         data() {
@@ -133,7 +144,8 @@
                 modalShow: false,
                 modalText: "",
                 limit: 5,
-                oneDayInMS: 86400000
+                oneDayInMS: 86400000,
+                showMore: false
             }
         },
         methods: {
@@ -145,6 +157,9 @@
                     this.limit += 5
                 }
 
+            },
+            showMoreToggle(){
+                this.showMore = !this.showMore;
             },
             resetLimit() {
                 this.limit = 5;
@@ -178,13 +193,8 @@
             }
 
         },
-        parseNumbers() {
-            let input = document.getElementsByName('bidAmount')[0].value.replace(/^[^0-9]*0*|[^0-9]/g, '');
-            let output = input.length > 0 ? '$ ' + input : '';
-            document.getElementsByName('bidAmount')[0].value = output
-        },
-        showMoreToggle(){
-            this.showMore = !this.showMore;
+        created() {
+
         }
     }
 </script>
@@ -193,22 +203,20 @@
     .mainContainer {
         margin-top: 10px;
     }
-
-.thumbNailHolder {
-    padding: 10px 0 10px 0;
-    cursor: pointer;
-}
-
-.row {
-    justify-content: center;
-}
-.contentContainer{
-    background: white;
-}
-.showToggle{
-    font-size: 10pt;
-    font-weight: bold;
-    display: block;
-    cursor: pointer;
-}
+    .thumbNailHolder {
+        padding: 10px 0 10px 0;
+        cursor: pointer;
+    }
+    .row {
+        justify-content: center;
+    }
+    .contentContainer{
+        background: white;
+    }
+    .showToggle{
+        font-size: 10pt;
+        font-weight: bold;
+        display: block;
+        cursor: pointer;
+    }
 </style>

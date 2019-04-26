@@ -121,8 +121,8 @@ export default {
         },
         moveImage(e){
             let dir, index, newIndex, tmp;
-            dir = e.originalTarget.className.includes("right") ? 1 : -1;
-            index = e.originalTarget.parentElement.id.replace(/[^0-9]/g,"");
+            dir = e.target.className.includes("right") ? 1 : -1;
+            index = e.target.parentElement.id.replace(/[^0-9]/g,"");
             dir = dir / 1;
             index = index / 1;
             newIndex = index + dir;

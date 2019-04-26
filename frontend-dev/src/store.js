@@ -10,7 +10,7 @@ export default new Vuex.Store({
         currentUploads: [],
         auctionPosts: [],
         categories: [],
-        me: null
+        me: null,
     },
     mutations: {
         addUpload(state, value) {

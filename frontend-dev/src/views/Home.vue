@@ -67,7 +67,7 @@
                   >Price: ${{auction.startprice }} Bids: {{ auction.bids.length }}</p>
                 </b-col>
                 <b-col>
-                  <p class="textRight">{{auction.endtime.replace(/T/g, " ")}}</p>
+                  <p class="textRight">{{auction.endtime.replace(/T/g, "~").toString().slice(5, 16)}}</p>
                 </b-col>
               </b-row>
             </b-container>
@@ -240,6 +240,10 @@ a:hover {
 
 .textLeft {
   float: left;
+}
+
+.textRight{
+    float: right;
 }
 
 .searchBox {

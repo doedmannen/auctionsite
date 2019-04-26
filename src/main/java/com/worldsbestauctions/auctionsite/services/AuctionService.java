@@ -11,8 +11,8 @@ public class AuctionService {
     @Autowired
     AuctionRepo auctionPostRepo;
 
-    public Iterable search (String title){
-        return auctionPostRepo.findByTitleContaining(title);
+    public Iterable search (String value){
+        return auctionPostRepo.findDistinctByTitleContainingOrDescriptionContaining(value, value);
     }
 
     /*public Iterable getTopTen() {

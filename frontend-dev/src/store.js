@@ -31,8 +31,16 @@ export default new Vuex.Store({
         },
         setMe(state, value){
             state.me = value;
+        },
+        async homeSearchInDb(state, value){
+            let posts = null;
+            if(value == ""){
+                posts = await (await fetch(API_URL + 'auction')).json();
+            } else {
+                posts = await (await fetch(API_URL + 'auction/search/'+value)).json();
+            }
+            state.auctionPosts = posts;
         }
-
     },
     actions: {
         async getPostsFromDb() {

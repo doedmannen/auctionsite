@@ -5,16 +5,18 @@
         <h1 class="logo">Sell your stuff!</h1>
         <p>Wow, an auction site! Check out some auctions below, select a category or search for exactly what you
             want. </p>
-        <input class="searchBox" type="text" v-model="searchAuctions" placeholder="Search">
-      
+        <input class="searchBox" type="text"
+        v-on:keyup="searchInDb"
+        v-model="searchAuctions" placeholder="Search">
+
         <div class="flexActivComp">
                   <p class="filterby">Show:</p>
              <span @click="toggleActive" class="filterby filter" :style="this.showActive ? 'color:black':'color:green'" style="cursor: pointer;">Active</span>
              <span @click="toggleComplete" class="filterby filter" :style="this.showCompleted? 'color:black':'color:green'" style="cursor: pointer;">Completed</span>
         </div>
-        
-        
-        <div class="mainFlex" v-for="(auction, index) in filteredAuctions.slice(0,auctionsShown)" :key="index">
+
+
+        <div class="mainFlex" v-for="(auction, index) in auctionPosts.slice(0,auctionsShown)" :key="index">
             <a :href="'/auction/' + auction.auctionid" class="flexSection">
              <img :src="'/assets/img/thumbnail/'+auction.images[0]" id="image">
                 <div class="flex">
@@ -37,7 +39,7 @@
          <div class="showMoreButton">
         <b-button class="showMore mt-2" v-on:click="loadMore">Load more</b-button>
     </div>
-    
+
     </div>
 </div>
 </template>
@@ -81,16 +83,16 @@ export default {
                     return timeNow <= new Date(dat);
                     })
             }
-            
+
             return active.concat(complete);
         },
 
-        filteredAuctions: function() {
-            return this.auctionPosts.filter((auction) => {
-                return auction.title.toLowerCase().match(this.searchAuctions) || auction.description.toLowerCase().match(this.searchAuctions);
-            })
-
-        }
+        // filteredAuctions: function() {
+        //     return this.auctionPosts.filter((auction) => {
+        //         return auction.title.toLowerCase().match(this.searchAuctions) || auction.description.toLowerCase().match(this.searchAuctions);
+        //     })
+        //
+        // }
     },
     methods: {
         toggleActive(){
@@ -101,6 +103,9 @@ export default {
         },
          loadMore() {
             this.auctionsShown += 5;
+        },
+        searchInDb(){
+            this.$store.commit('homeSearchInDb', this.searchAuctions);
         }
     }
 };

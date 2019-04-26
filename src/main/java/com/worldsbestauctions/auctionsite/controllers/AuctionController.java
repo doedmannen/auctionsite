@@ -19,11 +19,6 @@ public class AuctionController {
     @Autowired
     AuctionService auctionPostsService;
 
-    @Autowired
-    ImageService imageService;
-
-    @Autowired
-    UserService userService;
 
     @GetMapping("/search/{value}")
     Iterable<Auctions> search(@PathVariable String value){
@@ -37,15 +32,8 @@ public class AuctionController {
 
     @PostMapping
     long createNewAuction(@RequestBody Auctions body, HttpServletRequest request){
-        body.setAuctionowner(userService.getUserByEmail(request.getUserPrincipal().getName()).getUserid());
-        body.setStarttime(LocalDateTime.now());
-        body.setEndtime(LocalDateTime.now().plusDays(2));
-        long id = auctionPostsService.save(body).getAuctionid();
-        byte order = 0;
-        for(String path : body.getImages()){
-            imageService.save(new Images(id, path, ++order));
-        }
-        return id;
+        return auctionPostsService.create(request.getUserPrincipal().getName(), body);
+
     }
 
 }

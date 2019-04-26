@@ -23,8 +23,8 @@ public class SecretUserService {
         return secretUserRepo.findDistinctFirstByEmailIgnoreCase(email);
     }
 
-    public void save(SecretUser user) {
+    public SecretUser save(SecretUser user) {
         user.setPassword(encoder.encode(user.getPassword()));
-        secretUserRepo.save(user);
+        return secretUserRepo.save(user);
     }
 }

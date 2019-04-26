@@ -5,10 +5,20 @@
           <input type="file" name="files2upload" id="poweif23" accept="image/*" multiple required @change="loadImages" style="display: none">
       </label>
 
-      <div v-if="this.thumbnailPreview.length > 0" class="pictureFrame">
-          <figure v-for="(elem) of this.thumbnailPreview" class="uploadPic" >
-              <img :src="elem" alt="picture">
-          </figure>
+      <div v-if="this.thumbnailPreview.length > 0" class="imageFrame">
+          <div v-for="(elem, index) of this.thumbnailPreview" :class="['isolatedImage', index == 0 ? 'primaryImage':'']">
+              <div :id="'imageContainer'+index">
+                  <i class="fas fa-arrow-circle-left arrow" v-if="index != 0" @click="moveImage"> </i>
+                  <i class="fas fa-arrow-circle-right arrow" v-if="index+1 != thumbnailPreview.length" @click="moveImage"> </i>
+              </div>
+              <figure class="uploadPic">
+                  <img :src="elem">
+              </figure>
+              <span class="primaryDisplay" v-if="index == 0">Primary image</span>
+          </div>
+      </div>
+      <div v-else>
+          <p>No pictures have been chosen</p>
       </div>
 
   </div>
@@ -108,6 +118,20 @@ export default {
                 ui8a[i] = byteString.charCodeAt(i);
             }
             return ui8a;
+        },
+        moveImage(e){
+            let dir, index, newIndex, tmp;
+            dir = e.originalTarget.className.includes("right") ? 1 : -1;
+            index = e.originalTarget.parentElement.id.replace(/[^0-9]/g,"");
+            dir = dir / 1;
+            index = index / 1;
+            newIndex = index + dir;
+            tmp = this.pics.splice(index, 1)[0];
+            this.pics.splice(newIndex,0,tmp);
+            this.$store.commit('orderUploads', {
+                index: index,
+                newIndex: newIndex
+            })
         }
     },
     data() {
@@ -133,11 +157,32 @@ export default {
 .uploadPic{
     display: inline-block;
 }
+.primaryImage{
+    border: 3px solid blue;
+}
 .filePointer{
     cursor: pointer;
 }
 img{
     width: 100%;
 }
-
+.imageFrame{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.isolatedImage{
+    display: inline-block;
+    display: flex;
+    flex-direction: column;
+}
+.arrow{
+    display: inline;
+    padding: 0 5px 0 5px;
+    cursor: pointer;
+}
+.primaryDisplay{
+    font-size: 10pt;
+    font-weight: bold;
+}
 </style>

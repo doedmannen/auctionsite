@@ -1,33 +1,35 @@
 <template lang="html">
-    <li class="dropleft">
-        <a data-toggle="dropdown"><span v-if="this.loggedIn">{{me.firstname +" "+ me.lastname}}</span><i class="fas fa-user spacing"></i></a>
-        <ul class="dropdown-menu dropdown-menu-lg-left" role="menu">
-            <div class="col-lg-12">
-                <div v-if="!loggedIn">
-                    <div class="text-center">
-                        <p class="logo">Log In</p>
-                    </div>
-                    <form role="form" autocomplete="off">
-                        <div class="form-group">
-                            <label for="userEmail">E-mail</label>
-                            <input type="text" name="login_email" id="userEmail" tabindex="1"
-                            class="form-control" placeholder="Email" value="" autocomplete="off">
-                        </div>
+    <div class="main">
+        <p v-if="loggedIn">{{me.firstname}} {{me.lastname}}</p>
+        <div class="contentMenu">
+            <b-dropdown variant="link" id="dropdown-login" dropleft ref="dropdownlogin" class="m-2" no-caret>
 
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" name="login_pass" id="password" tabindex="2"
-                            class="form-control" placeholder="Password" autocomplete="off">
-                        </div>
-                        <div><p id="loginError">Incorrect username or password!</p></div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-xs-5">
-                                    <button @click="loginUser" type="button" class="btn btn-center">Submit</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                <template slot="button-content"><i class="fas fa-user spacing"></i>
+                </template>
+                <div v-if="!loggedIn">
+                    <b-dropdown-form>
+                        <p class="logo">Log In</p>
+                        <b-form-group @submit.stop.prevent>
+                            <b-form-input
+                            id="login-email"
+                            size="md"
+                            placeholder="Email Address"
+                            v-on:keyup.enter="loginUser"
+                            ></b-form-input>
+                        </b-form-group>
+
+                        <b-form-group>
+                            <b-form-input
+                            id="login-pass"
+                            type="password"
+                            size="md"
+                            placeholder="Password"
+                            v-on:keyup.enter="loginUser"
+                            ></b-form-input>
+                        </b-form-group>
+                        <button @click="loginUser" type="button" class="btn btn-center">Submit</button>
+                        <div><p style="color:red">{{formErrorLogin}}</p></div>
+                    </b-dropdown-form>
                 </div>
                 <div v-else>
                     <div class="text-center">
@@ -35,14 +37,20 @@
                     </div>
                     <button @click="logoutUser" type="button" class="btn btn-center">Logout</button>
                 </div>
-            </div>
-        </ul>
-    </li>
+            </b-dropdown>
+        </div>
+    </div>
+
 </template>
 
 <script>
 export default {
     name: 'Login',
+    data(){
+        return{
+            formErrorLogin: ""
+        }
+    },
     computed: {
         loggedIn() {
             return this.$store.state.me != null;
@@ -53,27 +61,40 @@ export default {
     },
     methods: {
         async loginUser() {
-            document.getElementById("loginError").style.visibility = "hidden";
-
+            let error = "";
             let data, username, password;
-            username = document.getElementsByName('login_email')[0].value;
-            password = document.getElementsByName('login_pass')[0].value;
+            username = document.getElementById('login-email').value;
+            password = document.getElementById('login-pass').value;
             data = `username=${username}&password=${password}`;
-            let responseFromBackend = await fetch('/login', {
-                method: "POST",
-                body: data,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+
+            if(!username.match(/^[a-z]{3,}@[a-z]{3,}\.[a-z]{2,10}$/)){
+                error = "Please enter an email";
+            } else if(!password) {
+                error = "Please enter a password";
+            } else {
+                let responseFromBackend = await fetch('/login', {
+                    method: "POST",
+                    body: data,
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                });
+                if (responseFromBackend.url.includes("fail")) {
+                    error = "Incorrect email and/or password";
+                } else {
+                    this.$refs.dropdownlogin.hide(true)
+                    this.$store.dispatch("whoami");
                 }
-            });
-            if(responseFromBackend.url.includes("fail")) {
-                document.getElementById("loginError").style.visibility = "visible";
             }
-            this.$store.dispatch("whoami");
+            this.setError(error);
         },
-        async logoutUser(){
+        async logoutUser() {
+            this.$refs.dropdownlogin.hide(true)
             await fetch("/logout");
             this.$store.dispatch("whoami");
+        },
+        setError(error){
+            this.formErrorLogin = error;
         }
     }
 }
@@ -83,9 +104,19 @@ export default {
 i{
     cursor: pointer;
 }
-
-#loginError {
-    color:red;
-    visibility: hidden;
+.loggedInUser{
+    margin: 0;
+    padding: 0;
+}
+.main{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+.contentMenu * {
+    text-align: center;
+}
+.btn{
+    margin: 0;
 }
 </style>

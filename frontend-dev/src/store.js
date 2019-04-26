@@ -19,6 +19,10 @@ export default new Vuex.Store({
         clearUploads(state, value) {
             state.currentUploads.length = 0;
         },
+        orderUploads(state, value){
+            let tmp = state.currentUploads.splice(value.index, 1)[0];
+            state.currentUploads.splice(value.newIndex, 0, tmp);
+        },
         setPosts(state, value) {
             state.auctionPosts = value;
         },

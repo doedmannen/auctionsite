@@ -1,46 +1,47 @@
 <template>
-    <div v-if="auctionPost">
-        <b-container class="mainContainer" fluid>
-            <b-row>
-                <b-col cols="2">
-                </b-col>
-                <b-col cols="6">
-                    <h1>{{auctionPost.title}}</h1>
-                    <img :src="imgPath + auctionPost.images[arrayNum] " alt="nej">
-                    <div class="row">
-                        <div class="thumbNailHolder" v-for="(image, index) in auctionPost.images" :key="image.id"
-                             @click="changeMainPic(index)">
-                            <img :src="thumbnail + image">
-                        </div>
-                        <div>
-                        </div>
+<div v-if="auctionPost">
+    <b-container class="mainContainer" fluid>
+        <b-row>
+            <b-col cols="2">
+            </b-col>
+            <b-col cols="7" class="contentContainer">
+                <h1>{{auctionPost.title}}</h1>
+                <img :src="imgPath + auctionPost.images[arrayNum] " alt="nej">
+                <div class="row">
+                    <div class="thumbNailHolder" v-for="(image, index) in auctionPost.images" :key="image.id" @click="changeMainPic(index)">
+                        <img :src="thumbnail + image">
                     </div>
                     <div>
                         {{auctionPost.description}}
                     </div>
-                </b-col>
-                <b-col cols="4">
-                    <div v-if="Date.now()<=Date.parse(auctionPost.endtime.toString())">
-                        <b-jumbotron>
-                            <template slot="lead">
-                                <br>
+                </div>
+            </b-col>
+            <b-col cols="3">
+                <div>
+                    <b-jumbotron>
+                        <template slot="lead">
+                            <br>
+                            <span v-else>Be the first to bid!</span>
+                            <br>
+                            <span>Asking price: ${{auctionPost.startprice}} </span>
+                        </template>
                                 <span v-if="auctionPost.bids.length>0">Leading bid at: ${{auctionPost.bids[0].bidamount}}</span>
-                                <span v-else>Be the first to bid!</span>
-                                <br>
-                                <span>Asking price: ${{auctionPost.startprice}} </span>
-                            </template>
 
-                            <hr class="my-4">
-                            <div v-if="loggedIn">
-                                <div v-if="auctionPost.users.userid != this.me.userid">
-                                    <h3>Place your bid</h3>
-                                    <input type="text" name="bidAmount" placeholder="Place your bid"
-                                           @change="parseNumbers"><br>
-                                    <b-button variant="primary" @click="placeBid">Place bid</b-button>
-                                </div>
-                                <div v-else>
-                                    <h3>You can't bid on your own auctions</h3>
-                                </div>
+                        <hr class="my-4">
+                        <div>
+                            <h4>Description: </h4>
+                            <p>{{description}}
+                                <span class="showToggle" v-if="auctionPost.description.length > 50" @click="showMoreToggle">[
+                                    {{(this.showMore ? 'Show less' : 'Show more')}}
+                                ]</span>
+                            </p>
+                        </div>
+                        <hr class="my-4">
+                        <div v-if="loggedIn">
+                            <div v-if="auctionPost.users.userid != this.me.userid">
+                                <h3>Place your bid</h3>
+                                <input type="text" name="bidAmount" placeholder="Place your bid" @change="parseNumbers"><br>
+                                <b-button variant="primary" @click="placeBid">Place bid</b-button>
                             </div>
 
                             <p>{{auctionPost.endtime.toString().replace(/T/g," ")}}</p>
@@ -177,8 +178,13 @@
             }
 
         },
-        created() {
-
+        parseNumbers() {
+            let input = document.getElementsByName('bidAmount')[0].value.replace(/^[^0-9]*0*|[^0-9]/g, '');
+            let output = input.length > 0 ? '$ ' + input : '';
+            document.getElementsByName('bidAmount')[0].value = output
+        },
+        showMoreToggle(){
+            this.showMore = !this.showMore;
         }
     }
 </script>
@@ -188,12 +194,21 @@
         margin-top: 10px;
     }
 
-    .thumbNailHolder {
-        padding: 10px;
-        cursor: pointer;
-    }
+.thumbNailHolder {
+    padding: 10px 0 10px 0;
+    cursor: pointer;
+}
 
-    .row {
-        justify-content: center;
-    }
+.row {
+    justify-content: center;
+}
+.contentContainer{
+    background: white;
+}
+.showToggle{
+    font-size: 10pt;
+    font-weight: bold;
+    display: block;
+    cursor: pointer;
+}
 </style>

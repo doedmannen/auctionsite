@@ -25,15 +25,15 @@ public class AuctionController {
     @Autowired
     UserService userService;
 
-    @GetMapping
-    Iterable<Auctions> getAll(){
-        return auctionPostsService.getTopTen();
-    }
-    
     /*@GetMapping
     Iterable<Auctions> getAll(){
-        return auctionPostsService.getAll();
+        return auctionPostsService.getTopTen();
     }*/
+    
+    @GetMapping
+    Iterable<Auctions> getAll(){
+        return auctionPostsService.getAll();
+    }
 
     @PostMapping
     long createNewAuction(@RequestBody Auctions body, HttpServletRequest request){
@@ -41,8 +41,9 @@ public class AuctionController {
         body.setStarttime(LocalDateTime.now());
         body.setEndtime(LocalDateTime.now().plusDays(2));
         long id = auctionPostsService.save(body).getAuctionid();
+        byte order = 0;
         for(String path : body.getImages()){
-            imageService.save(new Images(id, path));
+            imageService.save(new Images(id, path, ++order));
         }
         return id;
     }

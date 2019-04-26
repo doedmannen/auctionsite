@@ -28,7 +28,10 @@ public class UserController {
         return u;
     }
     @PostMapping
-    void createNewUser(@RequestBody SecretUser body) {
-        secretUserService.save(body);
+    long createNewUser(@RequestBody SecretUser body) {
+        long id = 0;
+        if(secretUserService.getSecretUserByEmail(body.getEmail()) == null)
+            id = secretUserService.save(body).getUserid();
+        return id;
     }
 }

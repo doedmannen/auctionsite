@@ -5,23 +5,31 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Bids {
-
-
+    @Id
+    private long id;
     private  long userid;
     private int auctionid;
     private double bidamount;
-    @Id
     private LocalDateTime bidtime;
+
+    @ManyToOne
+    @JoinColumn(name="userid", referencedColumnName = "userid", insertable = false, updatable = false)
+    private Users user;
+
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
+    }
 
     public void setUserid(long userid) {
         this.userid = userid;
-    }
-
-    public long getUserid() {
-        return userid;
     }
 
     public void setAuctionid(int auctionid) {
@@ -46,5 +54,13 @@ public class Bids {
 
     public LocalDateTime getBidtime() {
         return bidtime;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

@@ -32,7 +32,7 @@ public class Auctions {
     private List<Bids> bids;
 
     public List<Bids> getBids() {
-        return bids.stream().sorted(Comparator.comparing(Bids::getBidamount)).collect(Collectors.toList());
+        return bids.stream().sorted(Comparator.comparing(Bids::getBidamount).reversed()).collect(Collectors.toList());
     }
 
     @OneToMany(mappedBy = "auctionid")

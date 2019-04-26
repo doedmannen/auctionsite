@@ -70,6 +70,7 @@
 
     .navbar {
         background-color: rgb(126, 199, 199);
+        box-shadow: 2px 2px 5px gray;
     }
 
     .logo {

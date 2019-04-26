@@ -32,7 +32,7 @@
 
             <ChatMenu />
 
-            <a href=""><i class="fas fa-envelope spacing"></i></a>
+            <i class="fas fa-bell"></i>
         </div>
     </nav>
 </template>
@@ -51,9 +51,6 @@
             },
             categories(){
                 return this.$store.state.categories;
-            },
-            socketConnected(){
-                return this.$store.state.socketConnected;
             }
         },
         components: {

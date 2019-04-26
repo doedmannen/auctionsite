@@ -16,21 +16,21 @@ new Vue({
 }).$mount('#app')
 
 
-let wsaa;
+let ws;
 let isConnected = false;
 connect();
 
 function connect() {
-    wsaa = new WebSocket('ws://localhost:8080/websocketa');
-    wsaa.onmessage = (e) => {
-      showsaaomething(e.data);
+    ws = new WebSocket('ws://localhost:8080/websocket');
+    ws.onmessage = (e) => {
+      showsomething(e.data);
     }
-    wsaa.onopen = (e) => {
+    ws.onopen = (e) => {
         sendSomething();
         isConnected = true;
     };
 
-    wsaa.onclose = (e) => {
+    ws.onclose = (e) => {
         console.log("Closing websocket...");
     };
 
@@ -38,17 +38,17 @@ function connect() {
 }
 
 function disconnect() {
-    if (wsaa != null) {
-        wsaa.close();
+    if (ws != null) {
+        ws.close();
     }
     isConnected = false;
     console.log("Disconnected");
 }
 
 function sendSomething() {
-    wsaa.send(JSON.stringify({firstname: "Hello World!" }));
+    ws.send(JSON.stringify({firstname: "Hello World!" }));
 }
 
-function showsaaomething(message) {
-    document.querySelector("#messages").innerText += message + "\n";
+function showsomething(message) {
+    store.commit('')
 }

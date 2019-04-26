@@ -20,7 +20,11 @@ public class SocketController extends TextWebSocketHandler {
 
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
-        System.out.println("Received msg: " + message.getPayload());
+        String name = null;
+        try{
+            session.getPrincipal().getName();
+        }catch (Exception e){}
+        System.out.println("Received msg from ".concat(name+": ") + message.getPayload());
 
         // Demonstration purpose only: send back "Hello" + same message as received
 //        socketService.sendToAll("Hello " + message.getPayload());

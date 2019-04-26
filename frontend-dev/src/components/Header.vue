@@ -30,7 +30,7 @@
 
             <Login />
 
-            <a href=""><i class="fas fa-envelope spacing"></i></a>
+            <a href=""><i class="fas fa-envelope spacing" :style="'color:'+socketConnected?'green':'red'"></i></a>
         </div>
     </nav>
 </template>
@@ -49,6 +49,9 @@
             },
             categories(){
                 return this.$store.state.categories;
+            },
+            socketConnected(){
+                return this.$store.state.socketConnected;
             }
         },
         components: {

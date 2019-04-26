@@ -10,7 +10,9 @@ export default new Vuex.Store({
         currentUploads: [],
         auctionPosts: [],
         categories: [],
-        me: null
+        me: null,
+        chatMessages: [],
+        socketConnected: false
     },
     mutations: {
         addUpload(state, value) {
@@ -31,6 +33,12 @@ export default new Vuex.Store({
         },
         setMe(state, value){
             state.me = value;
+        },
+        addChatMsg(state, value){
+            state.chatMessages.push(value);
+        },
+        setSocket(state, value){
+            state.socketConnected = value; 
         }
 
     },

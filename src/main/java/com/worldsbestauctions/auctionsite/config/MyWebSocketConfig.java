@@ -18,7 +18,7 @@ public class MyWebSocketConfig implements WebSocketConfigurer {
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         SocketController sc = new SocketController();
         sc.setSocketService(socketService);
-        registry.addHandler(sc, "/websocketa").setAllowedOrigins("http://localhost:8081");
+        registry.addHandler(sc, "/websocket").setAllowedOrigins("http://localhost:8081");
     }
 }
 

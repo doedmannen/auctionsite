@@ -5,9 +5,9 @@
                 <template slot="button-content"><i class="fas fa-comments"></i>
                 </template>
                 <b-dropdown-form>
-                    <p class="logo">Chat menu</p>
-                    <ul v-if="">
-                        <li></li>
+                    <p class="logo">Chat menu</p>{{hasMessages}}
+                    <ul v-if="hasMessages">
+                        <li v-for="(elem) in this.myMessages">{{elem}}</li>
                     </ul>
                 </b-dropdown-form>
             </b-dropdown>
@@ -26,8 +26,12 @@ export default {
             return this.$store.state.socketConnected && this.$store.state.me;
         },
         hasMessages(){
+            return this.$store.state.chatMessages.length;
+        },
+        myMessages(){
             return this.$store.state.chatMessages;
         }
+
     }
 }
 </script>

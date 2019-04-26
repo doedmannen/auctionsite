@@ -1,5 +1,7 @@
 package com.worldsbestauctions.auctionsite.entities;
 
+import com.worldsbestauctions.auctionsite.socketwrapper.Sendable;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -7,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Entity
-public class Bids {
+public class Bids implements Sendable {
 
 
     private  long userid;

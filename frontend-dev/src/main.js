@@ -23,7 +23,8 @@ connect();
 function connect() {
     ws = new WebSocket('ws://localhost:8080/websocket');
     ws.onmessage = (e) => {
-      showsomething(e.data);
+        console.log(JSON.parse(e.data));
+        showsomething(JSON.parse(e.data));
     }
     ws.onopen = (e) => {
         sendSomething();
@@ -52,5 +53,5 @@ function sendSomething() {
 }
 
 function showsomething(message) {
-    store.commit('')
+    store.commit('addChatMsg', message)
 }

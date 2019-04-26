@@ -27,7 +27,7 @@ public class SocketController extends TextWebSocketHandler {
         System.out.println("Received msg from ".concat(name+": ") + message.getPayload());
 
         // Demonstration purpose only: send back "Hello" + same message as received
-//        socketService.sendToAll("Hello " + message.getPayload());
+        socketService.sendToOne(session, "{\"msg\":\"HELLO\"}");
 
         // Example with a generic Map instead of converting the JSON to a specific class
         // Map keysAndValues = new Gson().fromJson(message.getPayload(), Map.class);

@@ -2,6 +2,7 @@ package com.worldsbestauctions.auctionsite.controllers;
 
 import com.worldsbestauctions.auctionsite.entities.Bids;
 import com.worldsbestauctions.auctionsite.services.BidService;
+import com.worldsbestauctions.auctionsite.services.SocketService;
 import com.worldsbestauctions.auctionsite.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,11 +21,14 @@ public class BidController {
     BidService bidService;
     @Autowired
     UserService userService;
+    @Autowired
+    SocketService socketService;
 
     @PostMapping
     void createNewBid(@RequestBody Bids body, HttpServletRequest request) {
         body.setBidtime(LocalDateTime.now());
         body.setUserid(userService.getUserByEmail(request.getUserPrincipal().getName()).getUserid());
-        bidService.save(body);
+        Bids bid = bidService.save(body);
+        socketService.sendToAll(bid, Bids.class);
     }
 }

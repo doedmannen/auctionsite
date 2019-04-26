@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class AuctionService {
 
     @Autowired
-    AuctionRepo auctionPostRepo;
+    AuctionRepo auctionRepo;
 
     @Autowired
     ImageService imageService;
@@ -21,11 +21,11 @@ public class AuctionService {
     UserService userService;
 
     public Iterable search (String value){
-        return auctionPostRepo.findDistinctByTitleContainingOrDescriptionContaining(value, value);
+        return auctionRepo.findDistinctByTitleContainingOrDescriptionContaining(value, value);
     }
 
     public Iterable getAll(){
-        return auctionPostRepo.findAllByOrderByEndtime();
+        return auctionRepo.findAllByOrderByEndtime();
     }
 
 
@@ -33,7 +33,7 @@ public class AuctionService {
         body.setAuctionowner(userService.getUserByEmail(email).getUserid());
         body.setStarttime(LocalDateTime.now());
         body.setEndtime(LocalDateTime.now().plusDays(2));
-        long id = auctionPostRepo.save(body).getAuctionid();
+        long id = auctionRepo.save(body).getAuctionid();
         byte order = 0;
         for(String path : body.getImages()){
             imageService.save(new Images(id, path, ++order));

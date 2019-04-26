@@ -7,7 +7,9 @@
             want. </p>
         <input class="searchBox" type="text"
         v-on:keyup="searchInDb"
-        v-model="searchAuctions" placeholder="Search">
+        v-model="searchAuctions" :placeholder="searchPlaceholder">
+         <!--Söker när man släpper en tangent-->
+        <!--v-model = sparar det man sökt, value-->
 
         <div class="flexActivComp">
                   <p class="filterby">Show:</p>
@@ -86,13 +88,11 @@ export default {
 
             return active.concat(complete);
         },
-
-        // filteredAuctions: function() {
-        //     return this.auctionPosts.filter((auction) => {
-        //         return auction.title.toLowerCase().match(this.searchAuctions) || auction.description.toLowerCase().match(this.searchAuctions);
-        //     })
-        //
-        // }
+        searchPlaceholder(){
+            return this.$route.params.cat ?
+                'Search in ' + this.$route.params.cat
+                : 'Search';
+        }
     },
     methods: {
         toggleActive(){
@@ -106,6 +106,7 @@ export default {
         },
         searchInDb(){
             this.$store.commit('homeSearchInDb', this.searchAuctions);
+            //skickar value till store/mutated
         }
     }
 };

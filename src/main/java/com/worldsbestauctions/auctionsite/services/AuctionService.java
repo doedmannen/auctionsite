@@ -15,12 +15,8 @@ public class AuctionService {
         return auctionPostRepo.findDistinctByTitleContainingOrDescriptionContaining(value, value);
     }
 
-    /*public Iterable getTopTen() {
-        return auctionPostRepo.findTop10ByOrderByAuctionidDesc();
-    }*/
-
     public Iterable getAll(){
-        return auctionPostRepo.findAll();
+        return auctionPostRepo.findAllByOrderByStarttime();
     }
 
 

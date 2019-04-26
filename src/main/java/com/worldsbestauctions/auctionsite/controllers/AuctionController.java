@@ -25,11 +25,6 @@ public class AuctionController {
     @Autowired
     UserService userService;
 
-    /*@GetMapping
-    Iterable<Auctions> getAll(){
-        return auctionPostsService.getTopTen();
-    }*/
-
     @GetMapping("/search/{value}")
     Iterable<Auctions> search(@PathVariable String value){
         return auctionPostsService.search(value);

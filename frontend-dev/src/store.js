@@ -36,7 +36,9 @@ export default new Vuex.Store({
             let posts = null;
             if(value == ""){
                 posts = await (await fetch(API_URL + 'auction')).json();
-            } else {
+            }/* else if(){
+                posts = await (await fetch(API_URL + 'auction/search/' +cat + value)).json();
+            }*/else {
                 posts = await (await fetch(API_URL + 'auction/search/'+value)).json();
             }
             state.auctionPosts = posts;

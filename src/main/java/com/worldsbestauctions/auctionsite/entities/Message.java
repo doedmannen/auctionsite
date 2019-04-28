@@ -3,21 +3,29 @@ package com.worldsbestauctions.auctionsite.entities;
 
 import com.worldsbestauctions.auctionsite.socketwrapper.Sendable;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "Messages")
 public class Message implements Sendable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
     long senderid;
     long receiverid;
     String message;
     LocalDateTime timesent;
-    public Message(String message){
-        this.id = 1;
-        this.senderid = 1;
-        this.receiverid = 2;
-        this.message = message;
-        this.timesent = LocalDateTime.now();
-    }
+
+    @ManyToOne
+    @JoinColumn(name="senderid", referencedColumnName = "userid", insertable = false, updatable = false)
+    private Users sender;
+
+    @ManyToOne
+    @JoinColumn(name="receiverid", referencedColumnName = "userid", insertable = false, updatable = false)
+    private Users receiver;
+
+    public Message(){}
 
     public long getId() {
         return id;
@@ -57,5 +65,21 @@ public class Message implements Sendable {
 
     public void setTimesent(LocalDateTime timesent) {
         this.timesent = timesent;
+    }
+
+    public Users getSender() {
+        return sender;
+    }
+
+    public void setSender(Users sender) {
+        this.sender = sender;
+    }
+
+    public Users getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(Users receiver) {
+        this.receiver = receiver;
     }
 }

@@ -1,8 +1,11 @@
 package com.worldsbestauctions.auctionsite.controllers;
 
+import com.google.gson.Gson;
 import com.worldsbestauctions.auctionsite.entities.Message;
 import com.worldsbestauctions.auctionsite.services.SocketService;
+import com.worldsbestauctions.auctionsite.services.UserService;
 import com.worldsbestauctions.auctionsite.socketwrapper.SocketWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -14,7 +17,6 @@ import java.io.IOException;
 @Controller
 public class SocketController extends TextWebSocketHandler {
 
-
     private SocketService socketService;
     public void setSocketService(SocketService socketService) {
         this.socketService = socketService;
@@ -22,16 +24,7 @@ public class SocketController extends TextWebSocketHandler {
 
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
-        String name = null;
-        try{
-            name = session.getPrincipal().getName();
-        }catch (Exception e){}
-
-        if(name != null){
-            // Save message
-            // Demonstration purpose only: send back "Hello" + same message as received
-            socketService.sendToOne(session, new SocketWrapper(new Message("HELLO"+message.getPayload())), SocketWrapper.class);
-        }
+        socketService.handleMessage(session, new Gson().fromJson(message.getPayload(), Message.class));
 
         // Example with a generic Map instead of converting the JSON to a specific class
         // Map keysAndValues = new Gson().fromJson(message.getPayload(), Map.class);

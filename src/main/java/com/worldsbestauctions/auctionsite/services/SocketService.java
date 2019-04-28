@@ -1,6 +1,9 @@
 package com.worldsbestauctions.auctionsite.services;
 
 import com.google.gson.Gson;
+import com.worldsbestauctions.auctionsite.entities.Message;
+import com.worldsbestauctions.auctionsite.repos.UserRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -16,6 +19,10 @@ public class SocketService {
 
     private List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
     private ConcurrentHashMap<String, WebSocketSession> loggedIn = new ConcurrentHashMap<>();
+
+    public void handleChatMessage(Message message){
+
+    }
 
     public void sendToOne(WebSocketSession webSocketSession, String message) throws IOException {
         webSocketSession.sendMessage(new TextMessage(message));

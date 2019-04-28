@@ -43,7 +43,8 @@ export default new Vuex.Store({
         appendBid(state, value){
             state.auctionPosts
                 .filter(ap => value.auctionid == ap.auctionid)[0]
-                .bids.push(value);
+                .bids.unshift(value);
+            console.log(state.auctionPosts);
         }
     },
     actions: {

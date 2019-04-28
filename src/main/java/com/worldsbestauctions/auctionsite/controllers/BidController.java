@@ -20,16 +20,9 @@ public class BidController {
 
     @Autowired
     BidService bidService;
-    @Autowired
-    UserService userService;
-    @Autowired
-    SocketService socketService;
 
     @PostMapping
     void createNewBid(@RequestBody Bids body, HttpServletRequest request) {
-        body.setBidtime(LocalDateTime.now());
-        body.setUserid(userService.getUserByEmail(request.getUserPrincipal().getName()).getUserid());
-        Bids bid = bidService.save(body);
-        socketService.sendToAll(new SocketWrapper(bid), SocketWrapper.class);
+        bidService.incommingBid(body, request);
     }
 }

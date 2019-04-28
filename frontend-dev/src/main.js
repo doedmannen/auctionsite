@@ -56,6 +56,7 @@ function sendSomething() {
 }
 
 function handleMessage(message) {
+    console.log(message.msgObject);
     switch (message.type) {
         case 'Bids':
             store.commit('appendBid', message.msgObject);

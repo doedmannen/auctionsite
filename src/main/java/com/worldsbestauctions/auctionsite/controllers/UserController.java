@@ -27,7 +27,6 @@ public class UserController {
         }catch (Exception e){}
         return u;
     }
-
     @PostMapping
     long createNewUser(@RequestBody SecretUser body) {
         long id = 0;

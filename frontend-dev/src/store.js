@@ -12,7 +12,8 @@ export default new Vuex.Store({
         categories: [],
         me: null,
         chatMessages: [],
-        socketConnected: false
+        socketConnected: false,
+        activeChat: null
     },
     mutations: {
         addUpload(state, value) {

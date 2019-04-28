@@ -24,12 +24,14 @@ public class SocketController extends TextWebSocketHandler {
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
         String name = null;
         try{
-            session.getPrincipal().getName();
+            name = session.getPrincipal().getName();
         }catch (Exception e){}
-        System.out.println("Received msg from ".concat(name+": ") + message.getPayload());
 
-        // Demonstration purpose only: send back "Hello" + same message as received
-        socketService.sendToOne(session, new SocketWrapper(new Message("HELLO")), SocketWrapper.class);
+        if(name != null){
+            // Save message
+            // Demonstration purpose only: send back "Hello" + same message as received
+            socketService.sendToOne(session, new SocketWrapper(new Message("HELLO"+message.getPayload())), SocketWrapper.class);
+        }
 
         // Example with a generic Map instead of converting the JSON to a specific class
         // Map keysAndValues = new Gson().fromJson(message.getPayload(), Map.class);

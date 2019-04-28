@@ -38,9 +38,13 @@ export default new Vuex.Store({
             state.chatMessages.push(value);
         },
         setSocket(state, value){
-            state.socketConnected = value; 
+            state.socketConnected = value;
+        },
+        appendBid(state, value){
+            state.auctionPosts
+                .filter(ap => value.auctionid == ap.auctionid)[0]
+                .bids.push(value);
         }
-
     },
     actions: {
         async getPostsFromDb() {

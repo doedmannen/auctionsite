@@ -23,8 +23,9 @@ connect();
 function connect() {
     ws = new WebSocket('ws://localhost:8080/websocket');
     ws.onmessage = (e) => {
-        console.log(JSON.parse(e.data));
-        showsomething(JSON.parse(e.data));
+        let msgObject = JSON.parse(e.data);
+        console.log(msgObject);
+        handleMessage(msgObject);
     }
     ws.onopen = (e) => {
         sendSomething();
@@ -52,6 +53,16 @@ function sendSomething() {
     ws.send(JSON.stringify({firstname: "Hello World!" }));
 }
 
-function showsomething(message) {
-    store.commit('addChatMsg', message)
+function handleMessage(message) {
+    switch (message.type) {
+        case 'Bids':
+            store.commit('appendBid', message.msgObject);
+            break;
+        case 'Message':
+            store.commit('addChatMsg', message.msgObject);
+            break;
+        default:
+            console.log("error in msg",message);
+            break;
+    }
 }

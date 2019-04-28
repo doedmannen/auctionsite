@@ -6,6 +6,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -13,6 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class SocketService {
 
     private List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
+    private HashMap<String, WebSocketSession> loggedIn = new HashMap<>();
 
     public void sendToOne(WebSocketSession webSocketSession, String message) throws IOException {
         webSocketSession.sendMessage(new TextMessage(message));
@@ -21,6 +23,16 @@ public class SocketService {
     public void sendToOne(WebSocketSession webSocketSession, Object obj, Class klass) throws IOException {
         sendToOne(webSocketSession, new Gson().toJson(obj, klass));
     }
+
+    public void sendToOne(String email, String message) throws IOException {
+        if(loggedIn.containsKey(email))
+            this.sendToOne(loggedIn.get(email), message);
+    }
+    public void sendToOne(String email, Object obj, Class klass) throws IOException {
+        if(loggedIn.containsKey(email))
+            this.sendToOne(loggedIn.get(email), obj, klass);
+    }
+
 
     public void sendToAll(Object obj, Class klass) {
         sendToAll(new Gson().toJson(obj, klass));
@@ -39,9 +51,15 @@ public class SocketService {
 
     public void addSession(WebSocketSession session) {
         sessions.add(session);
+        try{
+            loggedIn.put(session.getPrincipal().getName(), session);
+        } catch (Exception e) {}
     }
 
     public void removeSession(WebSocketSession session) {
         sessions.remove(session);
+        try{
+            loggedIn.remove(session.getPrincipal().getName());
+        } catch (Exception e) {}
     }
 }

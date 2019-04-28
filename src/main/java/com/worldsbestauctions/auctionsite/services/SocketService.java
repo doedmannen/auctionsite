@@ -8,13 +8,14 @@ import org.springframework.web.socket.WebSocketSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 public class SocketService {
 
     private List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
-    private HashMap<String, WebSocketSession> loggedIn = new HashMap<>();
+    private ConcurrentHashMap<String, WebSocketSession> loggedIn = new ConcurrentHashMap<>();
 
     public void sendToOne(WebSocketSession webSocketSession, String message) throws IOException {
         webSocketSession.sendMessage(new TextMessage(message));

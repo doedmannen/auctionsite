@@ -2,9 +2,11 @@ package com.worldsbestauctions.auctionsite.controllers;
 
 import com.google.gson.Gson;
 import com.worldsbestauctions.auctionsite.entities.Message;
+import com.worldsbestauctions.auctionsite.services.MessageService;
 import com.worldsbestauctions.auctionsite.services.SocketService;
 import com.worldsbestauctions.auctionsite.services.UserService;
 import com.worldsbestauctions.auctionsite.socketwrapper.SocketWrapper;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.CloseStatus;
@@ -17,24 +19,21 @@ import java.io.IOException;
 @Controller
 public class SocketController extends TextWebSocketHandler {
 
+    private MessageService messageService;
     private SocketService socketService;
     public void setSocketService(SocketService socketService) {
         this.socketService = socketService;
     }
-
+    public void setMessageService(MessageService messageService){this.messageService = messageService; }
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
-        socketService.handleMessage(session, new Gson().fromJson(message.getPayload(), Message.class));
-
-        // Example with a generic Map instead of converting the JSON to a specific class
-        // Map keysAndValues = new Gson().fromJson(message.getPayload(), Map.class);
-        // Get the value of a key named "firstname"
-        // String firstname = keysAndValues.get("firstname");
+        messageService.incommingChatMessage(session, new Gson().fromJson(message.getPayload(), Message.class));
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
         socketService.addSession(session);
+        messageService.broadcastMessageHistory(session);
     }
 
     @Override

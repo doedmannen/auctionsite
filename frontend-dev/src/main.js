@@ -39,7 +39,7 @@ function connect() {
         console.log("Closing websocket...");
     };
 
-  console.log("Connecting...");
+  console.log("Socket connected...");
 }
 
 function disconnect() {
@@ -48,15 +48,14 @@ function disconnect() {
     }
     isConnected = false;
     store.commit('setSocket', isConnected)
-    console.log("Disconnected");
+    console.log("Disconnected socket");
 }
 
 function sendSomething() {
-    ws.send(JSON.stringify({firstname: "Hello World!" }));
+    // ws.send(JSON.stringify({firstname: "Hello World!" }));
 }
 
 function handleMessage(message) {
-    console.log(message.msgObject);
     switch (message.type) {
         case 'Bids':
             store.commit('appendBid', message.msgObject);
@@ -64,8 +63,11 @@ function handleMessage(message) {
         case 'Message':
             store.commit('addChatMsg', message.msgObject);
             break;
+        case 'MessageHistory':
+            store.commit('setChatHistory', message.msgObject);
+            break;
         default:
-            console.log("error in msg",message);
+            console.log("error in msg", message);
             break;
     }
 }

@@ -45,7 +45,12 @@ export default new Vuex.Store({
             state.auctionPosts
                 .filter(ap => value.auctionid == ap.auctionid)[0]
                 .bids.unshift(value);
-            console.log(state.auctionPosts);
+        },
+        setChatHistory(state, value){
+            state.chatMessages = value.history;
+        },
+        setActiveChat(state, value){
+            state.activeChat = value;
         }
     },
     actions: {

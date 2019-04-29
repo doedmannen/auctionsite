@@ -24,5 +24,9 @@ public class UserService {
         return userRepo.findByUserid(id);
     }
 
+    public Users updateIcon(Users body) {
+       return userRepo.save(body);
+    }
+
 }
 

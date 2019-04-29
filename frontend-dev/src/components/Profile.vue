@@ -22,23 +22,27 @@
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <i class="fas fa-smile yellow" id="iconChoice"></i>
+                                    <i class="fas fa-smile" id="iconChoice"></i>
                                     <h5>Change icon</h5>
-                                    <button class="icon" @click="changeIcon()"><i id="smile" class="fas fa-smile"></i></button>
-                                    <button class="icon" @click="changeIcon()"><i id="cat" class="fas fa-cat"></i></button>
-                                    <button class="icon" @click="changeIcon()"><i id="dragon" class="fas fa-dragon"></i></button>
-                                    <button class="icon" @click="changeIcon()"> <i id="hippo" class="fas fa-hippo"></i></button>
+                                    <button class="icon" @click="changeIcon()"><i id="smile" class="fas fa-smile"></i>
+                                    </button>
+                                    <button class="icon" @click="changeIcon()"><i id="cat" class="fas fa-cat"></i>
+                                    </button>
+                                    <button class="icon" @click="changeIcon()"><i id="dragon" class="fas fa-dragon"></i>
+                                    </button>
+                                    <button class="icon" @click="changeIcon()"><i id="hippo" class="fas fa-hippo"></i>
+                                    </button>
 
-                                    <hr>
+                                    <!--<hr>
                                     <h5>Change color</h5>
                                     <button class="color" @click="changeColor()"><i id="pink" class="fas fa-circle pink"></i></button>
                                     <button class="color" @click="changeColor()"><i id="blue" class="fas fa-circle blue"></i></button>
                                     <button class="color" @click="changeColor()"><i id="green" class="fas fa-circle green"></i></button>
-                                    <button class="color" @click="changeColor()"><i id="yellow" class="fas fa-circle yellow"></i></button>
+                                    <button class="color" @click="changeColor()"><i id="yellow" class="fas fa-circle yellow"></i></button>-->
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btnStyle" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btnStyle">Save changes</button>
+                                    <button type="button" class="btn btnStyle" @click="saveIcon">Save changes</button>
                                 </div>
                             </div>
 
@@ -82,7 +86,8 @@
             },
             loggedIn() {
                 return this.$store.state.me != null;
-            }
+            },
+
         },
         methods: {
             showModal() {
@@ -90,12 +95,24 @@
                 $(element).modal('show');
             },
             changeIcon() {
-                document.addEventListener('click', function(e) {
+                document.addEventListener('click', function (e) {
                     let iconChoice = document.getElementById("iconChoice");
                     iconChoice.className = "fas fa-" + e.target.id;
                 });
             },
-            changeColor() {
+            async saveIcon() {
+                let data = {};
+                data.avatar_class = document.getElementById("iconChoice").className;
+
+                await fetch('/api/user', {
+                    method: "PUT",
+                    body: JSON.stringify(data),
+                    headers: {
+                        "content-type": "application/json"
+                    }
+                });
+            },
+            /*changeColor() {
                 document.addEventListener('click', function (e) {
                     let iconClass = document.getElementById("iconChoice");
                     console.log("This is class: " + iconClass.className);
@@ -105,7 +122,7 @@
                     console.log(array)
 
                 });
-            },
+            },*/
             async getUser() {
                 let data = {};
 

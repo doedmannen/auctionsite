@@ -13,6 +13,7 @@ public class Users implements Serializable {
     private String email;
     private String firstname;
     private String lastname;
+    private String avatar_class;
 
     public Users(){}
 
@@ -46,6 +47,14 @@ public class Users implements Serializable {
 
     public String getLastname() {
         return lastname;
+    }
+
+    public String getAvatar_class() {
+        return avatar_class;
+    }
+
+    public void setAvatar_class(String avatar_class) {
+        this.avatar_class = avatar_class;
     }
 
 

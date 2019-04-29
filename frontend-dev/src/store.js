@@ -10,7 +10,7 @@ export default new Vuex.Store({
         currentUploads: [],
         auctionPosts: [],
         categories: [],
-        me: null
+        me: null,
     },
     mutations: {
         addUpload(state, value) {
@@ -18,6 +18,10 @@ export default new Vuex.Store({
         },
         clearUploads(state, value) {
             state.currentUploads.length = 0;
+        },
+        orderUploads(state, value){
+            let tmp = state.currentUploads.splice(value.index, 1)[0];
+            state.currentUploads.splice(value.newIndex, 0, tmp);
         },
         setPosts(state, value) {
             state.auctionPosts = value;
@@ -27,8 +31,18 @@ export default new Vuex.Store({
         },
         setMe(state, value){
             state.me = value;
+        },
+        async homeSearchInDb(state, value){
+            let posts = null;
+            if(value == ""){
+                posts = await (await fetch(API_URL + 'auction')).json();
+            }/* else if(){
+                posts = await (await fetch(API_URL + 'auction/search/' +cat + value)).json();
+            }*/else {
+                posts = await (await fetch(API_URL + 'auction/search/'+value)).json();
+            }
+            state.auctionPosts = posts;
         }
-
     },
     actions: {
         async getPostsFromDb() {

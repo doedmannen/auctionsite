@@ -62,6 +62,11 @@
                 </countdown>
             </div>
         </b-jumbotron>
+        <template>
+            <div>
+                <b-modal v-model="modalShow">{{modalText}}</b-modal>
+            </div>
+        </template>
     </div>
     <div v-else>
         <b-jumbotron>
@@ -99,11 +104,6 @@
                 </b-modal>
             </div>
         </b-jumbotron>
-        <template>
-            <div>
-                <b-modal v-model="modalShow">{{modalText}}</b-modal>
-            </div>
-        </template>
     </div>
 </template>
 

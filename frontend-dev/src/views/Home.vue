@@ -81,7 +81,7 @@
                 <div class="flex">
                     <p class="title">{{ auction.title }}</p>
                     <p>{{ auction.description }}</p>
-                        <a :href="auction.sellerProfile">
+                        <a :href="'/profile/' + auction.users.userid">
                             <p>Seller: {{ auction.users.firstname }} {{ auction.users.lastname }}</p>
                         </a>
                     

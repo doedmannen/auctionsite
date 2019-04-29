@@ -9,20 +9,21 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
+import java.net.http.WebSocket;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 public class SocketService {
 
     private List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
-    private ConcurrentHashMap<String, WebSocketSession> loggedIn = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, HashSet<WebSocketSession>> loggedIn = new ConcurrentHashMap<>();
 
-    public void handleChatMessage(Message message){
-
-    }
 
     public void sendToOne(WebSocketSession webSocketSession, String message) throws IOException {
         webSocketSession.sendMessage(new TextMessage(message));
@@ -32,13 +33,16 @@ public class SocketService {
         sendToOne(webSocketSession, new Gson().toJson(obj, klass));
     }
 
-    public void sendToOne(String email, String message) throws IOException {
-        if(loggedIn.containsKey(email))
-            this.sendToOne(loggedIn.get(email), message);
-    }
     public void sendToOne(String email, Object obj, Class klass) throws IOException {
-        if(loggedIn.containsKey(email))
-            this.sendToOne(loggedIn.get(email), obj, klass);
+        System.out.println("Sending msg to one user");
+        if(loggedIn.containsKey(email)) {
+            System.out.println(loggedIn.get(email).size());
+            loggedIn.get(email).forEach(session -> {
+                try{
+                    this.sendToOne(session, obj, klass);
+                }catch (Exception e){ e.printStackTrace();}
+            });
+        }
     }
 
 
@@ -59,15 +63,29 @@ public class SocketService {
 
     public void addSession(WebSocketSession session) {
         sessions.add(session);
+        addLoggedIn(session);
+    }
+
+    public void addLoggedIn(WebSocketSession session){
         try{
-            loggedIn.put(session.getPrincipal().getName(), session);
-        } catch (Exception e) {}
+            if(!loggedIn.containsKey(session.getPrincipal().getName())){
+                loggedIn.put(session.getPrincipal().getName(), new HashSet<>());
+            }
+            loggedIn.get(session.getPrincipal().getName()).add(session);
+        } catch (Exception e) {e.printStackTrace();}
     }
 
     public void removeSession(WebSocketSession session) {
         sessions.remove(session);
+        removeLoggedIn(session);
+    }
+
+    public void removeLoggedIn(WebSocketSession session){
         try{
-            loggedIn.remove(session.getPrincipal().getName());
-        } catch (Exception e) {}
+            loggedIn.get(session.getPrincipal().getName()).remove(session);
+            if(loggedIn.get(session.getPrincipal().getName()).size() == 0){
+                loggedIn.remove(session.getPrincipal().getName());
+            }
+        } catch (Exception e) {e.printStackTrace();}
     }
 }

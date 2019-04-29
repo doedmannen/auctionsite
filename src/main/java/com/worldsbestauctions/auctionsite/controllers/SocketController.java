@@ -2,6 +2,7 @@ package com.worldsbestauctions.auctionsite.controllers;
 
 import com.google.gson.Gson;
 import com.worldsbestauctions.auctionsite.entities.Message;
+import com.worldsbestauctions.auctionsite.entities.Users;
 import com.worldsbestauctions.auctionsite.services.MessageService;
 import com.worldsbestauctions.auctionsite.services.SocketService;
 import com.worldsbestauctions.auctionsite.services.UserService;
@@ -27,13 +28,13 @@ public class SocketController extends TextWebSocketHandler {
     public void setMessageService(MessageService messageService){this.messageService = messageService; }
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
+        for (int i = 0; i < 30; i++) System.out.println("I GOT A MESSAGE");
         messageService.incommingChatMessage(session, new Gson().fromJson(message.getPayload(), Message.class));
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
         socketService.addSession(session);
-        messageService.broadcastMessageHistory(session);
     }
 
     @Override

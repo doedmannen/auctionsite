@@ -25,18 +25,41 @@ public class MessageService {
     UserRepo userRepo;
 
     public void incommingChatMessage(WebSocketSession session, Message m){
-        Users sender, receiver;
-        long id;
+        Users sender = null;
+        Users receiver = null;
+        System.out.println(session.getPrincipal().getName());
         try{
             sender = userRepo.findDistinctFirstByEmailIgnoreCase(session.getPrincipal().getName());
             receiver = userRepo.findById(m.getReceiverid()).get();
-            m.setSenderid(sender.getUserid());
-            m.setSender(sender);
-            m.setReceiver(receiver);
-            m.setTimesent(LocalDateTime.now());
-            id = messageRepo.save(m).getId();
-            m.setId(id);
+        }catch (Exception e){}
+
+        for (int i = 0; i < 30; i++) System.out.println(sender.getEmail());
+
+        if(sender != null){
+            if(sender != null && receiver != null){
+                this.saveAndSend(sender, receiver, m);
+            }else {
+                if(m.getMessage().equals("handshake")){
+                    socketService.addLoggedIn(session);
+                    for (int i = 0; i < 30; i++)
+                        System.out.println("USER IS NOW AUTH");
+                }
+            }
+        }
+    }
+
+    public void saveAndSend(Users sender, Users receiver, Message m){
+        long id;
+        m.setSenderid(sender.getUserid());
+        m.setSender(sender);
+        m.setReceiver(receiver);
+        m.setTimesent(LocalDateTime.now());
+        id = messageRepo.save(m).getId();
+        m.setId(id);
+        try{
             socketService.sendToOne(m.getSender().getEmail(), new SocketWrapper(m), SocketWrapper.class);
+        }catch (Exception e){}
+        try{
             socketService.sendToOne(m.getReceiver().getEmail(), new SocketWrapper(m), SocketWrapper.class);
         }catch (Exception e){}
     }

@@ -11,11 +11,12 @@ import java.time.LocalDateTime;
 public class Message implements Sendable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
-    long senderid;
-    long receiverid;
-    String message;
-    LocalDateTime timesent;
+    private long id;
+    private long senderid;
+    private long receiverid;
+    private String message;
+    private LocalDateTime timesent;
+    private short hasread;
 
     @ManyToOne
     @JoinColumn(name="senderid", referencedColumnName = "userid", insertable = false, updatable = false)
@@ -81,5 +82,13 @@ public class Message implements Sendable {
 
     public void setReceiver(Users receiver) {
         this.receiver = receiver;
+    }
+
+    public short getHasread() {
+        return hasread;
+    }
+
+    public void setHasread(short hasread) {
+        this.hasread = hasread;
     }
 }

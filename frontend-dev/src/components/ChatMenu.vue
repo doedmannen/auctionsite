@@ -1,7 +1,7 @@
 <template lang="html">
     <div class="main" v-if="isValid">
         <div class="buttonClass" @click="chatWindowToggle">
-            <i class="fas fa-comments"></i>
+            <i class="fas fa-comments"></i><span v-if="unreadMessages">{{unreadMessages}}</span>
         </div>
         <div class="chatWindow" v-if="chatVisible">
             <div v-if="!activeChat">
@@ -70,6 +70,12 @@ export default {
         },
         me(){
             return this.$store.state.me;
+        },
+        unreadMessages(){
+            return this.$store.state.chatMessages
+                .filter(m => !m.hasread)
+                .filter(m => m.receiverid == this.me.userid)
+                .length
         }
     },
     methods: {

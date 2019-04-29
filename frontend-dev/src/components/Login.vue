@@ -84,6 +84,7 @@ export default {
                 } else {
                     this.$refs.dropdownlogin.hide(true)
                     this.$store.dispatch("whoami");
+                    this.$store.dispatch("getChatHistory");
                 }
             }
             this.setError(error);
@@ -91,7 +92,7 @@ export default {
         async logoutUser() {
             this.$refs.dropdownlogin.hide(true)
             await fetch("/logout");
-            this.$store.dispatch("whoami");
+            this.$store.dispatch("logout");
         },
         setError(error){
             this.formErrorLogin = error;

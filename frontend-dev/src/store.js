@@ -49,13 +49,17 @@ export default new Vuex.Store({
                 .bids.unshift(value);
         },
         setChatHistory(state, value){
-            state.chatMessages = value.history;
+            console.log(value);
+            state.chatMessages = value;
         },
         setActiveChat(state, value){
             state.activeChat = value;
         },
         sendMessage(state, value){
             state.outgoingMessages.push(value);
+        },
+        setOutgoingMessages(state, value){
+            state.outgoingMessages = [];
         }
     },
     actions: {
@@ -75,6 +79,21 @@ export default new Vuex.Store({
                 me = null;
             }
             this.commit('setMe', me);
+        },
+        async getChatHistory() {
+            let history = await fetch(API_URL + 'message');
+            try{
+                history = await history.json();
+            }catch(e){
+                history = [];
+            }
+            this.commit('setChatHistory', history);
+        },
+        logout(){
+            this.commit('setMe', null);
+            this.commit('setOutgoingMessages', []);
+            this.commit('setActiveChat', null);
+            this.commit('setChatHistory', [])
         }
     }
 })

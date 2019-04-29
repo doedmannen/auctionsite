@@ -50,12 +50,12 @@ function disconnect() {
         ws.close();
     }
     isConnected = false;
-    store.commit('setSocket', isConnected)
+    store.commit('setSocket', ws)
     console.log("Disconnected socket");
 }
 
 function sendSomething(msgObject) {
-    console.log("sending msg");
+    console.log("sending msg", msgObject);
     ws.send(JSON.stringify(msgObject));
 }
 

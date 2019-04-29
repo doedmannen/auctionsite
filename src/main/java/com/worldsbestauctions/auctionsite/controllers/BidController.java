@@ -20,22 +20,41 @@ public class BidController {
 
     @Autowired
     BidService bidService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    SocketService socketService;
 
     @PostMapping
     void createNewBid(@RequestBody Bids body, HttpServletRequest request) {
-        bidService.incommingBid(body, request);
-        double oldBid=oldBid(body);
-        if (oldBid>=body.getBidamount())
-        {
-            System.out.println("error, bid was too low");
-        }
-        else{
-            body.setBidamount(body.getBidamount());
-            body.setBidtime(LocalDateTime.now());
-            body.setUserid(userService.getUserByEmail(request.getUserPrincipal().getName()).getUserid());
-            bidService.save(body);
+        long userId = 0;
+        try{
+            userId = userService.getUserByEmail(request.getUserPrincipal().getName()).getUserid();
+        } catch (Exception e){}
+        if(userId > 0){
+            double oldBid=oldBid(body);
+            if (oldBid>=body.getBidamount())
+            {
+                System.out.println("error, bid was too low");
+            }
+            else{
+                body.setBidamount(body.getBidamount());
+                body.setBidtime(LocalDateTime.now());
+                body.setUserid(userId);
+                long id = bidService.save(body).getId();
+                body.setId(id);
+                body.setUser(userService.findById(userId).get());
+                socketService.sendToAll(new SocketWrapper(body), SocketWrapper.class);
+            }
         }
     }
+//
+//    long bidId, userId;
+//    userId = userRepo.findDistinctFirstByEmailIgnoreCase(request.getUserPrincipal().getName()).getUserid();
+//        bid.setUserid(userId);
+//    Bids b = bidRepo.findDistinctById(bidId);
+//        b.setUser(userRepo.findById(userId).get());
+//        socketService.sendToAll(new SocketWrapper(b), SocketWrapper.class);
 
     public double oldBid(Bids body){
         double previousHighestBid=0;

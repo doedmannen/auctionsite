@@ -19,24 +19,16 @@ public class BidService {
 
     @Autowired
     BidRepo bidRepo;
-    @Autowired
-    UserRepo userRepo;
-    @Autowired
-    SocketService socketService;
 
-    public void incommingBid(Bids bid, HttpServletRequest request){
-        long bidId, userId;
-        userId = userRepo.findDistinctFirstByEmailIgnoreCase(request.getUserPrincipal().getName()).getUserid();
-        bid.setBidtime(LocalDateTime.now());
-        bid.setUserid(userId);
-        bidId = bidRepo.save(bid).getId();
-        Bids b = bidRepo.findDistinctById(bidId);
-        b.setUser(userRepo.findById(userId).get());
-        socketService.sendToAll(new SocketWrapper(b), SocketWrapper.class);
+    public Bids findById(long id){
+        return bidRepo.findDistinctById(id);
     }
 
     public Iterable<Bids> getHightestBidById(int id){
         return bidRepo.findBidamountByAuctionid(id);
     }
 
+    public Bids save(Bids b){
+        return bidRepo.save(b);
+    }
 }

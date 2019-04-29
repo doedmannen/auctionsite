@@ -46,11 +46,12 @@
                     </b-container>
                     <b-container class="bv-example-row">
                         <b-row v-for="bid in auctionPost.bids.slice(limit-5,limit)">
-                            <b-col>{{bid.user.firstname}}</b-col>
+                            <b-col>{{bid.user.firstname+' '+bid.user.lastname}}</b-col>
                             <b-col>${{bid.bidamount}}</b-col>
                             <b-col>{{bid.bidtime.toString().replace(/T/g," ")}}</b-col>
                         </b-row>
-                        <button @click="loadFiveMore">Next 5</button>
+                        <button @click="loadPreviousFive"><<</button>
+                        <button @click="loadFiveMore">>></button>
                     </b-container>
                 </b-modal>
             </div>
@@ -95,11 +96,12 @@
                     </b-container>
                     <b-container class="bv-example-row">
                         <b-row v-for="bid in auctionPost.bids.slice(limit-5,limit)">
-                            <b-col>{{bid.user.firstname}}</b-col>
+                            <b-col>{{bid.user.firstname+' '+bid.user.lastname}}</b-col>
                             <b-col>${{bid.bidamount}}</b-col>
                             <b-col>{{bid.bidtime.toString().replace(/T/g," ")}}</b-col>
                         </b-row>
-                        <button @click="loadFiveMore">Next 5</button>
+                        <button @click="loadPreviousFive"><<</button>
+                        <button @click="loadFiveMore">>></button>
                     </b-container>
                 </b-modal>
             </div>
@@ -125,6 +127,11 @@
                     this.limit += 5
                 }
 
+            },
+            loadPreviousFive(){
+                if(this.limit>5){
+                    this.limit-=5;
+                }
             },
             showMoreToggle() {
                 this.showMore = !this.showMore;

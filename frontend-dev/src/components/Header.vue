@@ -16,7 +16,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <div v-for="(category, index) in categories" :key="index">
-                            <a :href="'/category/' + category.categoryname" class="dropdown-item">{{ category.categoryname }}</a>
+                            <router-link :to="'/category/' + category.categoryname" class="dropdown-item">{{ category.categoryname }}</router-link>
                         </div>
                     </div>
                 </li>
@@ -73,6 +73,7 @@
 
     .navbar {
         background-color: rgb(126, 199, 199);
+        box-shadow: 2px 2px 5px gray;
     }
 
     .logo {

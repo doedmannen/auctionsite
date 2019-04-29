@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import java.util.List;
+
 @Service
 public class BidService {
 
@@ -31,6 +33,10 @@ public class BidService {
         Bids b = bidRepo.findDistinctById(bidId);
         b.setUser(userRepo.findById(userId).get());
         socketService.sendToAll(new SocketWrapper(b), SocketWrapper.class);
+    }
+
+    public Iterable<Bids> getHightestBidById(int id){
+        return bidRepo.findBidamountByAuctionid(id);
     }
 
 }

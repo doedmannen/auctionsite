@@ -31,7 +31,7 @@
             </div>
 
             <p>{{auctionPost.endtime.toString().replace(/T/g," ")}}</p>
-            <p>Seller: {{ auctionPost.users.firstname+' '+auctionPost.users.lastname}}</p>
+            <router-link :to="'/profile/' + auctionPost.users.userid"><p>Seller: {{ auctionPost.users.firstname+' '+auctionPost.users.lastname}}</p></router-link>
             <div>
                 <b-button v-b-modal.modal-1 @click="resetLimit">Bid history</b-button>
 
@@ -62,6 +62,11 @@
                 </countdown>
             </div>
         </b-jumbotron>
+        <template>
+            <div>
+                <b-modal v-model="modalShow">{{modalText}}</b-modal>
+            </div>
+        </template>
     </div>
     <div v-else>
         <b-jumbotron>
@@ -99,11 +104,6 @@
                 </b-modal>
             </div>
         </b-jumbotron>
-        <template>
-            <div>
-                <b-modal v-model="modalShow">{{modalText}}</b-modal>
-            </div>
-        </template>
     </div>
 </template>
 

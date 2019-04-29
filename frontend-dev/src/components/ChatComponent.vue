@@ -1,19 +1,21 @@
 <template lang="html">
     <div class="motherland">
         <div class="header">
-            <div class="">
-                <h4>{{activeChat}}</h4>
+            <div class="headertext">
+                <h5>{{activeChat}}</h5>
             </div>
-            <div @click="killConvo"><i class="far fa-times-circle"></i></div>
+            <div class="closeButton" @click="killConvo"><i class="far fa-times-circle"></i></div>
         </div>
-        <div class="main">
+        <div class="main" id="boxThatCanScroll">
             <div v-for="(elem) of this.messages" class="singularity">
-                <p class="sender">{{elem.sender.firstname}} {{elem.sender.firstname}}</p>
+                <p class="sender">{{elem.sender.firstname}} {{elem.sender.lastname}}:</p>
                 <p class="message">{{elem.message}}</p>
             </div>
         </div>
         <div class="footer">
-            <input type="text" name="chatbox">
+            <input type="text" name="chatbox"
+            v-on:keyup="handleMessage">
+            <button type="button" name="button" @click="sendMessage">Send</button>
         </div>
     </div>
 </template>
@@ -23,6 +25,9 @@ export default {
     name: 'Chat',
     computed: {
         messages(){
+            setTimeout(() => {
+                this.scrollToEnd();
+            }, 1);
             return this.$store.state.chatMessages
                 .filter(m => m.receiverid === this.activeChat
                     || m.senderid === this.activeChat);
@@ -31,9 +36,31 @@ export default {
             return this.$store.state.activeChat;
         }
     },
+    mounted(){
+        this.scrollToEnd();
+    },
     methods: {
         killConvo(){
             this.$store.commit('setActiveChat', null);
+        },
+        sendMessage(e){
+            let msg = {
+                receiverid: this.activeChat,
+                message: e.target.value
+            };
+            this.$store.commit('sendMessage', msg);
+            e.target.value = "";
+        },
+        handleMessage(e){
+            if(e.key == 'Enter'){
+                this.sendMessage(e);
+            } else {
+                e.target.value = e.target.value.replace(/[ ]{2,}/g," ").replace(/^ $/g, "");
+            }
+        },
+        scrollToEnd(){
+            let scroller = document.getElementById('boxThatCanScroll');
+            scroller.scrollTop = scroller.scrollHeight;
         }
     }
 
@@ -42,29 +69,49 @@ export default {
 
 <style lang="css" scoped>
 .motherland{
-    min-height: 20vh;
-    max-height: 20vh;
-}
-.head{
+    width: 24vw;
+    min-height: 49vh;
+    max-height: 49vh;
     display: flex;
     flex-direction: column;
+}
+.header{
+    display: flex;
+    flex-direction: row;
     width: 100%;
 }
 .main{
     flex: 1;
-    overflow-x: hidden;
     overflow-y: scroll;
 }
+.headertext{
+    flex: 1;
+}
 .singularity{
-
+    padding-left: 10pt;
+    text-align: left;
 }
 .sender{
-
+    font-size: 10pt;
+    font-weight: bold;
+    margin: 0;
 }
 .message{
-
+    margin: 0;
+    font-size: 10pt;
 }
-.footer{
-
+.footer > *{
+    padding: 0;
+    margin: 0;
+}
+.footer > button{
+    width: 4vw;
+}
+.footer > input{
+    width: 20vw;
+}
+.closeButton > i{
+    font-size: 16pt;
+    cursor: pointer;
 }
 </style>

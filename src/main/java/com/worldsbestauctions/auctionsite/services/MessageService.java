@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -32,6 +33,7 @@ public class MessageService {
             m.setSenderid(sender.getUserid());
             m.setSender(sender);
             m.setReceiver(receiver);
+            m.setTimesent(LocalDateTime.now());
             id = messageRepo.save(m).getId();
             m.setId(id);
             socketService.sendToOne(m.getSender().getEmail(), new SocketWrapper(m), SocketWrapper.class);

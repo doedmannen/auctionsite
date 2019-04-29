@@ -13,7 +13,9 @@ export default new Vuex.Store({
         me: null,
         chatMessages: [],
         socketConnected: false,
-        activeChat: null
+        activeChat: null,
+        socket: null,
+        outgoingMessages: []
     },
     mutations: {
         addUpload(state, value) {
@@ -38,7 +40,7 @@ export default new Vuex.Store({
         addChatMsg(state, value){
             state.chatMessages.push(value);
         },
-        setSocket(state, value){
+        setSocketConnection(state, value){
             state.socketConnected = value;
         },
         appendBid(state, value){
@@ -51,6 +53,9 @@ export default new Vuex.Store({
         },
         setActiveChat(state, value){
             state.activeChat = value;
+        },
+        sendMessage(state, value){
+            state.outgoingMessages.push(value);
         }
     },
     actions: {
@@ -70,6 +75,6 @@ export default new Vuex.Store({
                 me = null;
             }
             this.commit('setMe', me);
-        },
+        }
     }
 })

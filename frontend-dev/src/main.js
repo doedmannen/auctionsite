@@ -30,16 +30,19 @@ function connect() {
         handleMessage(msgObject);
     }
     ws.onopen = (e) => {
-        sendSomething();
         isConnected = true;
-        store.commit('setSocket', isConnected)
+        store.commit('setSocketConnection', isConnected)
     };
 
     ws.onclose = (e) => {
         console.log("Closing websocket...");
     };
-
-  console.log("Socket connected...");
+    window.setInterval(() => {
+        if(store.state.outgoingMessages.length > 0){
+            sendSomething(store.state.outgoingMessages.shift());
+        }
+    }, 1);
+    console.log("Socket connected...");
 }
 
 function disconnect() {
@@ -51,8 +54,9 @@ function disconnect() {
     console.log("Disconnected socket");
 }
 
-function sendSomething() {
-    // ws.send(JSON.stringify({firstname: "Hello World!" }));
+function sendSomething(msgObject) {
+    console.log("sending msg");
+    ws.send(JSON.stringify(msgObject));
 }
 
 function handleMessage(message) {

@@ -106,7 +106,7 @@ export default {
 }
 .chatWindow{
     padding: 0;
-    position: fixed;
+    position: absolute;
     min-width: 25vw;
     max-width: 25vw;
     min-height: 50vh;
@@ -125,8 +125,10 @@ export default {
     cursor: pointer;
 }
 .activityIndication{
-    color: green;
     display: inline;
     font-size: 6pt;
+}
+.activityIndication > *{
+    color: red;
 }
 </style>

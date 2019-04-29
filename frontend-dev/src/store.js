@@ -38,7 +38,10 @@ export default new Vuex.Store({
             state.me = value;
         },
         addChatMsg(state, value){
-            state.chatMessages.push(value);
+            if(!state.chatMessages.filter(m => m.id == value.id).length)
+                state.chatMessages.push(value);
+            else
+            console.log("Throwing away message");
         },
         setSocketConnection(state, value){
             state.socketConnected = value;
@@ -93,7 +96,41 @@ export default new Vuex.Store({
             this.commit('setMe', null);
             this.commit('setOutgoingMessages', []);
             this.commit('setActiveChat', null);
-            this.commit('setChatHistory', [])
+            this.commit('setChatHistory', []);
+            this.dispatch('connectSocket');
+        },
+        connectSocket() {
+            if(this.state.socket && this.state.socketConnected){
+                this.state.socket.close();
+            }
+            this.state.socket = new WebSocket('ws://localhost:8080/websocket');
+            this.state.socket.onmessage = (e) => {
+                let msg = JSON.parse(e.data);
+                console.log(msg);
+                switch (msg.type) {
+                    case 'Bids':
+                        this.commit('appendBid', msg.msgObject);
+                        break;
+                    case 'Message':
+                        this.commit('addChatMsg', msg.msgObject);
+                        break;
+                    case 'MessageHistory':
+                        this.commit('setChatHistory', msg.msgObject);
+                        break;
+                    default:
+                        console.log("error in msg", msg);
+                        break;
+                }
+            }
+            this.state.socket.onopen = (e) => {
+                console.log("Connected");
+                this.commit('setSocketConnection', true)
+            };
+            this.state.socket.onclose = (e) => {
+                console.log("Closing websocket...");
+                this.commit('setSocketConnection', false)
+            };
+            console.log("Connecting...");
         }
     }
 })

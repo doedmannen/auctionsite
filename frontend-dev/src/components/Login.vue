@@ -85,6 +85,7 @@ export default {
                     this.$refs.dropdownlogin.hide(true)
                     this.$store.dispatch("whoami");
                     this.$store.dispatch("getChatHistory");
+                    this.$store.dispatch("connectSocket");
                 }
             }
             this.setError(error);

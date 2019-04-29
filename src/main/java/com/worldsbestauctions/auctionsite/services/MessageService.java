@@ -33,18 +33,8 @@ public class MessageService {
             receiver = userRepo.findById(m.getReceiverid()).get();
         }catch (Exception e){}
 
-        for (int i = 0; i < 30; i++) System.out.println(sender.getEmail());
-
-        if(sender != null){
-            if(sender != null && receiver != null){
-                this.saveAndSend(sender, receiver, m);
-            }else {
-                if(m.getMessage().equals("handshake")){
-                    socketService.addLoggedIn(session);
-                    for (int i = 0; i < 30; i++)
-                        System.out.println("USER IS NOW AUTH");
-                }
-            }
+        if(sender != null && receiver != null){
+            this.saveAndSend(sender, receiver, m);
         }
     }
 

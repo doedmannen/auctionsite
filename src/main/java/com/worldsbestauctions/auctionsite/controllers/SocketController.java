@@ -28,7 +28,6 @@ public class SocketController extends TextWebSocketHandler {
     public void setMessageService(MessageService messageService){this.messageService = messageService; }
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
-        for (int i = 0; i < 30; i++) System.out.println("I GOT A MESSAGE");
         messageService.incommingChatMessage(session, new Gson().fromJson(message.getPayload(), Message.class));
     }
 

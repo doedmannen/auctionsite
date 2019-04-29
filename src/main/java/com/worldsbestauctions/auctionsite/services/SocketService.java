@@ -72,7 +72,10 @@ public class SocketService {
                 loggedIn.put(session.getPrincipal().getName(), new HashSet<>());
             }
             loggedIn.get(session.getPrincipal().getName()).add(session);
-        } catch (Exception e) {e.printStackTrace();}
+            System.out.println("A user was added into the stuff" + loggedIn.get(session.getPrincipal().getName()).size());
+        } catch (Exception e) {
+            System.out.println("Could not auth user");
+        }
     }
 
     public void removeSession(WebSocketSession session) {
@@ -86,6 +89,6 @@ public class SocketService {
             if(loggedIn.get(session.getPrincipal().getName()).size() == 0){
                 loggedIn.remove(session.getPrincipal().getName());
             }
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {}
     }
 }

@@ -1,14 +1,13 @@
 <template>
     <div>
-        <h1>Profile</h1>
         <div class="mainFlex">
             <div class="flexSection" id="namePic">
-                <img src="http://www.atabjkpg.se/wp-content/uploads/2017/12/default-user-image.png" id="profileIcon">
+                <i class="fas fa-cat" id="profileIcon"></i>
                 <h3>{{indivProfile.users.firstname}} {{indivProfile.users.lastname}}</h3>
-                <div v-if="this.me = null">
-                    <div v-if="indivProfile.users.userid = this.me.userid">
+
+                    <div v-if="me && indivProfile.users.userid == me.userid">
                         <button type="button" class="btn btnStyle" data-toggle="modal" data-target="#exampleModal"> Edit
-                            details
+                            icon
                         </button>
 
                         <!-- Change details modal -->
@@ -44,7 +43,7 @@
                                         <button type="button" class="btn btnStyle">Save changes</button>
                                     </div>
                                 </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -53,6 +52,7 @@
                 <button class="btn btnStyle">Contact</button>
             </div>
             <div class="flexSection">
+                <h3>Auctions</h3>
                 <div class="flex" v-for="auction in indivAuctions">
                     <a :href="'/auction/' + auction.auctionid">
                         <p>Auction: {{auction.title}}</p>
@@ -111,18 +111,13 @@
 
     }
 
-    .flexSection > * {
-        margin-bottom: 1em;
-    }
-
     #namePic {
         margin-right: 5em;
         width: 30%;
     }
 
     #profileIcon {
-        height: 30%;
-        width: 30%;
+        font-size: 7em;
         align-self: center;
     }
 
@@ -131,6 +126,7 @@
         color: rgb(126, 199, 199);
         width: 30%;
         align-self: center;
+        margin-bottom: 0.5em;
     }
 
     .flex > * {

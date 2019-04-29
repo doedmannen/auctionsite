@@ -23,16 +23,28 @@ public class BidController {
 
     @PostMapping
     void createNewBid(@RequestBody Bids body, HttpServletRequest request) {
-        oldBid(body);
-        body.setBidtime(LocalDateTime.now());
-        body.setUserid(userService.getUserByEmail(request.getUserPrincipal().getName()).getUserid());
-        bidService.save(body);
+        double oldBid=oldBid(body);
+        if (oldBid>=body.getBidamount())
+        {
+            System.out.println("error, bid was too low");
+        }
+        else{
+            body.setBidamount(body.getBidamount());
+            body.setBidtime(LocalDateTime.now());
+            body.setUserid(userService.getUserByEmail(request.getUserPrincipal().getName()).getUserid());
+            bidService.save(body);
+        }
     }
 
-    public void oldBid(Bids body){
-        System.out.println(body.getAuctionid()+"------------------------------------------------------------------------------------------------------");
+    public double oldBid(Bids body){
+        double previousHighestBid=0;
         int auctionId = body.getAuctionid();
-        bidService.getHightestBidById(auctionId);
-
+        Iterable<Bids>bidAmount=bidService.getHightestBidById(auctionId);
+        for(Bids bid:bidAmount){
+            if(bid.getBidamount()>previousHighestBid)
+                previousHighestBid=bid.getBidamount();
+        }
+        System.out.println(previousHighestBid+"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        return previousHighestBid;
     }
 }

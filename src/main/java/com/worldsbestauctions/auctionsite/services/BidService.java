@@ -21,8 +21,6 @@ public class BidService {
     }
 
     public Iterable<Bids> getHightestBidById(int id){
-        System.out.println(bidRepo.findBidamountByAuctionid(id) + "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        Iterable<Bids>bidAmount=bidRepo.findBidamountByAuctionid(id);
         return bidRepo.findBidamountByAuctionid(id);
     }
 

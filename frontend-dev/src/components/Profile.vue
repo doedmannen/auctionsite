@@ -5,44 +5,42 @@
                 <i class="fas fa-cat" id="profileIcon"></i>
                 <h3>{{indivProfile.users.firstname}} {{indivProfile.users.lastname}}</h3>
 
-                    <div v-if="me && indivProfile.users.userid == me.userid">
-                        <button type="button" class="btn btnStyle" data-toggle="modal" data-target="#exampleModal"> Edit
-                            icon
-                        </button>
+                <div v-if="me && indivProfile.users.userid == me.userid">
+                    <button type="button" class="btn btnStyle" data-toggle="modal" data-target="#exampleModal"> Edit
+                        icon
+                    </button>
 
-                        <!-- Change details modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">My details</h5>
-                                        <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Save changes"></button>
-                                        <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <h5>Change icon</h5>
-                                        <i id="smile" class="fas fa-smile" @click="changeActive('smile')"
-                                           v-bind:class="{ active: isActive }"></i>
-                                        <i id="cat" class="fas fa-cat" @click="changeActive('cat')"
-                                           v-bind:class="{ active: isActive }"></i>
-                                        <i id="dragon" class="fas fa-dragon" @click="changeActive('dragon')"
-                                           v-bind:class="{ active: isActive }"></i>
-                                        <i id="hippo" class="fas fa-hippo" @click="changeActive('hippo')"
-                                           v-bind:class="{ active: isActive }"></i>
-                                        <hr>
-                                        <h5>Change color</h5>
-                                        <span class="dot color1"></span>
-                                        <span class="dot color2"></span>
-                                        <span class="dot color3"></span>
-                                        <span class="dot color4"></span>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btnStyle" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btnStyle">Save changes</button>
-                                    </div>
+                    <!-- Change details modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">My details</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Save changes"></button>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close"></button>
                                 </div>
+                                <div class="modal-body">
+                                    <i class="fas fa-smile yellow" id="iconChoice"></i>
+                                    <h5>Change icon</h5>
+                                    <button class="icon" @click="changeIcon()"><i id="smile" class="fas fa-smile"></i></button>
+                                    <button class="icon" @click="changeIcon()"><i id="cat" class="fas fa-cat"></i></button>
+                                    <button class="icon" @click="changeIcon()"><i id="dragon" class="fas fa-dragon"></i></button>
+                                    <button class="icon" @click="changeIcon()"> <i id="hippo" class="fas fa-hippo"></i></button>
+
+                                    <hr>
+                                    <h5>Change color</h5>
+                                    <button class="color" @click="changeColor()"><i id="pink" class="fas fa-circle pink"></i></button>
+                                    <button class="color" @click="changeColor()"><i id="blue" class="fas fa-circle blue"></i></button>
+                                    <button class="color" @click="changeColor()"><i id="green" class="fas fa-circle green"></i></button>
+                                    <button class="color" @click="changeColor()"><i id="yellow" class="fas fa-circle yellow"></i></button>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btnStyle" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btnStyle">Save changes</button>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
@@ -91,8 +89,22 @@
                 let element = this.$refs.modal.$el;
                 $(element).modal('show');
             },
-            changeActive(icon) {
-                document.getElementById(icon).isActive = !this.isActive;
+            changeIcon() {
+                document.addEventListener('click', function(e) {
+                    let iconChoice = document.getElementById("iconChoice");
+                    iconChoice.className = "fas fa-" + e.target.id;
+                });
+            },
+            changeColor() {
+                document.addEventListener('click', function (e) {
+                    let iconClass = document.getElementById("iconChoice");
+                    console.log("This is class: " + iconClass.className);
+
+                    let array = iconClass.className.split(" ");
+                    iconClass.className = array[0] + " " + array[1] + " " + e.target.id;
+                    console.log(array)
+
+                });
             }
         }
     };
@@ -152,23 +164,29 @@
         margin: 1em;
     }
 
-    .color1 {
-        background-color: cornflowerblue;
+    .blue {
+        color: cornflowerblue;
     }
 
-    .color2 {
-        background-color: #e83e8c;
+    .pink {
+        color: #e83e8c;
     }
 
-    .color3 {
-        background-color: limegreen;
+    .green {
+        color: limegreen;
     }
 
-    .color4 {
-        background-color: gold;
+    .yellow {
+        color: gold;
     }
 
     .active {
         color: rgb(126, 199, 199);
+    }
+
+    .color, .icon {
+        background-color: white;
+        border: none;
+        outline: none;
     }
 </style>

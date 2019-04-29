@@ -31,7 +31,7 @@
             </div>
 
             <p>{{auctionPost.endtime.toString().replace(/T/g," ")}}</p>
-            <a :href="'/profile/' + auctionPost.users.userid"><p>Seller: {{ auctionPost.users.firstname+' '+auctionPost.users.lastname}}</p></a>
+            <router-link :to="'/profile/' + auctionPost.users.userid"><p>Seller: {{ auctionPost.users.firstname+' '+auctionPost.users.lastname}}</p></router-link>
             <div>
                 <b-button v-b-modal.modal-1 @click="resetLimit">Bid history</b-button>
 

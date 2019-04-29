@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class AuctionService {
@@ -39,5 +40,9 @@ public class AuctionService {
             imageService.save(new Images(id, path, ++order));
         }
         return id;
+    }
+
+    public Optional<Auctions> findById(long id){
+        return auctionRepo.findById(id);
     }
 }

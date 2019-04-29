@@ -106,7 +106,7 @@ export default new Vuex.Store({
             this.dispatch('connectSocket');
         },
         connectSocket() {
-            if(this.state.socket && this.state.socketConnected){
+            if(this.state.socket){
                 this.state.socket.close();
             }
             this.state.socket = new WebSocket('ws://localhost:8080/websocket');
@@ -134,7 +134,8 @@ export default new Vuex.Store({
             };
             this.state.socket.onclose = (e) => {
                 console.log("Closing websocket...");
-                this.commit('setSocketConnection', false)
+                this.commit('setSocketConnection', false);
+                this.state.socket = null;
             };
             console.log("Connecting...");
         },

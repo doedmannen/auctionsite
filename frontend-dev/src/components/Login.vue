@@ -1,6 +1,6 @@
 <template lang="html">
     <div class="main">
-        <p v-if="loggedIn">{{me.firstname}} {{me.lastname}}</p>
+        <router-link :to="'/profile/' + me.userid"> <p v-if="loggedIn">{{me.firstname}} {{me.lastname}}</p> </router-link>
         <div class="contentMenu">
             <b-dropdown variant="link" id="dropdown-login" dropleft ref="dropdownlogin" class="m-2" no-caret>
 

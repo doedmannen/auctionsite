@@ -23,8 +23,16 @@ public class BidController {
 
     @PostMapping
     void createNewBid(@RequestBody Bids body, HttpServletRequest request) {
+        oldBid(body);
         body.setBidtime(LocalDateTime.now());
         body.setUserid(userService.getUserByEmail(request.getUserPrincipal().getName()).getUserid());
         bidService.save(body);
+    }
+
+    public void oldBid(Bids body){
+        System.out.println(body.getAuctionid()+"------------------------------------------------------------------------------------------------------");
+        int auctionId = body.getAuctionid();
+        bidService.getHightestBidById(auctionId);
+
     }
 }

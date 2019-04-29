@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class BidService {
 
@@ -15,6 +18,12 @@ public class BidService {
 
     public Bids save(Bids bid){
         return bidRepo.save(bid);
+    }
+
+    public Iterable<Bids> getHightestBidById(int id){
+        System.out.println(bidRepo.findBidamountByAuctionid(id) + "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        Iterable<Bids>bidAmount=bidRepo.findBidamountByAuctionid(id);
+        return bidRepo.findBidamountByAuctionid(id);
     }
 
 }

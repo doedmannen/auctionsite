@@ -44,11 +44,6 @@ export default {
     components:{
         ChatComponent: () => import ('@/components/ChatComponent.vue')
     },
-    data(){
-        return {
-            chatVisible: false
-        }
-    },
     computed: {
         isValid(){
             return this.$store.state.socketConnected && this.$store.state.me;
@@ -82,6 +77,9 @@ export default {
                 .filter(m => !m.hasread)
                 .filter(m => m.receiverid == this.me.userid)
                 .length
+        },
+        chatVisible(){
+            return this.$store.state.showChat;
         }
     },
     methods: {
@@ -90,10 +88,10 @@ export default {
             this.$store.commit('setActiveChat', id);
         },
         closeChatWindow(){
-            this.chatVisible = false;
+            this.$store.commit('setShowChat', false);
         },
         chatWindowToggle(){
-            this.chatVisible = !this.chatVisible;
+            this.$store.commit('setShowChat', !this.chatVisible);
         },
         unreadMessagesSpecific(id){
             let size = this.$store.state.chatMessages

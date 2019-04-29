@@ -15,7 +15,8 @@ export default new Vuex.Store({
         socketConnected: false,
         activeChat: null,
         socket: null,
-        outgoingMessages: []
+        outgoingMessages: [],
+        showChat: false
     },
     mutations: {
         addUpload(state, value) {
@@ -80,6 +81,9 @@ export default new Vuex.Store({
                 posts = await (await fetch(API_URL + 'auction/search/'+value)).json();
             }
             state.auctionPosts = posts;
+        },
+        setShowChat(state, value){
+            state.showChat = value;
         }
     },
     actions: {

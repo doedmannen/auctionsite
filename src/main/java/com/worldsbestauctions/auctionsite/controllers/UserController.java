@@ -34,4 +34,8 @@ public class UserController {
             id = secretUserService.save(body).getUserid();
         return id;
     }
+    @GetMapping("/profile/{userid}")
+    Users sendUserToFront(@PathVariable long userid) {
+        return userService.getUserById(userid);
+    }
 }

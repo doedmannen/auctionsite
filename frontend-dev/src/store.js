@@ -11,6 +11,7 @@ export default new Vuex.Store({
         auctionPosts: [],
         categories: [],
         me: null,
+        user: null,
     },
     mutations: {
         addUpload(state, value) {
@@ -32,6 +33,9 @@ export default new Vuex.Store({
         setMe(state, value){
             state.me = value;
         },
+        setUser(state, value) {
+            state.user = value;
+        },
         async homeSearchInDb(state, value){
             let posts = null;
             if(value == ""){
@@ -48,6 +52,10 @@ export default new Vuex.Store({
         async getPostsFromDb() {
             let posts = await (await fetch(API_URL + 'auction')).json();
             this.commit('setPosts', posts);
+        },
+        async getUser() {
+            let user = await (await fetch(API_URL + 'user/profile')).json();
+            this.commit('setUser', user);
         },
         async getCategoriesFromDb() {
             let categories = await (await fetch(API_URL + 'category')).json();

@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepo extends CrudRepository<Users, Long> {
     Users findDistinctFirstByEmailIgnoreCase(String email);
+
+    Users findByUserid(long userid);
 }

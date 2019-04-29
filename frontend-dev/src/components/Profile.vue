@@ -105,6 +105,17 @@
                     console.log(array)
 
                 });
+            },
+            async getUser() {
+                let data = {};
+
+                await fetch('/api/user/profile', {
+                    method: "GET",
+                    body: JSON.stringify(data),
+                    headers: {
+                        "content-type": "application/json"
+                    }
+                });
             }
         }
     };

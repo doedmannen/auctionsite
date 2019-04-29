@@ -20,5 +20,9 @@ public class UserService {
         return userRepo.findDistinctFirstByEmailIgnoreCase(email);
     }
 
+    public Users getUserById(long id) {
+        return userRepo.findByUserid(id);
+    }
+
 }
 

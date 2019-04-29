@@ -38,6 +38,7 @@ export default {
     },
     mounted(){
         this.scrollToEnd();
+        this.$store.dispatch('readCurrentChat');
     },
     methods: {
         killConvo(){
@@ -112,6 +113,7 @@ export default {
     width: 20vw;
 }
 .closeButton > i{
+    padding-top: 3px;
     font-size: 16pt;
     cursor: pointer;
 }

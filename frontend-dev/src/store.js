@@ -38,10 +38,16 @@ export default new Vuex.Store({
             state.me = value;
         },
         addChatMsg(state, value){
-            if(!state.chatMessages.filter(m => m.id == value.id).length)
+            if(!state.chatMessages.filter(m => m.id == value.id).length){
+                console.log("New message");
                 state.chatMessages.push(value);
-            else
-            console.log("Throwing away message");
+            } else {
+                console.log("Replacement");
+                let old = state.chatMessages.filter(m => m.id == value.id)[0];
+                let index = state.chatMessages.indexOf(old);
+                state.chatMessages.splice(index, 1);
+                state.chatMessages.push(value);
+            }
         },
         setSocketConnection(state, value){
             state.socketConnected = value;
@@ -131,6 +137,9 @@ export default new Vuex.Store({
                 this.commit('setSocketConnection', false)
             };
             console.log("Connecting...");
+        },
+        async readCurrentChat(){
+            await fetch(API_URL + 'message/read/'+this.state.activeChat);
         }
     }
 })

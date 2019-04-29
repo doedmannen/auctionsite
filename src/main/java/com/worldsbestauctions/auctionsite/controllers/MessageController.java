@@ -38,7 +38,7 @@ public class MessageController {
             sender = userRepo.findById(id).get();
         }catch(Exception e){}
         if(receiver != null){
-            messageList = (List<Message>) messageRepo.findMessageBySenderidAndReceiverid(sender.getUserid(), receiver.getUserid());
+            messageList = (List<Message>) messageRepo.findMessageBySenderidAndReceiveridAndHasread(sender.getUserid(), receiver.getUserid(), (short)0);
             for (Message message : messageList){
                 message.setHasread((short)1);
                 messageRepo.save(message);

@@ -1,7 +1,7 @@
 <template lang="html">
     <div class="main" v-if="isValid">
         <div class="buttonClass" @click="chatWindowToggle">
-            <i class="fas fa-comments"></i><span v-if="unreadMessages">{{unreadMessages}}</span>
+            <i class="fas fa-comments"></i><span v-if="unreadMessages"> {{unreadMessages}}</span>
         </div>
         <div class="chatWindow" v-if="chatVisible">
             <div v-if="!activeChat">
@@ -14,7 +14,13 @@
                     <div class="activityIndication">
                         <i class="fas fa-circle"></i>
                     </div>
-                    {{elem.firstname}} {{elem.lastname}}</div>
+                    <div class="nameContainer">
+                        {{elem.firstname}} {{elem.lastname}}
+                    </div>
+                    <div class="unread">
+                        {{(unreadMessagesSpecific(elem.userid))}}
+                    </div>
+                    </div>
                 </div>
             </div>
             <div v-else>
@@ -80,15 +86,24 @@ export default {
     },
     methods: {
         openConversation(e){
-            let id = e.target.id.replace(/[^0-9]/g,"")/1;
+            let id = e.target.parentElement.id.replace(/[^0-9]/g,"")/1;
             this.$store.commit('setActiveChat', id);
-            console.log(e.target.id.replace(/[^0-9]/g,""));
         },
         closeChatWindow(){
             this.chatVisible = false;
         },
         chatWindowToggle(){
             this.chatVisible = !this.chatVisible;
+        },
+        unreadMessagesSpecific(id){
+            let size = this.$store.state.chatMessages
+                .filter(m => !m.hasread)
+                .filter(m => m.receiverid == this.me.userid)
+                .filter(m => m.senderid == id)
+                .length;
+            if(size){
+                return ''+size+' new';
+            }
         }
     }
 
@@ -98,6 +113,14 @@ export default {
 <style lang="css" scoped>
 .singleConversation{
     cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+.nameContainer{
+    flex: 1;
+}
+.unread{
+    font-style: italic;
 }
 .invisiblecover{
     min-height: 100vh;
@@ -109,6 +132,7 @@ export default {
 }
 .convoContainer{
     text-align: left;
+    min-width: 20vw;
 }
 .chatWindow{
     padding: 0;
@@ -131,8 +155,8 @@ export default {
     cursor: pointer;
 }
 .activityIndication{
-    display: inline;
     font-size: 6pt;
+    padding-right: 5px;
 }
 .activityIndication > *{
     color: red;

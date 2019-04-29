@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface MessageRepo extends CrudRepository<Message, Long> {
     Iterable<Message> findMessageBySenderidOrReceiverid(long s, long r);
-    Iterable<Message> findMessageBySenderidAndReceiverid(long s, long r);
+    Iterable<Message> findMessageBySenderidAndReceiveridAndHasread(long s, long r, short i);
 }

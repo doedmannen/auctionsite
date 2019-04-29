@@ -53,12 +53,4 @@ public class MessageService {
             socketService.sendToOne(m.getReceiver().getEmail(), new SocketWrapper(m), SocketWrapper.class);
         }catch (Exception e){}
     }
-
-    public void broadcastMessageHistory(WebSocketSession session){
-        try{
-            Users user = userRepo.findDistinctFirstByEmailIgnoreCase(session.getPrincipal().getName());
-            Iterable<Message> history = messageRepo.findMessageBySenderidOrReceiverid(user.getUserid(), user.getUserid());
-            socketService.sendToOne(session, new SocketWrapper(new MessageHistory((List) history)), SocketWrapper.class);
-        } catch (Exception e){}
-    }
 }

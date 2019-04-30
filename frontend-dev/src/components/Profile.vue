@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="mainFlex">
+        <div class="mainFlex" v-if="user">
             <div class="flexSection" id="namePic">
                 <i :class=indivProfile.users.avatar_class id="profileIcon"></i>
                 <h3>{{indivProfile.users.firstname}} {{indivProfile.users.lastname}}</h3>
@@ -55,12 +55,19 @@
             </div>
             <div class="flexSection">
                 <h3>{{indivProfile.users.firstname}}'s Auctions</h3>
+                <div v-if="indivAuctions.length > 0">
+        
                 <div class="flex" v-for="auction in indivAuctions">
-                    <a :href="'/auction/' + auction.auctionid">
+                    <route-link :to="'/auction/' + auction.auctionid">
                         <p class="column">Auction: {{auction.title}}</p>
                         <p class="column">Ending: {{auction.endtime.toString().replace(/T/g," ")}}</p>
-                    </a>
+                    </route-link>
+                
                 </div>
+
+                </div>
+                <div v-else><p>This user has no auctions</p></div>
+                
             </div>
         </div>
     </div>
@@ -71,12 +78,18 @@
         name: 'Profile',
         data() {
             return {
-                isActive: false
+                isActive: false,
+                user: null
             }
+        },
+        mounted(){
+            this.getUserFromDB();
+            console.log('Vi hatar', this.user)
         },
         computed: {
             indivProfile() {
-                return this.$store.state.auctionPosts.filter(auction => auction.users.userid == this.$route.params.userid)[0];
+               // return this.$store.state.auctionPosts.filter(auction => auction.users.userid == this.$route.params.userid)[0];
+               return this.user
             },
             indivAuctions() {
                 return this.$store.state.auctionPosts.filter(auction => auction.users.userid == this.$route.params.userid);
@@ -90,6 +103,13 @@
 
         },
         methods: {
+             async getUserFromDB (){
+            let id = this.$route.params.userid
+            console.log('blabla', id)
+            let user = await (await fetch('/api/user/profile/' + id)).json();
+            this.user = {users: user}
+             },
+
             showModal() {
                 let element = this.$refs.modal.$el;
                 $(element).modal('show');
@@ -123,17 +143,7 @@
 
                 });
             },*/
-            async getUser() {
-                let data = {};
-
-                await fetch('/api/user/profile', {
-                    method: "GET",
-                    body: JSON.stringify(data),
-                    headers: {
-                        "content-type": "application/json"
-                    }
-                });
-            }
+           
         }
     };
 </script>

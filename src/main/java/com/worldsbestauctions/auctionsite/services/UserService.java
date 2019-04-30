@@ -21,7 +21,7 @@ public class UserService {
     }
 
     public Users getUserById(long id) {
-        return userRepo.findByUserid(id);
+        return userRepo.findById(id).get();
     }
 
     public Users updateIcon(Users body) {

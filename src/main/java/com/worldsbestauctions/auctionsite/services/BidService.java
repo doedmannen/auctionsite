@@ -24,7 +24,7 @@ public class BidService {
         return bidRepo.findDistinctById(id);
     }
 
-    public Iterable<Bids> getHightestBidById(int id){
+    public Iterable<Bids> getHightestBidById(long id){
         return bidRepo.findBidamountByAuctionid(id);
     }
 

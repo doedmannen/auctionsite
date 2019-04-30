@@ -2,6 +2,7 @@ package com.worldsbestauctions.auctionsite.controllers;
 
 import com.worldsbestauctions.auctionsite.entities.Bids;
 import com.worldsbestauctions.auctionsite.services.BidService;
+import com.worldsbestauctions.auctionsite.services.NotificationService;
 import com.worldsbestauctions.auctionsite.services.SocketService;
 import com.worldsbestauctions.auctionsite.services.UserService;
 import com.worldsbestauctions.auctionsite.socketwrapper.SocketWrapper;
@@ -24,6 +25,8 @@ public class BidController {
     UserService userService;
     @Autowired
     SocketService socketService;
+    @Autowired
+    NotificationService notificationService;
 
     @PostMapping
     void createNewBid(@RequestBody Bids body, HttpServletRequest request) {
@@ -45,6 +48,7 @@ public class BidController {
                 body.setId(id);
                 body.setUser(userService.findById(userId).get());
                 socketService.sendToAll(new SocketWrapper(body), SocketWrapper.class);
+                notificationService.createNotifications(body);
             }
         }
     }
@@ -58,7 +62,7 @@ public class BidController {
 
     public double oldBid(Bids body){
         double previousHighestBid=0;
-        int auctionId = body.getAuctionid();
+        long auctionId = body.getAuctionid();
         Iterable<Bids>bidAmount=bidService.getHightestBidById(auctionId);
         for(Bids bid:bidAmount){
             if(bid.getBidamount()>previousHighestBid)

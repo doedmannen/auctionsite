@@ -15,7 +15,7 @@ public class Bids  implements Sendable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private long userid;
-    private int auctionid;
+    private long auctionid;
     private double bidamount;
     private LocalDateTime bidtime;
 
@@ -35,11 +35,11 @@ public class Bids  implements Sendable{
         this.userid = userid;
     }
 
-    public void setAuctionid(int auctionid) {
+    public void setAuctionid(long auctionid) {
         this.auctionid = auctionid;
     }
 
-    public int getAuctionid() {
+    public long getAuctionid() {
         return auctionid;
     }
 

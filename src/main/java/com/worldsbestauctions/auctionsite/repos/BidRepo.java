@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface BidRepo extends CrudRepository<Bids, Long> {
 
     Bids findDistinctById(long id);
-    Iterable<Bids> findBidamountByAuctionid(int aLong);
+    Iterable<Bids> findBidamountByAuctionid(long aLong);
 }

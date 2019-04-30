@@ -138,6 +138,9 @@ export default new Vuex.Store({
                     case 'MessageHistory':
                         this.commit('setChatHistory', msg.msgObject);
                         break;
+                    case 'Notification':
+                        console.log("WE GOT A Notification");
+                        break;
                     default:
                         console.log("error in msg", msg);
                         break;

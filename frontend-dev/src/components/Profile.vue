@@ -2,7 +2,7 @@
     <div>
         <div class="mainFlex">
             <div class="flexSection" id="namePic">
-                <i class="fas fa-cat" id="profileIcon"></i>
+                <i :class=indivProfile.users.avatar_class id="profileIcon"></i>
                 <h3>{{indivProfile.users.firstname}} {{indivProfile.users.lastname}}</h3>
 
                 <div v-if="me && indivProfile.users.userid == me.userid">
@@ -54,11 +54,11 @@
                 <button class="btn btnStyle">Contact</button>
             </div>
             <div class="flexSection">
-                <h3>Auctions</h3>
+                <h3>{{indivProfile.users.firstname}}'s Auctions</h3>
                 <div class="flex" v-for="auction in indivAuctions">
                     <a :href="'/auction/' + auction.auctionid">
-                        <p>Auction: {{auction.title}}</p>
-                        <p>Ending: {{auction.endtime.toString().replace(/T/g," ")}}</p>
+                        <p class="column">Auction: {{auction.title}}</p>
+                        <p class="column">Ending: {{auction.endtime.toString().replace(/T/g," ")}}</p>
                     </a>
                 </div>
             </div>
@@ -173,6 +173,7 @@
         display: flex;
         flex-direction: row;
     }
+    
 
     p {
         margin-right: 2em;
@@ -182,14 +183,6 @@
         padding: 0.5em;
         font-size: 2em;
         outline: #0c5460;
-    }
-
-    .dot {
-        height: 30px;
-        width: 30px;
-        border-radius: 50%;
-        display: inline-block;
-        margin: 1em;
     }
 
     .blue {
@@ -206,10 +199,6 @@
 
     .yellow {
         color: gold;
-    }
-
-    .active {
-        color: rgb(126, 199, 199);
     }
 
     .color, .icon {

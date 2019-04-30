@@ -158,7 +158,7 @@ export default new Vuex.Store({
             console.log("Connecting...");
         },
         async readCurrentChat(){
-            await fetch(API_URL + 'message/read/'+this.state.activeChat);
+            await fetch(API_URL + 'message/read/'+this.state.activeChat.id);
         }
     }
 })

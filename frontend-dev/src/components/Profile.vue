@@ -58,10 +58,10 @@
                 <div v-if="indivAuctions.length > 0">
         
                 <div class="flex" v-for="auction in indivAuctions">
-                    <route-link :to="'/auction/' + auction.auctionid">
+                    <router-link :to="'/auction/' + auction.auctionid">
                         <p class="column">Auction: {{auction.title}}</p>
                         <p class="column">Ending: {{auction.endtime.toString().replace(/T/g," ")}}</p>
-                    </route-link>
+                    </router-link>
                 
                 </div>
 
@@ -79,7 +79,8 @@
         data() {
             return {
                 isActive: false,
-                user: null
+                user: null,
+                avatar: null
             }
         },
         mounted(){
@@ -88,7 +89,6 @@
         },
         computed: {
             indivProfile() {
-               // return this.$store.state.auctionPosts.filter(auction => auction.users.userid == this.$route.params.userid)[0];
                return this.user
             },
             indivAuctions() {
@@ -100,12 +100,14 @@
             loggedIn() {
                 return this.$store.state.me != null;
             },
+           /* now: function(){
+                return this.avatar || indivProfile.users.avatar_class;
+            }*/
 
         },
         methods: {
              async getUserFromDB (){
             let id = this.$route.params.userid
-            console.log('blabla', id)
             let user = await (await fetch('/api/user/profile/' + id)).json();
             this.user = {users: user}
              },
@@ -123,6 +125,7 @@
             async saveIcon() {
                 let data = {};
                 data.avatar_class = document.getElementById("iconChoice").className;
+                this.avatar = data.avatar_class
 
                 await fetch('/api/user', {
                     method: "PUT",

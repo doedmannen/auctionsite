@@ -1,6 +1,8 @@
 package com.worldsbestauctions.auctionsite.controllers;
 
+import com.worldsbestauctions.auctionsite.entities.Auctions;
 import com.worldsbestauctions.auctionsite.entities.Bids;
+import com.worldsbestauctions.auctionsite.services.AuctionService;
 import com.worldsbestauctions.auctionsite.services.BidService;
 import com.worldsbestauctions.auctionsite.services.SocketService;
 import com.worldsbestauctions.auctionsite.services.UserService;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/bid")
@@ -23,6 +26,8 @@ public class BidController {
     @Autowired
     UserService userService;
     @Autowired
+    AuctionService auctionService;
+    @Autowired
     SocketService socketService;
 
     @PostMapping
@@ -32,8 +37,8 @@ public class BidController {
             userId = userService.getUserByEmail(request.getUserPrincipal().getName()).getUserid();
         } catch (Exception e){}
         if(userId > 0){
-            double oldBid=oldBid(body);
-            if (oldBid>=body.getBidamount())
+            double oldBid=currentHighestBid(body);
+            if (oldBid>=body.getBidamount() ||  auctionOwner(body, request))
             {
                 System.out.println("error, bid was too low");
             }
@@ -48,23 +53,26 @@ public class BidController {
             }
         }
     }
-//
-//    long bidId, userId;
-//    userId = userRepo.findDistinctFirstByEmailIgnoreCase(request.getUserPrincipal().getName()).getUserid();
-//        bid.setUserid(userId);
-//    Bids b = bidRepo.findDistinctById(bidId);
-//        b.setUser(userRepo.findById(userId).get());
-//        socketService.sendToAll(new SocketWrapper(b), SocketWrapper.class);
 
-    public double oldBid(Bids body){
-        double previousHighestBid=0;
+    private double currentHighestBid(Bids body) {
+        double previousHighestBid = 0;
         int auctionId = body.getAuctionid();
-        Iterable<Bids>bidAmount=bidService.getHightestBidById(auctionId);
-        for(Bids bid:bidAmount){
-            if(bid.getBidamount()>previousHighestBid)
-                previousHighestBid=bid.getBidamount();
+        Iterable<Bids> bidAmount = bidService.getHightestBidById(auctionId);
+        for (Bids bid : bidAmount) {
+            if (bid.getBidamount() > previousHighestBid)
+                previousHighestBid = bid.getBidamount();
         }
-        System.out.println(previousHighestBid+"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         return previousHighestBid;
+    }
+
+    private boolean auctionOwner(Bids body, HttpServletRequest request) {
+        boolean isOwner = false;
+        Optional<Auctions> allAuctions = auctionService.findById(body.getAuctionid());
+        try{
+            if(allAuctions.get().getAuctionowner() == userService.getUserByEmail(request.getUserPrincipal().getName()).getUserid()){
+                isOwner = true;
+            }
+        }catch (Exception e){}
+        return isOwner;
     }
 }

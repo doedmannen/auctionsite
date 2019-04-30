@@ -23,7 +23,7 @@
                     <h3>Place your bid</h3>
                     <input type="text" name="bidAmount" placeholder="Place your bid"
                            @change="parseNumbers"><br>
-                    <b-button variant="primary" @click="placeBid">Place bid</b-button>
+                    <b-button class="button" variant="primary" @click="placeBid">Place bid</b-button>
                 </div>
                 <div v-else>
                     <h3>You can't bid on your own auctions</h3>
@@ -47,11 +47,12 @@
                     </b-container>
                     <b-container class="bv-example-row">
                         <b-row v-for="bid in auctionPost.bids.slice(limit-5,limit)">
-                            <b-col>{{bid.user.firstname}}</b-col>
+                            <b-col>{{bid.user.firstname+' '+bid.user.lastname}}</b-col>
                             <b-col>${{bid.bidamount}}</b-col>
                             <b-col>{{bid.bidtime.toString().replace(/T/g," ")}}</b-col>
                         </b-row>
-                        <button @click="loadFiveMore">Next 5</button>
+                        <button @click="loadPreviousFive"><<</button>
+                        <button @click="loadFiveMore">>></button>
                     </b-container>
                 </b-modal>
             </div>
@@ -79,8 +80,11 @@
 
             <hr class="my-4">
 
-            <p>
+            <p v-if="auctionPost.bids.length>0">
                 sold for: ${{auctionPost.bids[0].bidamount}}
+            </p>
+            <p v-else>
+                No bids on this auction
             </p>
             <div>
                 <b-button v-b-modal.modal-2 @click="resetLimit">Bid history</b-button>
@@ -96,11 +100,12 @@
                     </b-container>
                     <b-container class="bv-example-row">
                         <b-row v-for="bid in auctionPost.bids.slice(limit-5,limit)">
-                            <b-col>{{bid.user.firstname}}</b-col>
+                            <b-col>{{bid.user.firstname+' '+bid.user.lastname}}</b-col>
                             <b-col>${{bid.bidamount}}</b-col>
                             <b-col>{{bid.bidtime.toString().replace(/T/g," ")}}</b-col>
                         </b-row>
-                        <button @click="loadFiveMore">Next 5</button>
+                        <button @click="loadPreviousFive"><<</button>
+                        <button @click="loadFiveMore">>></button>
                     </b-container>
                 </b-modal>
             </div>
@@ -126,6 +131,11 @@
                     this.limit += 5
                 }
 
+            },
+            loadPreviousFive(){
+                if(this.limit>5){
+                    this.limit-=5;
+                }
             },
             showMoreToggle() {
                 this.showMore = !this.showMore;
@@ -207,5 +217,8 @@
     .startnewchat{
         cursor: pointer;
         font-weight: bold;
+    }
+    .button{
+        margin-top: 5px;
     }
 </style>

@@ -4,7 +4,9 @@ import com.worldsbestauctions.auctionsite.entities.Auctions;
 import com.worldsbestauctions.auctionsite.entities.Bids;
 import com.worldsbestauctions.auctionsite.services.AuctionService;
 import com.worldsbestauctions.auctionsite.services.BidService;
+import com.worldsbestauctions.auctionsite.services.SocketService;
 import com.worldsbestauctions.auctionsite.services.UserService;
+import com.worldsbestauctions.auctionsite.socketwrapper.SocketWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,22 +27,34 @@ public class BidController {
     UserService userService;
     @Autowired
     AuctionService auctionService;
+    @Autowired
+    SocketService socketService;
 
     @PostMapping
     void createNewBid(@RequestBody Bids body, HttpServletRequest request) {
-        auctionOwner(body, request);
-        double oldBid = previousHighestBid(body);
-        if (oldBid >= body.getBidamount() || auctionOwner(body, request)) {
-            System.out.println("error, faulty input");
-        } else {
-            body.setBidamount(body.getBidamount());
-            body.setBidtime(LocalDateTime.now());
-            body.setUserid(userService.getUserByEmail(request.getUserPrincipal().getName()).getUserid());
-            bidService.save(body);
+        long userId = 0;
+        try{
+            userId = userService.getUserByEmail(request.getUserPrincipal().getName()).getUserid();
+        } catch (Exception e){}
+        if(userId > 0){
+            double oldBid=currentHighestBid(body);
+            if (oldBid>=body.getBidamount() ||  auctionOwner(body, request))
+            {
+                System.out.println("error, bid was too low");
+            }
+            else{
+                body.setBidamount(body.getBidamount());
+                body.setBidtime(LocalDateTime.now());
+                body.setUserid(userId);
+                long id = bidService.save(body).getId();
+                body.setId(id);
+                body.setUser(userService.findById(userId).get());
+                socketService.sendToAll(new SocketWrapper(body), SocketWrapper.class);
+            }
         }
     }
 
-    public double previousHighestBid(Bids body) {
+    private double currentHighestBid(Bids body) {
         double previousHighestBid = 0;
         int auctionId = body.getAuctionid();
         Iterable<Bids> bidAmount = bidService.getHightestBidById(auctionId);
@@ -51,7 +65,7 @@ public class BidController {
         return previousHighestBid;
     }
 
-    public boolean auctionOwner(Bids body, HttpServletRequest request) {
+    private boolean auctionOwner(Bids body, HttpServletRequest request) {
         boolean isOwner = false;
         Optional<Auctions> allAuctions = auctionService.findById(body.getAuctionid());
         try{

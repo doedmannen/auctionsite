@@ -1,6 +1,7 @@
 <template lang="html">
     <div class="main">
-        <p v-if="loggedIn">{{me.firstname}} {{me.lastname}}</p>
+        <p v-if="loggedIn">
+        <router-link :to="'/profile/' + me.userid"> {{me.firstname}} {{me.lastname}} </router-link></p>
         <div class="contentMenu">
             <b-dropdown variant="link" id="dropdown-login" dropleft ref="dropdownlogin" class="m-2" no-caret>
 
@@ -84,6 +85,8 @@ export default {
                 } else {
                     this.$refs.dropdownlogin.hide(true)
                     this.$store.dispatch("whoami");
+                    this.$store.dispatch("getChatHistory");
+                    this.$store.dispatch("connectSocket");
                 }
             }
             this.setError(error);
@@ -91,7 +94,7 @@ export default {
         async logoutUser() {
             this.$refs.dropdownlogin.hide(true)
             await fetch("/logout");
-            this.$store.dispatch("whoami");
+            this.$store.dispatch("logout");
         },
         setError(error){
             this.formErrorLogin = error;

@@ -22,6 +22,8 @@
             this.$store.dispatch("getPostsFromDb");
             this.$store.dispatch("getCategoriesFromDb");
             this.$store.dispatch("whoami");
+            this.$store.dispatch("getChatHistory");
+            this.$store.dispatch("connectSocket");
         }
     };
 

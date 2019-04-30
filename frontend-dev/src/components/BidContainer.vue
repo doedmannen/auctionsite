@@ -31,7 +31,8 @@
             </div>
 
             <p>{{auctionPost.endtime.toString().replace(/T/g," ")}}</p>
-            <a :href="'/profile/' + auctionPost.users.userid"><p>Seller: {{ auctionPost.users.firstname+' '+auctionPost.users.lastname}}</p></a>
+            <router-link :to="'/profile/' + auctionPost.users.userid"><p>Seller: {{ auctionPost.users.firstname+' '+auctionPost.users.lastname}}</p></router-link>
+            <p class="startnewchat" @click="openChat">Open chat</p>
             <div>
                 <b-button v-b-modal.modal-1 @click="resetLimit">Bid history</b-button>
 
@@ -165,8 +166,13 @@
                 let input = document.getElementsByName('bidAmount')[0].value.replace(/^[^0-9]*0*|[^0-9]/g, '');
                 let output = input.length > 0 ? '$ ' + input : '';
                 document.getElementsByName('bidAmount')[0].value = output
+            },
+            openChat(){
+                this.$store.commit('setActiveChat', this.auctionPost.users.userid);
+                this.$store.commit('setShowChat', true);
             }
-        },computed: {
+        },
+        computed: {
             auctionPost() {
                 return this.$store.state.auctionPosts.filter(auction => auction.auctionid == this.$route.params.auctionid)[0]
             },
@@ -202,5 +208,9 @@
         font-weight: bold;
         display: block;
         cursor: pointer;
+    }
+    .startnewchat{
+        cursor: pointer;
+        font-weight: bold;
     }
 </style>

@@ -23,7 +23,7 @@
                     <h3>Place your bid</h3>
                     <input type="text" name="bidAmount" placeholder="Place your bid"
                            @change="parseNumbers"><br>
-                    <b-button variant="primary" @click="placeBid">Place bid</b-button>
+                    <b-button class="button" variant="primary" @click="placeBid">Place bid</b-button>
                 </div>
                 <div v-else>
                     <h3>You can't bid on your own auctions</h3>
@@ -80,8 +80,11 @@
 
             <hr class="my-4">
 
-            <p>
+            <p v-if="auctionPost.bids.length>0">
                 sold for: ${{auctionPost.bids[0].bidamount}}
+            </p>
+            <p v-else>
+                No bids on this auction
             </p>
             <div>
                 <b-button v-b-modal.modal-2 @click="resetLimit">Bid history</b-button>
@@ -214,5 +217,8 @@
     .startnewchat{
         cursor: pointer;
         font-weight: bold;
+    }
+    .button{
+        margin-top: 5px;
     }
 </style>

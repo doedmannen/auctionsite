@@ -84,8 +84,9 @@ export default {
     },
     methods: {
         openConversation(e){
+            let name = e.target.innerHTML.replace(/ {2,}/g, "").replace(/\[^\w ]/g, "");
             let id = e.target.parentElement.id.replace(/[^0-9]/g,"")/1;
-            this.$store.commit('setActiveChat', id);
+            this.$store.commit('setActiveChat', {id: id, name: name});
         },
         closeChatWindow(){
             this.$store.commit('setShowChat', false);

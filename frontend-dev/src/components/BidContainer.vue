@@ -161,7 +161,9 @@
                 document.getElementsByName('bidAmount')[0].value = output
             },
             openChat(){
-                this.$store.commit('setActiveChat', this.auctionPost.users.userid);
+                let id = this.auctionPost.users.userid;
+                let name = `${this.auctionPost.users.firstname} ${this.auctionPost.users.lastname}`;
+                this.$store.commit('setActiveChat', {id: id, name: name});
                 this.$store.commit('setShowChat', true);
             }
         },

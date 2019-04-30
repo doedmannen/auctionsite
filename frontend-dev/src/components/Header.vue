@@ -22,7 +22,7 @@
                 </li>
 
                 <li class="nav-item" v-if="this.loggedIn">
-                    <a class="nav-link" href="/createauction">Create auction</a>
+                    <router-link :to="'/createauction'" class="nav-link">Create new auction</router-link>
                 </li>
             </ul>
 

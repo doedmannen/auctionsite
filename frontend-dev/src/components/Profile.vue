@@ -65,9 +65,17 @@
                 
                 </div>
 
+                    <div class="flex" v-for="auction in indivAuctions">
+                        <route-link :to="'/auction/' + auction.auctionid">
+                            <p class="column">Auction: {{auction.title}}</p>
+                            <p class="column">Ending: {{auction.endtime.toString().replace(/T/g," ")}}</p>
+                        </route-link>
+
+                    </div>
+
                 </div>
                 <div v-else><p>This user has no auctions</p></div>
-                
+
             </div>
         </div>
     </div>
@@ -79,16 +87,16 @@
         data() {
             return {
                 isActive: false,
-                user: null,
-                avatar: null
+                user: null
             }
         },
-        mounted(){
+        mounted() {
             this.getUserFromDB();
             console.log('Vi hatar', this.user)
         },
         computed: {
             indivProfile() {
+               // return this.$store.state.auctionPosts.filter(auction => auction.users.userid == this.$route.params.userid)[0];
                return this.user
             },
             indivAuctions() {
@@ -100,14 +108,12 @@
             loggedIn() {
                 return this.$store.state.me != null;
             },
-           /* now: function(){
-                return this.avatar || indivProfile.users.avatar_class;
-            }*/
 
         },
         methods: {
              async getUserFromDB (){
             let id = this.$route.params.userid
+            console.log('blabla', id)
             let user = await (await fetch('/api/user/profile/' + id)).json();
             this.user = {users: user}
              },
@@ -126,6 +132,8 @@
                 let data = {};
                 data.avatar_class = document.getElementById("iconChoice").className;
                 this.avatar = data.avatar_class
+
+                $('#exampleModal').modal('toggle');
 
                 await fetch('/api/user', {
                     method: "PUT",
@@ -146,9 +154,10 @@
 
                 });
             },*/
-           
+
         }
-    };
+    }
+    ;
 </script>
 
 <style scoped>
@@ -186,7 +195,7 @@
         display: flex;
         flex-direction: row;
     }
-    
+
 
     p {
         margin-right: 2em;

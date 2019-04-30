@@ -56,25 +56,19 @@
             <div class="flexSection">
                 <h3>{{indivProfile.users.firstname}}'s Auctions</h3>
                 <div v-if="indivAuctions.length > 0">
-        
-                <div class="flex" v-for="auction in indivAuctions">
-                    <router-link :to="'/auction/' + auction.auctionid">
-                        <p class="column">Auction: {{auction.title}}</p>
-                        <p class="column">Ending: {{auction.endtime.toString().replace(/T/g," ")}}</p>
-                    </router-link>
-                
-                </div>
-
                     <div class="flex" v-for="auction in indivAuctions">
-                        <route-link :to="'/auction/' + auction.auctionid">
-                            <p class="column">Auction: {{auction.title}}</p>
-                            <p class="column">Ending: {{auction.endtime.toString().replace(/T/g," ")}}</p>
-                        </route-link>
-
+                        <div id="left">
+                            <router-link :to="'/auction/' + auction.auctionid">
+                                Auction: {{auction.title}}
+                            </router-link>
+                        </div>
+                        <div id="right">
+                            Ending: {{auction.endtime.toString().replace(/T/g," ")}}
+                        </div>
+                        <div class="clear"></div>
                     </div>
 
                 </div>
-                <div v-else><p>This user has no auctions</p></div>
 
             </div>
         </div>
@@ -96,8 +90,8 @@
         },
         computed: {
             indivProfile() {
-               // return this.$store.state.auctionPosts.filter(auction => auction.users.userid == this.$route.params.userid)[0];
-               return this.user
+                // return this.$store.state.auctionPosts.filter(auction => auction.users.userid == this.$route.params.userid)[0];
+                return this.user
             },
             indivAuctions() {
                 return this.$store.state.auctionPosts.filter(auction => auction.users.userid == this.$route.params.userid);
@@ -111,12 +105,12 @@
 
         },
         methods: {
-             async getUserFromDB (){
-            let id = this.$route.params.userid
-            console.log('blabla', id)
-            let user = await (await fetch('/api/user/profile/' + id)).json();
-            this.user = {users: user}
-             },
+            async getUserFromDB() {
+                let id = this.$route.params.userid
+                console.log('blabla', id)
+                let user = await (await fetch('/api/user/profile/' + id)).json();
+                this.user = {users: user}
+            },
 
             showModal() {
                 let element = this.$refs.modal.$el;
@@ -194,11 +188,7 @@
     .flex > * {
         display: flex;
         flex-direction: row;
-    }
-
-
-    p {
-        margin-right: 2em;
+        margin-bottom: 0.5em;
     }
 
     .fas {
@@ -227,5 +217,18 @@
         background-color: white;
         border: none;
         outline: none;
+    }
+
+    #left {
+        width: 200px;
+        float: left;
+    }
+
+    #right {
+        margin-left: 200px;
+    }
+
+    .clear {
+        clear: both;
     }
 </style>

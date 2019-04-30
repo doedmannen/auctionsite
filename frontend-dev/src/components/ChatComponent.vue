@@ -2,7 +2,7 @@
     <div class="motherland">
         <div class="header">
             <div class="headertext">
-                <h5>{{activeChat}}</h5>
+                <h5>{{activeChat.name}}</h5>
             </div>
             <div class="closeButton" @click="killConvo"><i class="far fa-times-circle"></i></div>
         </div>
@@ -29,8 +29,8 @@ export default {
                 this.scrollToEnd();
             }, 1);
             return this.$store.state.chatMessages
-                .filter(m => m.receiverid === this.activeChat
-                    || m.senderid === this.activeChat);
+                .filter(m => m.receiverid === this.activeChat.id
+                    || m.senderid === this.activeChat.id);
         },
         activeChat(){
             return this.$store.state.activeChat;
@@ -46,7 +46,7 @@ export default {
         },
         sendMessage(e){
             let msg = {
-                receiverid: this.activeChat,
+                receiverid: this.activeChat.id,
                 message: e.target.value
             };
             console.log(msg);
@@ -88,6 +88,7 @@ export default {
 }
 .headertext{
     flex: 1;
+    font-family: 'Bungee Inline', cursive;
 }
 .singularity{
     padding-left: 10pt;
@@ -116,5 +117,10 @@ export default {
     padding-top: 3px;
     font-size: 16pt;
     cursor: pointer;
+}
+button{
+    background: white;
+    border-radius: 3px;
+    border: 1px solid black;
 }
 </style>

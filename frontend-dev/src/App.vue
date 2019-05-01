@@ -5,18 +5,21 @@
                 <router-view/>
             </main>
         <Footer/>
+        <Push />
     </div>
 </template>
 
 <script>
     import Header from "@/components/Header.vue";
     import Footer from "@/components/Footer.vue";
+    import Push from "@/components/Push.vue";
 
     export default {
         name: "App",
         components: {
             Header,
-            Footer
+            Footer,
+            Push
         },
         created() {
             this.$store.dispatch("getPostsFromDb");

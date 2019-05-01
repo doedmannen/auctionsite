@@ -84,9 +84,10 @@ export default {
                     error = "Incorrect email and/or password";
                 } else {
                     this.$refs.dropdownlogin.hide(true)
+                    this.$store.dispatch("connectSocket");
                     this.$store.dispatch("whoami");
                     this.$store.dispatch("getChatHistory");
-                    this.$store.dispatch("connectSocket");
+                    this.$store.dispatch("getNotifications");
                 }
             }
             this.setError(error);

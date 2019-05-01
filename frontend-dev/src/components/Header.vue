@@ -32,7 +32,7 @@
 
             <ChatMenu />
 
-            <i class="fas fa-bell"></i>
+            <Notifications />
         </div>
     </nav>
 </template>
@@ -56,7 +56,8 @@
         components: {
             Login: () => import('@/components/Login.vue'),
             Register: () => import('@/components/Register.vue'),
-            ChatMenu: () => import('@/components/ChatMenu.vue')
+            ChatMenu: () => import('@/components/ChatMenu.vue'),
+            Notifications: () => import('@/components/Notifications.vue')
         }
     };
 </script>

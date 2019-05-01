@@ -124,7 +124,7 @@ export default {
 .invisiblecover{
     min-height: 100vh;
     min-width: 100%;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     z-index: 9000;

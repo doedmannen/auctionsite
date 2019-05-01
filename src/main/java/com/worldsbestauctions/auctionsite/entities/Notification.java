@@ -16,7 +16,7 @@ public class Notification implements Sendable {
     private short hasread;
 
     @ManyToOne
-    @JoinColumn(name="senderid", referencedColumnName = "userid", insertable = false, updatable = false)
+    @JoinColumn(name="userid", referencedColumnName = "userid", insertable = false, updatable = false)
     private Users user;
     @ManyToOne
     @JoinColumn(name="auctionid", referencedColumnName = "auctionid", insertable = false, updatable = false)

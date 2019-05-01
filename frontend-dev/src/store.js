@@ -16,7 +16,9 @@ export default new Vuex.Store({
         activeChat: null,
         socket: null,
         outgoingMessages: [],
-        showChat: false
+        showChat: false,
+        notifications: [],
+        pushes: [] // needs to get the whole SocketWrapper object
     },
     mutations: {
         addUpload(state, value) {
@@ -84,6 +86,15 @@ export default new Vuex.Store({
         },
         setShowChat(state, value){
             state.showChat = value;
+        },
+        setNotifications(state, value){
+            state.notifications = value;
+        },
+        addNotification(state, value){
+            state.notifications.unshift(value);
+        },
+        addPush(state, value){
+            state.pushes.push(value);
         }
     },
     actions: {
@@ -113,11 +124,21 @@ export default new Vuex.Store({
             }
             this.commit('setChatHistory', history);
         },
+        async getNotifications() {
+            let history = await fetch(API_URL + 'notification');
+            try{
+                history = await history.json();
+            }catch(e){
+                history = [];
+            }
+            this.commit('setNotifications', history);
+        },
         logout(){
             this.commit('setMe', null);
             this.commit('setOutgoingMessages', []);
             this.commit('setActiveChat', null);
             this.commit('setChatHistory', []);
+            this.commit('setNotifications', []);
             this.dispatch('connectSocket');
         },
         connectSocket() {
@@ -139,7 +160,7 @@ export default new Vuex.Store({
                         this.commit('setChatHistory', msg.msgObject);
                         break;
                     case 'Notification':
-                        console.log("WE GOT A Notification");
+                        this.commit('addNotification', msg.msgObject);
                         break;
                     default:
                         console.log("error in msg", msg);
@@ -159,6 +180,17 @@ export default new Vuex.Store({
         },
         async readCurrentChat(){
             await fetch(API_URL + 'message/read/'+this.state.activeChat.id);
+        },
+        removePush(){
+            if(this.state.pushes.length > 0){
+                this.state.pushes.shift();
+            }
+        },
+        markNotificationsAsRead(){
+            // for(let i = 0; i < this.state.notifications.length; i++){
+            //     this.state.notifications[i].hasread = 1;
+            // }
+            // fetch('/api/notification/read');
         }
     }
 })

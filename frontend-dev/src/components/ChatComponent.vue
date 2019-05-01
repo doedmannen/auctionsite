@@ -57,7 +57,10 @@ export default {
             if(e.key == 'Enter'){
                 this.sendMessage(e);
             } else {
-                e.target.value = e.target.value.replace(/[ ]{2,}/g," ").replace(/^ $/g, "");
+                e.target.value = e.target.value
+                    .replace(/[ ]{2,}/g," ")
+                    .replace(/^ $/g, "")
+                    .substring(0,250);
             }
         },
         scrollToEnd(){

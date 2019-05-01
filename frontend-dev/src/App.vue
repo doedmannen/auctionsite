@@ -27,6 +27,7 @@
             this.$store.dispatch("whoami");
             this.$store.dispatch("getChatHistory");
             this.$store.dispatch("connectSocket");
+            this.$store.dispatch("getNotifications");
         }
     };
 

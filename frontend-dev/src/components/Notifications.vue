@@ -5,15 +5,20 @@
         </div>
         <div class="notificationWindow" v-if="notificationVisible">
             <p class="logo">Notifications</p>
-            <div v-if="hasNotifications">
-                <div class="notificationContainer" v-for="(elem) in myNotifications">
+            <div v-if="hasNotifications" class="notificationList">
+                <div class="notificationContainer" v-for="(elem) in myNotifications"
+                @click="closeNotificationWindow">
                 <router-link :to="'/auction/'+elem.auctionid">
-                    <div v-if="elem.bid.user.userid != elem.auction.users.userid">
-                        <p><strong>You are loosing an auction. </strong> {{elem.bid.user.firstname}} {{ elem.bid.user.lastname}} placed
-                        a bid of <strong>$ {{elem.bid.bidamount}}</strong> on <em><strong>{{elem.auction.title}}</strong></em>.</p>
+                    <span v-if="!elem.hasread" class="unreadNotification"> NEW </span>
+                    <div class="notificationText" v-if="elem.bid.user.userid == elem.auction.users.userid">
+                        <p>
+                            <strong>You are loosing an auction. </strong> {{elem.bid.user.firstname}} {{ elem.bid.user.lastname}} placed a bid of <strong>$ {{elem.bid.bidamount}}</strong> on <em><strong>{{elem.auction.title}}</strong></em>.
+                        </p>
                     </div>
-                    <div v-else>
-                        <p>Someone placed a bid on your auction</p>
+                    <div class="notificationText" v-else>
+                        <p>
+                            {{elem.bid.user.firstname}} {{ elem.bid.user.lastname}} placed a bid of <strong>$ {{elem.bid.bidamount}}</strong> on your auction <strong><em>{{elem.auction.title}}</em></strong>.
+                        </p>
                     </div>
                 </router-link>
                 </div>
@@ -64,12 +69,11 @@ export default {
     methods: {
         closeNotificationWindow(){
             this.showNotifications = false;
+            this.$store.dispatch('markNotificationsAsRead');
+
         },
         notificationWindowToggle(){
             this.showNotifications = !this.showNotifications;
-        },
-        markAsRead(){
-            this.$store.dispatch('markNotificationsAsRead');
         }
     }
 
@@ -108,5 +112,21 @@ export default {
     border: 1px solid lightgrey;
     display: flex;
     flex-direction: column;
+}
+.notificationText{
+    display: inline;
+}
+.notificationText > *{
+    display: inline;
+}
+.unreadNotification{
+    font-style: italic;
+    font-weight: bold;
+    color: red;
+    margin-right: 10px;
+}
+.notificationList{
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 </style>

@@ -42,7 +42,7 @@
         <div>
             <p class="errorText" v-if="this.formErrors && this.formErrors.server">
             {{formErrors.server}}</p>
-            <b-button class="submitbtn" type="submit" variant="primary" @click="createAuction">Submit</b-button>
+            <b-button class="submitbtn" type="submit" variant="primary" @click="createAuction">Create auction</b-button>
         </div>
     </div>
 </template>

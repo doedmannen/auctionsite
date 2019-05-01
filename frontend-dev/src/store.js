@@ -94,7 +94,10 @@ export default new Vuex.Store({
             state.notifications.unshift(value);
         },
         addPush(state, value){
-            state.pushes.push(value);
+            // if(value.type == 'Message' )
+            if(value.type != 'Message' || value.type == 'Message' && value.msgObject.senderid != this.state.me.userid && value.msgObject.hasread == 0){
+                state.pushes.push(value);
+            }
         }
     },
     actions: {
@@ -155,12 +158,14 @@ export default new Vuex.Store({
                         break;
                     case 'Message':
                         this.commit('addChatMsg', msg.msgObject);
+                        this.commit('addPush', msg);
                         break;
                     case 'MessageHistory':
                         this.commit('setChatHistory', msg.msgObject);
                         break;
                     case 'Notification':
                         this.commit('addNotification', msg.msgObject);
+                        this.commit('addPush', msg);
                         break;
                     default:
                         console.log("error in msg", msg);
@@ -187,10 +192,10 @@ export default new Vuex.Store({
             }
         },
         markNotificationsAsRead(){
-            // for(let i = 0; i < this.state.notifications.length; i++){
-            //     this.state.notifications[i].hasread = 1;
-            // }
-            // fetch('/api/notification/read');
+            for(let i = 0; i < this.state.notifications.length; i++){
+                this.state.notifications[i].hasread = 1;
+            }
+            fetch('/api/notification/read');
         }
     }
 })

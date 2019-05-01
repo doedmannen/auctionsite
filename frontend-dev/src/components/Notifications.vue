@@ -6,6 +6,9 @@
         <div class="notificationWindow" v-if="notificationVisible">
             <p class="logo">Notifications</p>
             <div v-if="hasNotifications" class="notificationList">
+                <div class="hideScroll">
+                    <!--  -->
+                </div>
                 <div class="notificationContainer" v-for="(elem) in myNotifications"
                 @click="closeNotificationWindow">
                 <router-link :to="'/auction/'+elem.auctionid">
@@ -81,7 +84,10 @@ export default {
 </script>
 
 <style lang="css" scoped>
-
+.buttonClass{
+    margin-right: 35px;
+    cursor: pointer;
+}
 .invisiblecover{
     min-height: 100vh;
     min-width: 100%;
@@ -128,5 +134,13 @@ export default {
 .notificationList{
     overflow-y: scroll;
     overflow-x: hidden;
+    height: 40vh;
+}
+.hideScroll{
+    background: white;
+    width: 18px;
+    height: 40vh;
+    position: absolute;
+    margin-left: 23.3vw;
 }
 </style>

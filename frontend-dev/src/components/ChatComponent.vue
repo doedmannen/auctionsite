@@ -7,6 +7,9 @@
             <div class="closeButton" @click="killConvo"><i class="far fa-times-circle"></i></div>
         </div>
         <div class="main" id="boxThatCanScroll">
+            <div class="hideScroll">
+                <!--  -->
+            </div>
             <div v-for="(elem) of this.messages" class="singularity">
                 <p class="sender">{{elem.sender.firstname}} {{elem.sender.lastname}}:</p>
                 <p class="message">{{elem.message}}</p>
@@ -125,5 +128,12 @@ button{
     background: white;
     border-radius: 3px;
     border: 1px solid black;
+}
+.hideScroll{
+    background: white;
+    width: 18px;
+    height: 41.2vh;
+    position: absolute;
+    margin-left: 22.9vw;
 }
 </style>

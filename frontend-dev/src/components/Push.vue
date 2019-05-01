@@ -53,15 +53,16 @@ export default {
     methods: {
         clickPush(){
             if(this.pushType == 'Notification'){
-
+                this.$router.push('/auction/'+this.msgObject.auctionid);
             } else {
                 let id = this.msgObject.senderid;
                 let name = this.msgObject.sender.firstname + " " + this.msgObject.sender.lastname;
                 this.$store.commit('setShowChat', true);
                 this.$store.commit('setActiveChat', {id: id, name: name});
             }
+            this.closePush();
         },
-        closePush(e){
+        closePush(){
             this.$store.dispatch('removePush');
         }
     }

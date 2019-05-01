@@ -150,7 +150,7 @@ export default {
     justify-content: center;
 }
 .buttonClass{
-    margin-right: 30px;
+    margin-right: 40px;
     cursor: pointer;
 }
 .activityIndication{

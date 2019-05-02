@@ -121,6 +121,7 @@ export default {
     border: 1px solid lightgrey;
     display: flex;
     flex-direction: column;
+    box-shadow: 2px 2px 5px;
 }
 .notificationText{
     display: inline;

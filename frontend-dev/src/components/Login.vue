@@ -34,7 +34,7 @@
                         <div><p style="color:red">{{formErrorLogin}}</p></div>
                     </b-dropdown-form>
                 </div>
-                <div v-else>
+                <div v-else class="shadowbox">
                     <div class="text-center">
                         <p class="sublogo">User menu</p>
                     </div>
@@ -120,7 +120,7 @@ i{
     align-items: baseline;
 }
 .contentMenu * {
-    text-align: center;
+    text-align: center
 }
 .btn{
     margin: 0;

@@ -121,6 +121,7 @@ export default {
 }
 .nameContainer{
     flex: 1;
+    margin-left: 15px;
 }
 .unread{
     font-style: italic;
@@ -135,7 +136,9 @@ export default {
 }
 .convoContainer{
     text-align: left;
-    min-width: 17vw;
+    width: 19vw;
+    height: 41vh;
+    overflow-y: scroll;
 }
 .chatWindow{
     padding: 0;
@@ -152,6 +155,7 @@ export default {
     border: 1px solid lightgrey;
     display: flex;
     justify-content: center;
+    box-shadow: 2px 2px 5px;
 }
 .buttonClass{
     margin-right: 40px;
@@ -160,6 +164,7 @@ export default {
 .online{
     font-size: 6pt;
     padding-right: 5px;
+    margin-left: 10px;
 }
 .online > *{
     color: green;
@@ -167,6 +172,7 @@ export default {
 .offline{
     font-size: 6pt;
     padding-right: 5px;
+    margin-left: 10px;
 }
 .offline > *{
     color: red;

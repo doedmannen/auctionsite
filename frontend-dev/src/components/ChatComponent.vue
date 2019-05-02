@@ -2,7 +2,7 @@
     <div class="motherland">
         <div class="header">
             <div class="headertext">
-                <p class="sublogo" >{{activeChat.name}}</p>
+                <p class="sublogo" @click="goToProfile">{{activeChat.name}}</p>
             </div>
             <div class="closeButton" @click="killConvo"><i class="far fa-times-circle"></i></div>
         </div>
@@ -67,6 +67,9 @@ export default {
                     .substring(0,250);
             }
         },
+        goToProfile(){
+            this.$router.push('/profile/'+this.activeChat.id);
+        },
         scrollToEnd(){
             let scroller = document.getElementById('boxThatCanScroll');
             scroller.scrollTop = scroller.scrollHeight;
@@ -96,6 +99,7 @@ export default {
     display: flex;
     flex-direction: row;
     width: 100%;
+    cursor: pointer;
 }
 .main{
     flex: 1;
@@ -103,7 +107,6 @@ export default {
 }
 .headertext{
     flex: 1;
-    font-family: 'Bungee Inline', cursive;
 }
 .singularity{
     padding-left: 10pt;

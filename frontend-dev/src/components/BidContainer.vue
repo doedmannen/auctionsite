@@ -32,7 +32,7 @@
 
             <p>{{auctionPost.endtime.toString().replace(/T/g," ")}}</p>
             <router-link :to="'/profile/' + auctionPost.users.userid"><p>Seller: {{ auctionPost.users.firstname+' '+auctionPost.users.lastname}}</p></router-link>
-            <p class="startnewchat" @click="openChat">Open chat</p>
+            <p class="startnewchat" v-if="loggedIn && auctionPost.users.userid != this.me.userid" @click="openChat">Open chat</p>
             <div>
                 <b-button v-b-modal.modal-1 @click="resetLimit">Bid history</b-button>
 
@@ -47,7 +47,7 @@
                     </b-container>
                     <b-container class="bv-example-row">
                         <b-row v-for="bid in auctionPost.bids.slice(limit-5,limit)">
-                            <b-col>{{bid.user.firstname+' '+bid.user.lastname}}</b-col>
+                            <b-col><router-link :to="'/profile/' + bid.user.userid">{{bid.user.firstname+' '+bid.user.lastname}}</router-link></b-col>
                             <b-col>${{bid.bidamount}}</b-col>
                             <b-col>{{bid.bidtime.toString().replace(/T/g," ")}}</b-col>
                         </b-row>

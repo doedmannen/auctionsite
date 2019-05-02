@@ -34,7 +34,7 @@
           v-for="(auction, index) in auctionPosts.slice(0,auctionsShown)"
           :key="index"
         >
-          <a :href="'/auction/' + auction.auctionid">
+          <router-link :to="'/auction/' + auction.auctionid">
             <b-container class="container">
               <b-row>
                 <b-col>
@@ -60,7 +60,7 @@
                   <p
                     class="textLeft"
                     v-if="auction.bids.length > 0"
-                  >Price: ${{ auction.bids[auction.bids.length-1].bidamount }} Bids: {{ auction.bids.length }}</p>
+                  >Price: ${{ auction.bids[0].bidamount }} Bids: {{ auction.bids.length }}</p>
                   <p
                     class="textLeft"
                     v-else
@@ -71,26 +71,9 @@
                 </b-col>
               </b-row>
             </b-container>
-          </a>
+          </router-link>
         </div>
       </div>
-
-      <!--  <div class="mainFlex" v-for="(auction, index) in auctionPosts.slice(0,auctionsShown)" :key="index">
-            <a :href="'/auction/' + auction.auctionid" class="flexSection">
-             <img :src="'/assets/img/thumbnail/'+auction.images[0]" id="image">
-                <div class="flex">
-                    <p class="title">{{ auction.title }}</p>
-                    <p>{{ auction.description }}</p>
-                        <a :href="'/profile/' + auction.users.userid">
-                            <p>Seller: {{ auction.users.firstname }} {{ auction.users.lastname }}</p>
-                        </a>
-                    
-                        <p class="currBid" v-if="auction.bids.length > 0">Price: ${{ auction.bids[auction.bids.length-1].bidamount }} ~ Bids: {{ auction.bids.length  }}</p>
-                        <p class="currBid" v-else>Price: ${{auction.startprice }} ~ Bids: {{ auction.bids.length }}</p>
-                        <p class="currBid"> EndTime: {{auction.endtime.replace(/T/g, " ")}} </p>   
-                </div>
-            </a>
-      </div>-->
 
       <div class="showMoreButton">
         <b-button class="showMore mt-2" v-on:click="loadMore">Load more</b-button>

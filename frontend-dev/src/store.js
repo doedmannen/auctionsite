@@ -11,7 +11,12 @@ export default new Vuex.Store({
         auctionPosts: [],
         categories: [],
         me: null,
-        user: null,
+        chatMessages: [],
+        socketConnected: false,
+        activeChat: null,
+        socket: null,
+        outgoingMessages: [],
+        showChat: false
     },
     mutations: {
         addUpload(state, value) {
@@ -33,8 +38,38 @@ export default new Vuex.Store({
         setMe(state, value){
             state.me = value;
         },
-        setUser(state, value) {
-            state.user = value;
+        addChatMsg(state, value){
+            if(!state.chatMessages.filter(m => m.id == value.id).length){
+                console.log("New message");
+                state.chatMessages.push(value);
+            } else {
+                console.log("Replacement");
+                let old = state.chatMessages.filter(m => m.id == value.id)[0];
+                let index = state.chatMessages.indexOf(old);
+                state.chatMessages.splice(index, 1);
+                state.chatMessages.push(value);
+            }
+        },
+        setSocketConnection(state, value){
+            state.socketConnected = value;
+        },
+        appendBid(state, value){
+            state.auctionPosts
+                .filter(ap => value.auctionid == ap.auctionid)[0]
+                .bids.unshift(value);
+        },
+        setChatHistory(state, value){
+            console.log(value);
+            state.chatMessages = value;
+        },
+        setActiveChat(state, value){
+            state.activeChat = value;
+        },
+        sendMessage(state, value){
+            state.outgoingMessages.push(value);
+        },
+        setOutgoingMessages(state, value){
+            state.outgoingMessages = [];
         },
         async homeSearchInDb(state, value){
             let posts = null;
@@ -46,6 +81,9 @@ export default new Vuex.Store({
                 posts = await (await fetch(API_URL + 'auction/search/'+value)).json();
             }
             state.auctionPosts = posts;
+        },
+        setShowChat(state, value){
+            state.showChat = value;
         }
     },
     actions: {
@@ -70,5 +108,58 @@ export default new Vuex.Store({
             }
             this.commit('setMe', me);
         },
+        async getChatHistory() {
+            let history = await fetch(API_URL + 'message');
+            try{
+                history = await history.json();
+            }catch(e){
+                history = [];
+            }
+            this.commit('setChatHistory', history);
+        },
+        logout(){
+            this.commit('setMe', null);
+            this.commit('setOutgoingMessages', []);
+            this.commit('setActiveChat', null);
+            this.commit('setChatHistory', []);
+            this.dispatch('connectSocket');
+        },
+        connectSocket() {
+            if(this.state.socket){
+                this.state.socket.close();
+            }
+            this.state.socket = new WebSocket('ws://localhost:8080/websocket');
+            this.state.socket.onmessage = (e) => {
+                let msg = JSON.parse(e.data);
+                console.log(msg);
+                switch (msg.type) {
+                    case 'Bids':
+                        this.commit('appendBid', msg.msgObject);
+                        break;
+                    case 'Message':
+                        this.commit('addChatMsg', msg.msgObject);
+                        break;
+                    case 'MessageHistory':
+                        this.commit('setChatHistory', msg.msgObject);
+                        break;
+                    default:
+                        console.log("error in msg", msg);
+                        break;
+                }
+            }
+            this.state.socket.onopen = (e) => {
+                console.log("Connected");
+                this.commit('setSocketConnection', true)
+            };
+            this.state.socket.onclose = (e) => {
+                console.log("Closing websocket...");
+                this.commit('setSocketConnection', false);
+                this.state.socket = null;
+            };
+            console.log("Connecting...");
+        },
+        async readCurrentChat(){
+            await fetch(API_URL + 'message/read/'+this.state.activeChat.id);
+        }
     }
 })

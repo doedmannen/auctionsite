@@ -16,3 +16,13 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+
+setInterval(() => {
+    console.log("Checking");
+    if(store.state.socket == null){
+        setTimeout(()=> {
+                console.log("manuell reboot");
+                store.dispatch('connectSocket');
+        }, 500);
+    }
+}, 1000);

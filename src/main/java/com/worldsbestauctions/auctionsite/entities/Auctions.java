@@ -101,4 +101,8 @@ public class Auctions {
     public void setAuctionowner(long auctionowner) {
         this.auctionowner = auctionowner;
     }
+
+    public long getAuctionowner() {
+        return auctionowner;
+    }
 }

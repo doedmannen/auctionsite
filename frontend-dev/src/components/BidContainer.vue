@@ -23,7 +23,7 @@
                     <h3>Place your bid</h3>
                     <input type="text" name="bidAmount" placeholder="Place your bid"
                            @change="parseNumbers"><br>
-                    <b-button variant="primary" @click="placeBid">Place bid</b-button>
+                    <b-button class="button" variant="primary" @click="placeBid">Place bid</b-button>
                 </div>
                 <div v-else>
                     <h3>You can't bid on your own auctions</h3>
@@ -31,7 +31,8 @@
             </div>
 
             <p>{{auctionPost.endtime.toString().replace(/T/g," ")}}</p>
-            <a :href="'/profile/' + auctionPost.users.userid"><p>Seller: {{ auctionPost.users.firstname+' '+auctionPost.users.lastname}}</p></a>
+            <router-link :to="'/profile/' + auctionPost.users.userid"><p>Seller: {{ auctionPost.users.firstname+' '+auctionPost.users.lastname}}</p></router-link>
+            <p class="startnewchat" @click="openChat">Open chat</p>
             <div>
                 <b-button v-b-modal.modal-1 @click="resetLimit">Bid history</b-button>
 
@@ -46,11 +47,12 @@
                     </b-container>
                     <b-container class="bv-example-row">
                         <b-row v-for="bid in auctionPost.bids.slice(limit-5,limit)">
-                            <b-col>{{bid.user.firstname}}</b-col>
+                            <b-col>{{bid.user.firstname+' '+bid.user.lastname}}</b-col>
                             <b-col>${{bid.bidamount}}</b-col>
                             <b-col>{{bid.bidtime.toString().replace(/T/g," ")}}</b-col>
                         </b-row>
-                        <button @click="loadFiveMore">Next 5</button>
+                        <button @click="loadPreviousFive"><<</button>
+                        <button @click="loadFiveMore">>></button>
                     </b-container>
                 </b-modal>
             </div>
@@ -62,6 +64,11 @@
                 </countdown>
             </div>
         </b-jumbotron>
+        <template>
+            <div>
+                <b-modal v-model="modalShow">{{modalText}}</b-modal>
+            </div>
+        </template>
     </div>
     <div v-else>
         <b-jumbotron>
@@ -73,8 +80,11 @@
 
             <hr class="my-4">
 
-            <p>
+            <p v-if="auctionPost.bids.length>0">
                 sold for: ${{auctionPost.bids[0].bidamount}}
+            </p>
+            <p v-else>
+                No bids on this auction
             </p>
             <div>
                 <b-button v-b-modal.modal-2 @click="resetLimit">Bid history</b-button>
@@ -90,20 +100,16 @@
                     </b-container>
                     <b-container class="bv-example-row">
                         <b-row v-for="bid in auctionPost.bids.slice(limit-5,limit)">
-                            <b-col>{{bid.user.firstname}}</b-col>
+                            <b-col>{{bid.user.firstname+' '+bid.user.lastname}}</b-col>
                             <b-col>${{bid.bidamount}}</b-col>
                             <b-col>{{bid.bidtime.toString().replace(/T/g," ")}}</b-col>
                         </b-row>
-                        <button @click="loadFiveMore">Next 5</button>
+                        <button @click="loadPreviousFive"><<</button>
+                        <button @click="loadFiveMore">>></button>
                     </b-container>
                 </b-modal>
             </div>
         </b-jumbotron>
-        <template>
-            <div>
-                <b-modal v-model="modalShow">{{modalText}}</b-modal>
-            </div>
-        </template>
     </div>
 </template>
 
@@ -125,6 +131,11 @@
                     this.limit += 5
                 }
 
+            },
+            loadPreviousFive(){
+                if(this.limit>5){
+                    this.limit-=5;
+                }
             },
             showMoreToggle() {
                 this.showMore = !this.showMore;
@@ -158,8 +169,15 @@
                 let input = document.getElementsByName('bidAmount')[0].value.replace(/^[^0-9]*0*|[^0-9]/g, '');
                 let output = input.length > 0 ? '$ ' + input : '';
                 document.getElementsByName('bidAmount')[0].value = output
+            },
+            openChat(){
+                let id = this.auctionPost.users.userid;
+                let name = `${this.auctionPost.users.firstname} ${this.auctionPost.users.lastname}`;
+                this.$store.commit('setActiveChat', {id: id, name: name});
+                this.$store.commit('setShowChat', true);
             }
-        },computed: {
+        },
+        computed: {
             auctionPost() {
                 return this.$store.state.auctionPosts.filter(auction => auction.auctionid == this.$route.params.auctionid)[0]
             },
@@ -195,5 +213,12 @@
         font-weight: bold;
         display: block;
         cursor: pointer;
+    }
+    .startnewchat{
+        cursor: pointer;
+        font-weight: bold;
+    }
+    .button{
+        margin-top: 5px;
     }
 </style>

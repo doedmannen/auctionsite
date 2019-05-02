@@ -1,6 +1,6 @@
 <template>
     <nav class="navbar navbar-expand-lg">
-        <a class="navbar-brand logo" href="/">Auction Site</a>
+        <router-link :to="'/'" class="navbar-brand logo">Auction Site</router-link>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -16,7 +16,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <div v-for="(category, index) in categories" :key="index">
-                            <a :href="'/category/' + category.categoryname" class="dropdown-item">{{ category.categoryname }}</a>
+                            <router-link :to="'/category/' + category.categoryname" class="dropdown-item">{{ category.categoryname }}</router-link>
                         </div>
                     </div>
                 </li>
@@ -30,7 +30,9 @@
 
             <Login />
 
-            <a href=""><i class="fas fa-envelope spacing"></i></a>
+            <ChatMenu />
+
+            <i class="fas fa-bell"></i>
         </div>
     </nav>
 </template>
@@ -53,7 +55,8 @@
         },
         components: {
             Login: () => import('@/components/Login.vue'),
-            Register: () => import('@/components/Register.vue')
+            Register: () => import('@/components/Register.vue'),
+            ChatMenu: () => import('@/components/ChatMenu.vue')
         }
     };
 </script>

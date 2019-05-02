@@ -38,7 +38,7 @@
             <b-container class="container">
               <b-row>
                 <b-col>
-                  <img :src="'/assets/img/thumbnail/'+auction.images[0]" id="image">
+                  <img :src="'/assets/img/'+auction.images[0]" id="image">
                 </b-col>
               </b-row>
 

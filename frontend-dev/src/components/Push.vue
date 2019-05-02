@@ -38,25 +38,38 @@ export default {
     name: 'Push',
     data(){
         return{
-            timer: setTimeout(() => {},1)
+            timer: setTimeout(() => {}, 1)
         }
     },
     computed: {
+        indexToUse(){
+            let index = 0;
+            if(this.$store.state.pushes.length > 1){
+                let first = this.$store.state.pushes[0];
+                if(this.$store.state.pushes[0].type == 'Message'){
+                    let filterShow = this.$store.state.pushes
+                        .filter(push => push.type == 'Message' && push.msgObject.senderid == first.msgObject.senderid);
+                    let last = filterShow[filterShow.length-1];
+                    index = this.$store.state.pushes.indexOf(last);
+                }
+            }
+            return index;
+        },
         pushMsg(){
-            return this.$store.state.pushes[0];
+            return this.$store.state.pushes[this.indexToUse];
         },
         hasPush(){
             clearTimeout(this.timer);
             this.timer = setTimeout(() => {
                 this.closePush();
-            },5000);
+            }, 5000);
             return this.$store.state.pushes.length;
         },
         pushType(){
-            return this.$store.state.pushes[0].type;
+            return this.$store.state.pushes[this.indexToUse].type;
         },
         msgObject(){
-            return this.$store.state.pushes[0].msgObject;
+            return this.$store.state.pushes[this.indexToUse].msgObject;
         }
     },
     methods: {

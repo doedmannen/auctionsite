@@ -99,8 +99,13 @@ export default new Vuex.Store({
             state.notifications.unshift(value);
         },
         addPush(state, value){
-            // if(value.type == 'Message' )
-            if(value.type != 'Message' || value.type == 'Message' && value.msgObject.senderid != this.state.me.userid && value.msgObject.hasread == 0){
+            if(state.showChat && value.type == 'Message' && value.msgObject.senderid == state.activeChat.id)
+                return;
+
+            if(value.type != 'Message' ||
+            value.type == 'Message' &&
+            value.msgObject.senderid != this.state.me.userid &&
+            value.msgObject.hasread == 0){
                 state.pushes.push(value);
             }
         }
@@ -198,7 +203,17 @@ export default new Vuex.Store({
         removePush(){
             if(this.state.pushes.length > 0){
                 console.log("KILLING PUSH");
-                this.state.pushes.shift();
+                let last = this.state.pushes.shift();
+                if(last.type == 'Message'){
+                    for(let i = 0; i < this.state.pushes.length; i++){
+                        console.log('ett varv börjar', this.state.pushes[i].msgObject.senderid );
+                        if(this.state.pushes[i].type == 'Message' && this.state.pushes[i].msgObject.senderid == last.msgObject.senderid){
+                            console.log("Removing push that is similar");
+                            this.state.pushes.splice(i, 1);
+                            i--;
+                        }
+                    }
+                }
             }
         },
         markNotificationsAsRead(){

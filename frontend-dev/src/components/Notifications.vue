@@ -4,7 +4,7 @@
             <i class="fas fa-bell"></i><span v-if="unreadNotifications"> {{unreadNotifications}}</span>
         </div>
         <div class="notificationWindow" v-if="notificationVisible">
-            <p class="logo">Notifications</p>
+            <p class="sublogo">Notifications</p>
             <div v-if="hasNotifications" class="notificationList">
                 <!-- <div class="hideScroll"> -->
                     <!--  -->
@@ -101,7 +101,7 @@ export default {
 }
 .notificationContainer{
     text-align: left;
-    min-width: 20vw;
+    min-width: 15vw;
     font-size: 10pt;
     cursor: pointer;
     padding: 5px 5px 0px 10px;
@@ -109,12 +109,12 @@ export default {
 .notificationWindow{
     padding: 0;
     position: absolute;
-    min-width: 25vw;
-    max-width: 25vw;
+    min-width: 20vw;
+    max-width: 20vw;
     min-height: 50vh;
     max-height: 50vh;
     z-index: 9001;
-    margin-left: -27vw;
+    margin-left: -22vw;
     margin-top: -5vh;
     background: white;
     border-radius: 4px;

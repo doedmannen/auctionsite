@@ -5,7 +5,7 @@
         </div>
         <div class="chatWindow" v-if="chatVisible">
             <div v-if="!activeChat">
-                <p class="logo">Chat menu</p>
+                <p class="sublogo">Chat menu</p>
                 <div class="convoContainer" v-if="hasConversations">
                     <div v-for="(elem) in this.myConversations"
                     class="singleConversation"
@@ -135,17 +135,17 @@ export default {
 }
 .convoContainer{
     text-align: left;
-    min-width: 20vw;
+    min-width: 17vw;
 }
 .chatWindow{
     padding: 0;
     position: absolute;
-    min-width: 25vw;
-    max-width: 25vw;
+    min-width: 20vw;
+    max-width: 20vw;
     min-height: 50vh;
     max-height: 50vh;
     z-index: 9001;
-    margin-left: -27vw;
+    margin-left: -22vw;
     margin-top: -5vh;
     background: white;
     border-radius: 4px;

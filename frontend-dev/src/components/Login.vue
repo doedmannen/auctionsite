@@ -11,7 +11,7 @@
                 </template>
                 <div v-if="!loggedIn">
                     <b-dropdown-form>
-                        <p class="logo">Log In</p>
+                        <p class="sublogo">Log In</p>
                         <b-form-group @submit.stop.prevent>
                             <b-form-input
                             id="login-email"
@@ -36,7 +36,7 @@
                 </div>
                 <div v-else>
                     <div class="text-center">
-                        <p class="logo">User menu</p>
+                        <p class="sublogo">User menu</p>
                     </div>
                     <button @click="logoutUser" type="button" class="btn btn-center">Logout</button>
                 </div>

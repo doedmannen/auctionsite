@@ -2,7 +2,7 @@
     <div class="motherland">
         <div class="header">
             <div class="headertext">
-                <h5>{{activeChat.name}}</h5>
+                <p class="sublogo" >{{activeChat.name}}</p>
             </div>
             <div class="closeButton" @click="killConvo"><i class="far fa-times-circle"></i></div>
         </div>
@@ -86,7 +86,7 @@ export default {
 
 <style lang="css" scoped>
 .motherland{
-    width: 24vw;
+    width: 19vw;
     min-height: 49vh;
     max-height: 49vh;
     display: flex;
@@ -126,7 +126,7 @@ export default {
     width: 4vw;
 }
 .footer > input{
-    width: 20vw;
+    width: 15vw;
 }
 .closeButton > i{
     padding-top: 3px;

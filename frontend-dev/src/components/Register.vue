@@ -7,7 +7,7 @@
                 </template>
                 <div>
                     <b-dropdown-form>
-                        <p class="logo">Create new account</p>
+                        <p class="sublogo">Create new account</p>
                         <b-form-group  @submit.stop.prevent>
                             <b-form-input
                             id="registration-firstname"

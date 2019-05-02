@@ -81,10 +81,13 @@
         font-family: 'Bungee Inline', cursive;
         font-size: 2em;
     }
+    .sublogo{
+        font-family: 'Bungee Inline', cursive;
+        font-size: 1.5em;
+    }
 
     .fas {
         font-size: 1.75em;
-        color: rgb(32, 64, 96);
     }
 
     .spacing {
@@ -96,7 +99,7 @@
     }
 
     .dropdown-menu {
-        width: 300px;
+        width: 20vw;
     }
 
     .btn-center {

@@ -11,7 +11,7 @@
                     class="singleConversation"
                     :id="'userchat'+elem.userid"
                     @click="openConversation">
-                    <div class="activityIndication">
+                    <div :class="(isOnline(elem.email) ? 'online':'offline')">
                         <i class="fas fa-circle"></i>
                     </div>
                     <div class="nameContainer">
@@ -79,10 +79,14 @@ export default {
                 .length
         },
         chatVisible(){
+            this.$store.dispatch("getOnlineList");
             return this.$store.state.showChat;
         }
     },
     methods: {
+        isOnline(email){
+            return this.$store.state.onlineList.includes(email);
+        },
         openConversation(e){
             let name = e.target.innerHTML.replace(/ {2,}/g, "").replace(/\[^\w ]/g, "");
             let id = e.target.parentElement.id.replace(/[^0-9]/g,"")/1;
@@ -153,11 +157,18 @@ export default {
     margin-right: 40px;
     cursor: pointer;
 }
-.activityIndication{
+.online{
     font-size: 6pt;
     padding-right: 5px;
 }
-.activityIndication > *{
+.online > *{
+    color: green;
+}
+.offline{
+    font-size: 6pt;
+    padding-right: 5px;
+}
+.offline > *{
     color: red;
 }
 </style>

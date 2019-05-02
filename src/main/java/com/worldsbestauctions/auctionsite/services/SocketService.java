@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 @Service
 public class SocketService {
@@ -90,5 +91,10 @@ public class SocketService {
                 loggedIn.remove(session.getPrincipal().getName());
             }
         } catch (Exception e) {}
+    }
+
+
+    public List<String> getLoggedInUsers(){
+        return loggedIn.keySet().stream().distinct().sorted().collect(Collectors.toList());
     }
 }

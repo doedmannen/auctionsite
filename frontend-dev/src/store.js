@@ -18,9 +18,14 @@ export default new Vuex.Store({
         outgoingMessages: [],
         showChat: false,
         notifications: [],
-        pushes: [] // needs to get the whole SocketWrapper object
+        pushes: [],
+        onlineList: []
     },
     mutations: {
+        setOnlineList(state, value){
+            state.onlineList = value;
+            console.log(state.onlineList);
+        },
         addUpload(state, value) {
             state.currentUploads.push(value);
         },
@@ -197,6 +202,15 @@ export default new Vuex.Store({
                 this.state.notifications[i].hasread = 1;
             }
             fetch('/api/notification/read');
+        },
+        async getOnlineList(){
+            let online = await fetch(API_URL + 'user/online');
+            try{
+                online = await online.json();
+            }catch(e){
+                online = [];
+            }
+            this.commit('setOnlineList', online);
         }
     }
 })

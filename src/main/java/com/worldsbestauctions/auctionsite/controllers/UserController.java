@@ -3,11 +3,13 @@ package com.worldsbestauctions.auctionsite.controllers;
 import com.worldsbestauctions.auctionsite.entities.SecretUser;
 import com.worldsbestauctions.auctionsite.entities.Users;
 import com.worldsbestauctions.auctionsite.services.SecretUserService;
+import com.worldsbestauctions.auctionsite.services.SocketService;
 import com.worldsbestauctions.auctionsite.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -18,6 +20,9 @@ public class UserController {
 
     @Autowired
     SecretUserService secretUserService;
+
+    @Autowired
+    SocketService socketService;
 
     @GetMapping("/whoami")
     Users whoAmI(HttpServletRequest request){
@@ -33,5 +38,9 @@ public class UserController {
         if(secretUserService.getSecretUserByEmail(body.getEmail()) == null)
             id = secretUserService.save(body).getUserid();
         return id;
+    }
+    @GetMapping("/online")
+    List<String> getOnlineUsers(){
+        return socketService.getLoggedInUsers();
     }
 }

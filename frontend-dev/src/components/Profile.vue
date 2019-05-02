@@ -42,9 +42,9 @@
                         </div>
                     </div>
                 </div>
-
-
-                <button class="btn btnStyle">Contact</button>
+                <div v-else>
+                    <button v-if="me" class="btn btnStyle" @click="openChatWithUser">Start chat</button>
+                </div>
             </div>
             <div class="flexSection">
                 <h3>{{indivProfile.users.firstname}}'s Auctions</h3>
@@ -129,6 +129,12 @@
                         "content-type": "application/json"
                     }
                 });
+            },
+            openChatWithUser(){
+                let id = this.indivProfile.users.userid;
+                let name = this.indivProfile.users.firstname + ' ' + this.indivProfile.users.lastname;
+                this.$store.commit('setActiveChat', {id: id, name: name});
+                this.$store.commit('setShowChat', true);
             }
         }
     }
@@ -177,7 +183,7 @@
         font-size: 2em;
         outline: #0c5460;
     }
-    
+
     .icon {
         background-color: white;
         border: none;

@@ -61,7 +61,7 @@ export default {
             return this.$store.state.notifications;
         },
         unreadNotifications(){
-            return this.$store.state.notifications
+                return this.$store.state.notifications
                 .filter(m => !m.hasread)
                 .length
         },

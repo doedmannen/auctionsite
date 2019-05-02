@@ -5,7 +5,9 @@
         <div class="contentMenu">
             <b-dropdown variant="link" id="dropdown-login" dropleft ref="dropdownlogin" class="m-2" no-caret>
 
-                <template slot="button-content"><i class="fas fa-user spacing"></i>
+                <template slot="button-content">
+                    <i v-if="!loggedIn" class="fas fa-key spacing"></i>
+                    <i v-else :class="me.avatar_class+' spacing'" :style="'color: '+me.avatar_color"></i>
                 </template>
                 <div v-if="!loggedIn">
                     <b-dropdown-form>

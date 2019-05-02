@@ -96,6 +96,7 @@ export default new Vuex.Store({
             state.notifications = value;
         },
         addNotification(state, value){
+            console.log(value);
             if(!state.notifications.includes(value))
                 state.notifications.unshift(value);
         },

@@ -14,6 +14,7 @@ public class Users implements Serializable {
     private String firstname;
     private String lastname;
     private String avatar_class;
+    private String avatar_color;
 
     public Users(){}
 
@@ -57,5 +58,11 @@ public class Users implements Serializable {
         this.avatar_class = avatar_class;
     }
 
+    public String getAvatar_color() {
+        return avatar_color;
+    }
 
+    public void setAvatar_color(String avatar_color) {
+        this.avatar_color = avatar_color;
+    }
 }

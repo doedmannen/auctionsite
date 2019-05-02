@@ -13,7 +13,7 @@
                 @click="closeNotificationWindow">
                 <router-link :to="'/auction/'+elem.auctionid">
                     <span v-if="!elem.hasread" class="unreadNotification"> NEW </span>
-                    <div class="notificationText" v-if="elem.bid.user.userid == elem.auction.users.userid">
+                    <div class="notificationText" v-if="elem.auction.users.userid != me.userid">
                         <p>
                             <strong>You are loosing an auction. </strong> {{elem.bid.user.firstname}} {{ elem.bid.user.lastname}} placed a bid of <strong>$ {{elem.bid.bidamount}}</strong> on <em><strong>{{elem.auction.title}}</strong></em>.
                         </p>
@@ -52,6 +52,9 @@ export default {
     computed: {
         isValid(){
             return this.$store.state.socketConnected && this.$store.state.me;
+        },
+        me(){
+            return this.$store.state.me;
         },
         hasNotifications(){
             // console.log(this.$store.state.notifications);

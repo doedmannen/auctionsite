@@ -48,6 +48,7 @@ public class UserController {
     Users updateIcon(@RequestBody Users body, HttpServletRequest request) {
         Users user = userService.getUserByEmail(request.getUserPrincipal().getName());
         user.setAvatar_class(body.getAvatar_class());
+        user.setAvatar_color(body.getAvatar_color());
         return userService.updateIcon(user);
     }
 

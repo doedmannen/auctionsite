@@ -2,7 +2,7 @@
     <div>
         <div class="mainFlex" v-if="user">
             <div class="flexSection" id="namePic">
-                <i :class="getAvatar" id="profileIcon"></i>
+                <i :class="getAvatar" :style="'color: '+indivProfile.users.avatar_color" id="profileIcon"></i>
                 <h3>{{indivProfile.users.firstname}} {{indivProfile.users.lastname}}</h3>
 
                 <div v-if="me && indivProfile.users.userid == me.userid">
@@ -22,16 +22,39 @@
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <i class="fas fa-smile" id="iconChoice"></i>
-                                    <h5>Change icon</h5>
-                                    <button class="icon" @click="changeIcon()"><i id="smile" class="fas fa-smile"></i>
-                                    </button>
-                                    <button class="icon" @click="changeIcon()"><i id="cat" class="fas fa-cat"></i>
-                                    </button>
-                                    <button class="icon" @click="changeIcon()"><i id="dragon" class="fas fa-dragon"></i>
-                                    </button>
-                                    <button class="icon" @click="changeIcon()"><i id="hippo" class="fas fa-hippo"></i>
-                                    </button>
+                                    <div :class="fakeComputed">
+                                        <i :class="me.avatar_class" :style="'color: '+currentColorHolder" id="iconChoice"></i>
+                                        <h5>Change icon</h5>
+                                        <button class="icon" @click="changeIcon"><i id="smile" class="fas fa-smile"></i>
+                                        </button>
+                                        <button class="icon" @click="changeIcon"><i class="fas fa-laugh-beam"></i>
+                                        </button>
+                                        <button class="icon" @click="changeIcon"><i id="dragon" class="fas fa-dragon"></i>
+                                        </button>
+                                        <button class="icon" @click="changeIcon"><i id="hippo" class="fas fa-hippo"></i>
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <button class="icon" @click="changeIcon"><i id="cat" class="fas fa-cat"></i>
+                                        </button>
+                                        <button class="icon" @click="changeIcon"><i class="fas fa-kiwi-bird"></i>
+                                        </button>
+                                        <button class="icon" @click="changeIcon"><i class="fas fa-horse"></i>
+                                        </button>
+                                        <button class="icon" @click="changeIcon"><i class="fas fa-user-secret"></i>
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <h5>Change color</h5>
+                                        <button class="icon" @click="changeColor"><i class="fas fa-circle" style="color: black;" id="colorblack"></i>
+                                        </button>
+                                        <button class="icon" @click="changeColor"><i class="fas fa-circle" style="color: green;" id="colorgreen"></i>
+                                        </button>
+                                        <button class="icon" @click="changeColor"><i class="fas fa-circle" style="color: blue;" id="colorblue"></i>
+                                        </button>
+                                        <button class="icon" @click="changeColor"><i class="fas fa-circle" style="color: brown;" id="colorbrown"></i>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btnStyle" data-dismiss="modal">Close</button>
@@ -75,7 +98,8 @@
             return {
                 isActive: false,
                 user: null,
-                avatar: null
+                avatar: null,
+                avatar_c: ''
             }
         },
         mounted() {
@@ -84,6 +108,10 @@
         computed: {
             indivProfile() {
                 return this.user
+            },
+            fakeComputed(){
+                this.avatar_c = this.avatar_c || this.me.avatar_color;
+                return '';
             },
             indivAuctions() {
                 return this.$store.state.auctionPosts.filter(auction => auction.users.userid == this.$route.params.userid);
@@ -96,6 +124,9 @@
             },
             getAvatar() {
                 return this.avatar || this.indivProfile.users.avatar_class;
+            },
+            currentColorHolder(){
+                return this.avatar_c;
             }
         },
         methods: {
@@ -109,16 +140,21 @@
                 let element = this.$refs.modal.$el;
                 $(element).modal('show');
             },
-            changeIcon() {
-                document.addEventListener('click', function (e) {
-                    let iconChoice = document.getElementById("iconChoice");
-                    iconChoice.className = "fas fa-" + e.target.id;
-                });
+            changeIcon(e) {
+                let iconChoice = document.getElementById("iconChoice");
+                iconChoice.className = e.target.className;
+            },
+            changeColor(e) {
+                this.avatar_c = e.target.id.replace("color", "");
+                console.log(this.avatar_c);
             },
             async saveIcon() {
                 let data = {};
                 data.avatar_class = document.getElementById("iconChoice").className;
-                this.avatar = data.avatar_class
+                data.avatar_color = this.avatar_c;
+                this.avatar = data.avatar_class;
+                document.getElementById('profileIcon').style = "color: " + data.avatar_color;
+
 
                 $('#iconModal').modal('toggle');
 
@@ -129,6 +165,7 @@
                         "content-type": "application/json"
                     }
                 });
+                this.$store.dispatch('whoami');
             },
             openChatWithUser(){
                 let id = this.indivProfile.users.userid;

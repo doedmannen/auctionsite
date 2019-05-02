@@ -20,10 +20,15 @@
             <hr class="my-4">
             <div v-if="loggedIn">
                 <div v-if="auctionPost.users.userid != this.me.userid">
-                    <h3>Place your bid</h3>
-                    <input type="text" name="bidAmount" placeholder="Place your bid"
-                           @change="parseNumbers" v-on:keyup="parseNumbers"><br>
-                    <b-button class="button" variant="primary" @click="placeBid">Place bid</b-button>
+                    <div v-if="auctionPost.bids[0].user.userid != this.me.userid">
+                        <h3>Place your bid</h3>
+                        <input type="text" name="bidAmount" placeholder="Place your bid"
+                        @change="parseNumbers" v-on:keyup="parseNumbers"><br>
+                        <b-button class="button" variant="primary" @click="placeBid">Place bid</b-button>
+                    </div>
+                    <div v-else>
+                        <h3>You have the highest bid</h3>
+                    </div>
                 </div>
                 <div v-else>
                     <h3>You can't bid on your own auctions</h3>
@@ -31,7 +36,7 @@
             </div>
 
             <p>{{auctionPost.endtime.toString().replace(/T/g," ")}}</p>
-            <router-link :to="'/profile/' + auctionPost.users.userid"><p>Seller: {{ auctionPost.users.firstname+' '+auctionPost.users.lastname}}</p></router-link>
+            <router-link :to="'/profile/' + auctionPost.users.userid"><p class="nameContainer">Seller: {{ auctionPost.users.firstname+' '+auctionPost.users.lastname}} <i :class="auctionPost.users.avatar_class" :style="'color: '+auctionPost.users.avatar_color"></i></p></router-link>
             <p class="startnewchat" v-if="loggedIn && auctionPost.users.userid != this.me.userid" @click="openChat">Open chat</p>
             <div>
                 <b-button v-b-modal.modal-1 @click="resetLimit">Bid history</b-button>
@@ -39,6 +44,7 @@
                 <b-modal id="modal-1" title="Bid History">
                     <b-container class="bv-example-row">
                         <b-row>
+                            <b-col></b-col>
                             <b-col>User</b-col>
                             <b-col>Amount</b-col>
                             <b-col>Time</b-col>
@@ -47,6 +53,7 @@
                     </b-container>
                     <b-container class="bv-example-row">
                         <b-row v-for="bid in auctionPost.bids.slice(limit-5,limit)">
+                            <b-col><i :class="bid.user.avatar_class" :style="'color: '+bid.user.avatar_color"></i></b-col>
                             <b-col><router-link :to="'/profile/' + bid.user.userid">{{bid.user.firstname+' '+bid.user.lastname}}</router-link></b-col>
                             <b-col>${{bid.bidamount}}</b-col>
                             <b-col>{{bid.bidtime.toString().replace(/T/g," ")}}</b-col>
@@ -92,6 +99,7 @@
                 <b-modal id="modal-2" title="Bid History">
                     <b-container class="bv-example-row">
                         <b-row>
+                            <b-col></b-col>
                             <b-col>User</b-col>
                             <b-col>Amount</b-col>
                             <b-col>Time</b-col>
@@ -100,7 +108,8 @@
                     </b-container>
                     <b-container class="bv-example-row">
                         <b-row v-for="bid in auctionPost.bids.slice(limit-5,limit)">
-                            <b-col>{{bid.user.firstname+' '+bid.user.lastname}}</b-col>
+                            <b-col><i :class="bid.user.avatar_class" :style="'color: '+bid.user.avatar_color"></i></b-col>
+                            <b-col><router-link :to="'/profile/' + bid.user.userid">{{bid.user.firstname+' '+bid.user.lastname}}</router-link></b-col>
                             <b-col>${{bid.bidamount}}</b-col>
                             <b-col>{{bid.bidtime.toString().replace(/T/g," ")}}</b-col>
                         </b-row>
@@ -223,5 +232,8 @@
     }
     .button{
         margin-top: 5px;
+    }
+    i{
+        font-size: 14pt;
     }
 </style>

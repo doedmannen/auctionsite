@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -31,6 +33,6 @@ public class NotificationController {
         try{
             notificationList = (List<Notification>) notificationService.getAllMyNotifications(request.getUserPrincipal().getName());
         } catch (Exception e){}
-        return notificationList;
+        return notificationList.stream().sorted(Comparator.comparing(Notification::getId).reversed()).collect(Collectors.toList());
     }
 }

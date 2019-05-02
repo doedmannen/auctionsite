@@ -100,6 +100,7 @@ main{
     right: 0;
     z-index: 1111;
     margin: 10px;
+    margin-right: 50px;
     margin-bottom: 40px;
     cursor: pointer;
 }
@@ -108,6 +109,7 @@ main{
     background: white;
     border: 1px solid black;
     border-radius: 5px;
+    box-shadow: 2px 2px 5px;
 }
 .bottom{
     height: 40px;

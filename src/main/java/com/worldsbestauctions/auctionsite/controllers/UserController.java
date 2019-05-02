@@ -34,4 +34,15 @@ public class UserController {
             id = secretUserService.save(body).getUserid();
         return id;
     }
+    @GetMapping("/profile/{userid}")
+    Users sendUserToFront(@PathVariable long userid) {
+        return userService.getUserById(userid);
+    }
+
+    @PutMapping
+    Users updateIcon(@RequestBody Users body, HttpServletRequest request) {
+        Users user = userService.getUserByEmail(request.getUserPrincipal().getName());
+        user.setAvatar_class(body.getAvatar_class());
+        return userService.updateIcon(user);
+    }
 }

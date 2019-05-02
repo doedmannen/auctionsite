@@ -1,48 +1,43 @@
 <template>
     <div>
-        <div class="mainFlex">
+        <div class="mainFlex" v-if="user">
             <div class="flexSection" id="namePic">
-                <i class="fas fa-cat" id="profileIcon"></i>
+                <i :class="getAvatar" id="profileIcon"></i>
                 <h3>{{indivProfile.users.firstname}} {{indivProfile.users.lastname}}</h3>
 
-                    <div v-if="me && indivProfile.users.userid == me.userid">
-                        <button type="button" class="btn btnStyle" data-toggle="modal" data-target="#exampleModal"> Edit
-                            icon
-                        </button>
+                <div v-if="me && indivProfile.users.userid == me.userid">
+                    <button type="button" class="btn btnStyle" data-toggle="modal" data-target="#iconModal"> Edit
+                        icon
+                    </button>
 
-                        <!-- Change details modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">My details</h5>
-                                        <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Save changes"></button>
-                                        <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <h5>Change icon</h5>
-                                        <i id="smile" class="fas fa-smile" @click="changeActive('smile')"
-                                           v-bind:class="{ active: isActive }"></i>
-                                        <i id="cat" class="fas fa-cat" @click="changeActive('cat')"
-                                           v-bind:class="{ active: isActive }"></i>
-                                        <i id="dragon" class="fas fa-dragon" @click="changeActive('dragon')"
-                                           v-bind:class="{ active: isActive }"></i>
-                                        <i id="hippo" class="fas fa-hippo" @click="changeActive('hippo')"
-                                           v-bind:class="{ active: isActive }"></i>
-                                        <hr>
-                                        <h5>Change color</h5>
-                                        <span class="dot color1"></span>
-                                        <span class="dot color2"></span>
-                                        <span class="dot color3"></span>
-                                        <span class="dot color4"></span>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btnStyle" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btnStyle">Save changes</button>
-                                    </div>
+                    <!-- Change details modal -->
+                    <div class="modal fade" id="iconModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">My details</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Save changes"></button>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close"></button>
                                 </div>
+                                <div class="modal-body">
+                                    <i class="fas fa-smile" id="iconChoice"></i>
+                                    <h5>Change icon</h5>
+                                    <button class="icon" @click="changeIcon()"><i id="smile" class="fas fa-smile"></i>
+                                    </button>
+                                    <button class="icon" @click="changeIcon()"><i id="cat" class="fas fa-cat"></i>
+                                    </button>
+                                    <button class="icon" @click="changeIcon()"><i id="dragon" class="fas fa-dragon"></i>
+                                    </button>
+                                    <button class="icon" @click="changeIcon()"><i id="hippo" class="fas fa-hippo"></i>
+                                    </button>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btnStyle" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btnStyle" @click="saveIcon">Save changes</button>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
@@ -52,13 +47,22 @@
                 <button class="btn btnStyle">Contact</button>
             </div>
             <div class="flexSection">
-                <h3>Auctions</h3>
-                <div class="flex" v-for="auction in indivAuctions">
-                    <a :href="'/auction/' + auction.auctionid">
-                        <p>Auction: {{auction.title}}</p>
-                        <p>Ending: {{auction.endtime.toString().replace(/T/g," ")}}</p>
-                    </a>
+                <h3>{{indivProfile.users.firstname}}'s Auctions</h3>
+                <div v-if="indivAuctions.length > 0">
+                    <div class="flex" v-for="auction in indivAuctions">
+                        <div id="left">
+                            <router-link :to="'/auction/' + auction.auctionid">
+                                Auction: {{auction.title}}
+                            </router-link>
+                        </div>
+                        <div id="right">
+                            Ending: {{auction.endtime.toString().replace(/T/g," ")}}
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
                 </div>
+
             </div>
         </div>
     </div>
@@ -69,12 +73,17 @@
         name: 'Profile',
         data() {
             return {
-                isActive: false
+                isActive: false,
+                user: null,
+                avatar: null
             }
+        },
+        mounted() {
+            this.getUserFromDB();
         },
         computed: {
             indivProfile() {
-                return this.$store.state.auctionPosts.filter(auction => auction.users.userid == this.$route.params.userid)[0];
+                return this.user
             },
             indivAuctions() {
                 return this.$store.state.auctionPosts.filter(auction => auction.users.userid == this.$route.params.userid);
@@ -84,18 +93,46 @@
             },
             loggedIn() {
                 return this.$store.state.me != null;
+            },
+            getAvatar() {
+                return this.avatar || this.indivProfile.users.avatar_class;
             }
         },
         methods: {
+            async getUserFromDB() {
+                let id = this.$route.params.userid
+                let user = await (await fetch('/api/user/profile/' + id)).json();
+                this.user = {users: user}
+            },
+
             showModal() {
                 let element = this.$refs.modal.$el;
                 $(element).modal('show');
             },
-            changeActive(icon) {
-                document.getElementById(icon).isActive = !this.isActive;
+            changeIcon() {
+                document.addEventListener('click', function (e) {
+                    let iconChoice = document.getElementById("iconChoice");
+                    iconChoice.className = "fas fa-" + e.target.id;
+                });
+            },
+            async saveIcon() {
+                let data = {};
+                data.avatar_class = document.getElementById("iconChoice").className;
+                this.avatar = data.avatar_class
+
+                $('#iconModal').modal('toggle');
+
+                await fetch('/api/user', {
+                    method: "PUT",
+                    body: JSON.stringify(data),
+                    headers: {
+                        "content-type": "application/json"
+                    }
+                });
             }
         }
-    };
+    }
+    ;
 </script>
 
 <style scoped>
@@ -132,10 +169,7 @@
     .flex > * {
         display: flex;
         flex-direction: row;
-    }
-
-    p {
-        margin-right: 2em;
+        margin-bottom: 0.5em;
     }
 
     .fas {
@@ -143,32 +177,28 @@
         font-size: 2em;
         outline: #0c5460;
     }
-
-    .dot {
-        height: 30px;
-        width: 30px;
-        border-radius: 50%;
-        display: inline-block;
-        margin: 1em;
+    
+    .icon {
+        background-color: white;
+        border: none;
+        outline: none;
     }
 
-    .color1 {
-        background-color: cornflowerblue;
+    #left {
+        width: 250px;
+        float: left;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
     }
 
-    .color2 {
-        background-color: #e83e8c;
+    #right {
+        margin-left: 250px;
     }
 
-    .color3 {
-        background-color: limegreen;
-    }
-
-    .color4 {
-        background-color: gold;
-    }
-
-    .active {
-        color: rgb(126, 199, 199);
+    .clear {
+        clear: both;
     }
 </style>

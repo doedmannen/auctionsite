@@ -188,6 +188,7 @@ export default new Vuex.Store({
         },
         removePush(){
             if(this.state.pushes.length > 0){
+                console.log("KILLING PUSH");
                 this.state.pushes.shift();
             }
         },

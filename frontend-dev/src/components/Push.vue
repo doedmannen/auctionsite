@@ -2,7 +2,7 @@
   <main>
       <div v-if="hasPush" class="pushContent">
           <div class="header">
-              <div class="title">
+              <div class="title" @click="clickPush">
                   <span v-if="pushType == 'Notification'">New bid</span>
                   <span v-else>New message</span>
               </div>
@@ -28,8 +28,8 @@
               </div>
           </div>
       </div>
-      <div class="bottom">
-      </div>
+      <!-- <div class="bottom">
+      </div> -->
   </main>
 </template>
 
@@ -81,15 +81,17 @@ export default {
 <style lang="css" scoped>
 main{
     width: 250px;
-    height: 250px;
+    /* height: 250px; */
     position: fixed;
     bottom: 0;
     right: 0;
     z-index: 1111;
     margin: 10px;
+    margin-bottom: 40px;
+    cursor: pointer;
 }
 .pushContent{
-    height: 210px;
+    /* height: 210px; */
     background: white;
     border: 1px solid black;
     border-radius: 5px;
@@ -112,12 +114,12 @@ main{
     padding-right: 5px;
     font-size: 16pt;
     margin-left: -15px;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 .textContent{
-    padding: 0 10px 0 10px;
+    padding: 0 10px 10px 10px;
     font-size: 11pt;
-    cursor: pointer;
-    height: 180px;
+    /* cursor: pointer; */
+    /* height: 180px; */
 }
 </style>

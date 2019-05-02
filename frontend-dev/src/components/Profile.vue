@@ -220,12 +220,17 @@
     }
 
     #left {
-        width: 200px;
+        width: 250px;
         float: left;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
     }
 
     #right {
-        margin-left: 200px;
+        margin-left: 250px;
     }
 
     .clear {

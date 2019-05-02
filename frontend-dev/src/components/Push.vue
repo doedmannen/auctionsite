@@ -36,11 +36,20 @@
 <script>
 export default {
     name: 'Push',
+    data(){
+        return{
+            timer: setTimeout(() => {},1)
+        }
+    },
     computed: {
         pushMsg(){
             return this.$store.state.pushes[0];
         },
         hasPush(){
+            clearTimeout(this.timer);
+            this.timer = setTimeout(() => {
+                this.closePush();
+            },5000);
             return this.$store.state.pushes.length;
         },
         pushType(){

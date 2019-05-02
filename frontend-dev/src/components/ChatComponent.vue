@@ -7,9 +7,9 @@
             <div class="closeButton" @click="killConvo"><i class="far fa-times-circle"></i></div>
         </div>
         <div class="main" id="boxThatCanScroll">
-            <div class="hideScroll">
+            <!-- <div class="hideScroll"> -->
                 <!--  -->
-            </div>
+            <!-- </div> -->
             <div v-for="(elem) of this.messages" class="singularity">
                 <p class="sender">{{elem.sender.firstname}} {{elem.sender.lastname}}:</p>
                 <p class="message">{{elem.message}}</p>

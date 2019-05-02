@@ -6,9 +6,9 @@
         <div class="notificationWindow" v-if="notificationVisible">
             <p class="logo">Notifications</p>
             <div v-if="hasNotifications" class="notificationList">
-                <div class="hideScroll">
+                <!-- <div class="hideScroll"> -->
                     <!--  -->
-                </div>
+                <!-- </div> -->
                 <div class="notificationContainer" v-for="(elem) in myNotifications"
                 @click="closeNotificationWindow">
                 <router-link :to="'/auction/'+elem.auctionid">

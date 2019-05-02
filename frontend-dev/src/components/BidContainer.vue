@@ -22,7 +22,7 @@
                 <div v-if="auctionPost.users.userid != this.me.userid">
                     <h3>Place your bid</h3>
                     <input type="text" name="bidAmount" placeholder="Place your bid"
-                           @change="parseNumbers"><br>
+                           @change="parseNumbers" v-on:keyup="parseNumbers"><br>
                     <b-button class="button" variant="primary" @click="placeBid">Place bid</b-button>
                 </div>
                 <div v-else>
@@ -165,10 +165,13 @@
 
                 this.modalShow = true;
             },
-            parseNumbers() {
+            parseNumbers(e) {
                 let input = document.getElementsByName('bidAmount')[0].value.replace(/^[^0-9]*0*|[^0-9]/g, '');
                 let output = input.length > 0 ? '$ ' + input : '';
-                document.getElementsByName('bidAmount')[0].value = output
+                document.getElementsByName('bidAmount')[0].value = output;
+                if(e.key == 'Enter'){
+                    this.placeBid();
+                }
             },
             openChat(){
                 let id = this.auctionPost.users.userid;

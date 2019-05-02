@@ -28,6 +28,7 @@ export default {
     name: 'Chat',
     computed: {
         messages(){
+            this.readAll();
             setTimeout(() => {
                 this.scrollToEnd();
             }, 1);
@@ -40,8 +41,8 @@ export default {
         }
     },
     mounted(){
-        this.scrollToEnd();
-        this.$store.dispatch('readCurrentChat');
+        // this.scrollToEnd();
+        // this.$store.dispatch('readCurrentChat');
     },
     methods: {
         killConvo(){
@@ -69,6 +70,14 @@ export default {
         scrollToEnd(){
             let scroller = document.getElementById('boxThatCanScroll');
             scroller.scrollTop = scroller.scrollHeight;
+        },
+        readAll(){
+            this.$store.dispatch('readCurrentChat');
+            for(let i = 0; i < this.$store.state.chatMessages.length; i++){
+                if(!this.$store.state.chatMessages[i].hasread && this.$store.state.chatMessages[i].senderid == this.$store.state.activeChat.id){
+                    this.$store.state.chatMessages[i].hasread = 1;
+                }
+            }
         }
     }
 

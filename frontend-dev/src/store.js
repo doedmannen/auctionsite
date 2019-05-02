@@ -110,6 +110,10 @@ export default new Vuex.Store({
             let posts = await (await fetch(API_URL + 'auction')).json();
             this.commit('setPosts', posts);
         },
+        async getUser() {
+            let user = await (await fetch(API_URL + 'user/profile')).json();
+            this.commit('setUser', user);
+        },
         async getCategoriesFromDb() {
             let categories = await (await fetch(API_URL + 'category')).json();
             this.commit('setCategories', categories);

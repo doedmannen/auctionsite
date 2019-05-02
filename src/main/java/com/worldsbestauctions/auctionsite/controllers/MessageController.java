@@ -42,12 +42,14 @@ public class MessageController {
             for (Message message : messageList){
                 message.setHasread((short)1);
                 messageRepo.save(message);
-                try{
-                    socketService.sendToOne(receiver.getEmail(), new SocketWrapper(message), SocketWrapper.class);
-                }catch (Exception e){}
-                try{
-                    socketService.sendToOne(sender.getEmail(), new SocketWrapper(message), SocketWrapper.class);
-                }catch (Exception e){}
+//                Intended use was: Resend to receiver and sender to confirm read on both ends. But I don't have time for the full
+//                implementation
+//                try{
+//                    socketService.sendToOne(receiver.getEmail(), new SocketWrapper(message), SocketWrapper.class);
+//                }catch (Exception e){}
+//                try{
+//                    socketService.sendToOne(sender.getEmail(), new SocketWrapper(message), SocketWrapper.class);
+//                }catch (Exception e){}
             }
         }
     }

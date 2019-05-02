@@ -53,7 +53,7 @@ export default {
                 receiverid: this.activeChat.id,
                 message: e.target.value
             };
-            console.log(msg);
+            // console.log(msg);
             this.$store.state.socket.send(JSON.stringify(msg));
             e.target.value = "";
         },

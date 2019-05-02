@@ -24,7 +24,7 @@ export default new Vuex.Store({
     mutations: {
         setOnlineList(state, value){
             state.onlineList = value;
-            console.log(state.onlineList);
+            // console.log(state.onlineList);
         },
         addUpload(state, value) {
             state.currentUploads.push(value);
@@ -47,10 +47,10 @@ export default new Vuex.Store({
         },
         addChatMsg(state, value){
             if(!state.chatMessages.filter(m => m.id == value.id).length){
-                console.log("New message");
+                // console.log("New message");
                 state.chatMessages.push(value);
             } else {
-                console.log("Replacement");
+                // console.log("Replacement");
                 let old = state.chatMessages.filter(m => m.id == value.id)[0];
                 let index = state.chatMessages.indexOf(old);
                 state.chatMessages.splice(index, 1);
@@ -66,7 +66,7 @@ export default new Vuex.Store({
                 .bids.unshift(value);
         },
         setChatHistory(state, value){
-            console.log(value);
+            // console.log(value);
             state.chatMessages = value;
         },
         setActiveChat(state, value){
@@ -96,9 +96,13 @@ export default new Vuex.Store({
             state.notifications = value;
         },
         addNotification(state, value){
-            state.notifications.unshift(value);
+            if(!state.notifications.includes(value))
+                state.notifications.unshift(value);
         },
         addPush(state, value){
+            if(state.pushes.includes(value))
+                return;
+
             if(state.showChat && value.type == 'Message' && value.msgObject.senderid == state.activeChat.id)
                 return;
 
@@ -165,7 +169,7 @@ export default new Vuex.Store({
             this.state.socket = new WebSocket('ws://localhost:8080/websocket');
             this.state.socket.onmessage = (e) => {
                 let msg = JSON.parse(e.data);
-                console.log(msg);
+                // console.log(msg);
                 switch (msg.type) {
                     case 'Bids':
                         this.commit('appendBid', msg.msgObject);
@@ -182,7 +186,7 @@ export default new Vuex.Store({
                         this.commit('addPush', msg);
                         break;
                     default:
-                        console.log("error in msg", msg);
+                        console.log("Error in msg", msg);
                         break;
                 }
             }
@@ -202,13 +206,12 @@ export default new Vuex.Store({
         },
         removePush(){
             if(this.state.pushes.length > 0){
-                console.log("KILLING PUSH");
+                // console.log("KILLING PUSH");
                 let last = this.state.pushes.shift();
                 if(last.type == 'Message'){
                     for(let i = 0; i < this.state.pushes.length; i++){
-                        console.log('ett varv börjar', this.state.pushes[i].msgObject.senderid );
                         if(this.state.pushes[i].type == 'Message' && this.state.pushes[i].msgObject.senderid == last.msgObject.senderid){
-                            console.log("Removing push that is similar");
+                            // console.log("Removing push that is similar");
                             this.state.pushes.splice(i, 1);
                             i--;
                         }

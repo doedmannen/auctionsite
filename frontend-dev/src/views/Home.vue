@@ -85,10 +85,6 @@
 <script>
 export default {
   name: "home",
-  mounted() {
-    console.log();
-    console.log();
-  },
   data() {
     return {
       searchAuctions: "",

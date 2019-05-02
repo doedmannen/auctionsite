@@ -18,10 +18,9 @@ new Vue({
 }).$mount('#app')
 
 setInterval(() => {
-    console.log("Checking");
     if(store.state.socket == null){
         setTimeout(()=> {
-                console.log("manuell reboot");
+                console.log("Socket was rebooted");
                 store.dispatch('connectSocket');
         }, 500);
     }

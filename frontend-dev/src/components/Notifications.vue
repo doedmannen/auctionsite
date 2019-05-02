@@ -54,7 +54,7 @@ export default {
             return this.$store.state.socketConnected && this.$store.state.me;
         },
         hasNotifications(){
-            console.log(this.$store.state.notifications);
+            // console.log(this.$store.state.notifications);
             return this.$store.state.notifications.length != 0;
         },
         myNotifications(){

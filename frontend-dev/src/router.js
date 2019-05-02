@@ -19,11 +19,6 @@ export default new Router({
       component: () => import('./views/Home.vue')
     },
     {
-      path: '/about',
-      name: 'about',
-      component: () => import('./views/About.vue')
-    },
-    {
       path: '/createauction',
       name: 'CreateAuction',
       component: () => import('./views/CreateAuction.vue')

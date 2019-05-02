@@ -105,9 +105,14 @@
         mounted() {
             this.getUserFromDB();
         },
+        watch: {
+            '$route': function() {
+                this.getUserFromDB();
+            }
+        },
         computed: {
             indivProfile() {
-                return this.user
+                return this.user;
             },
             fakeComputed(){
                 this.avatar_c = this.avatar_c || this.me.avatar_color;
@@ -134,6 +139,7 @@
                 let id = this.$route.params.userid
                 let user = await (await fetch('/api/user/profile/' + id)).json();
                 this.user = {users: user}
+                console.log(this.user);
             },
 
             showModal() {

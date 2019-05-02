@@ -43,7 +43,6 @@ public class BidController {
             double oldBid = currentHighestBid(body);
             if (oldBid>=body.getBidamount() ||  auctionOwner(body, request))
             {
-                System.out.println("error, bid was too low");
             }
             else{
                 body.setBidamount(body.getBidamount());

@@ -35,9 +35,7 @@ public class SocketService {
     }
 
     public void sendToOne(String email, Object obj, Class klass) throws IOException {
-        System.out.println("Sending msg to one user");
         if(loggedIn.containsKey(email)) {
-            System.out.println(loggedIn.get(email).size());
             loggedIn.get(email).forEach(session -> {
                 try{
                     this.sendToOne(session, obj, klass);
@@ -73,9 +71,7 @@ public class SocketService {
                 loggedIn.put(session.getPrincipal().getName(), new HashSet<>());
             }
             loggedIn.get(session.getPrincipal().getName()).add(session);
-            System.out.println("A user was added into the stuff" + loggedIn.get(session.getPrincipal().getName()).size());
         } catch (Exception e) {
-            System.out.println("Could not auth user");
         }
     }
 

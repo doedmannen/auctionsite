@@ -31,8 +31,9 @@ public class NotificationController {
     List<Notification> getAll(HttpServletRequest request){
         List<Notification> notificationList = null;
         try{
-            notificationList = (List<Notification>) notificationService.getAllMyNotifications(request.getUserPrincipal().getName());
+            notificationList = ((List<Notification>) notificationService.getAllMyNotifications(request.getUserPrincipal().getName()))
+                    .stream().sorted(Comparator.comparing(Notification::getId).reversed()).collect(Collectors.toList());
         } catch (Exception e){}
-        return notificationList.stream().sorted(Comparator.comparing(Notification::getId).reversed()).collect(Collectors.toList());
+        return notificationList;
     }
 }

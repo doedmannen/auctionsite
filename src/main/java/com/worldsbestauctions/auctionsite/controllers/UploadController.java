@@ -26,8 +26,6 @@ public class UploadController {
 
     @PostMapping
     String uploadPicture(@RequestParam("fullsize") MultipartFile fullsize, @RequestParam("thumbnail") MultipartFile thumbnail){
-        System.out.println("new file got sent to us");
-        System.out.println(fullsize.getContentType());
 
         String filename = UUID.randomUUID().toString().
                 concat(fullsize.getOriginalFilename().replaceAll("^.*(\\.[\\w]{3,4})$", "$1"));
@@ -38,10 +36,5 @@ public class UploadController {
             thumbnail.transferTo(pathThumbnail);
         }catch (Exception e){ return null; }
         return filename;
-    }
-
-    @GetMapping
-    String testPath(){
-        return "WOrkd";
     }
 }

@@ -2,16 +2,16 @@
     <div>
         <div class="mainFlex" v-if="user">
             <div class="flexSection" id="namePic">
-                <i :class=indivProfile.users.avatar_class id="profileIcon"></i>
+                <i :class="getAvatar" id="profileIcon"></i>
                 <h3>{{indivProfile.users.firstname}} {{indivProfile.users.lastname}}</h3>
 
                 <div v-if="me && indivProfile.users.userid == me.userid">
-                    <button type="button" class="btn btnStyle" data-toggle="modal" data-target="#exampleModal"> Edit
+                    <button type="button" class="btn btnStyle" data-toggle="modal" data-target="#iconModal"> Edit
                         icon
                     </button>
 
                     <!-- Change details modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal fade" id="iconModal" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -32,13 +32,6 @@
                                     </button>
                                     <button class="icon" @click="changeIcon()"><i id="hippo" class="fas fa-hippo"></i>
                                     </button>
-
-                                    <!--<hr>
-                                    <h5>Change color</h5>
-                                    <button class="color" @click="changeColor()"><i id="pink" class="fas fa-circle pink"></i></button>
-                                    <button class="color" @click="changeColor()"><i id="blue" class="fas fa-circle blue"></i></button>
-                                    <button class="color" @click="changeColor()"><i id="green" class="fas fa-circle green"></i></button>
-                                    <button class="color" @click="changeColor()"><i id="yellow" class="fas fa-circle yellow"></i></button>-->
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btnStyle" data-dismiss="modal">Close</button>
@@ -81,16 +74,15 @@
         data() {
             return {
                 isActive: false,
-                user: null
+                user: null,
+                avatar: null
             }
         },
         mounted() {
             this.getUserFromDB();
-            console.log('Vi hatar', this.user)
         },
         computed: {
             indivProfile() {
-                // return this.$store.state.auctionPosts.filter(auction => auction.users.userid == this.$route.params.userid)[0];
                 return this.user
             },
             indivAuctions() {
@@ -102,12 +94,13 @@
             loggedIn() {
                 return this.$store.state.me != null;
             },
-
+            getAvatar() {
+                return this.avatar || this.indivProfile.users.avatar_class;
+            }
         },
         methods: {
             async getUserFromDB() {
                 let id = this.$route.params.userid
-                console.log('blabla', id)
                 let user = await (await fetch('/api/user/profile/' + id)).json();
                 this.user = {users: user}
             },
@@ -127,7 +120,7 @@
                 data.avatar_class = document.getElementById("iconChoice").className;
                 this.avatar = data.avatar_class
 
-                $('#exampleModal').modal('toggle');
+                $('#iconModal').modal('toggle');
 
                 await fetch('/api/user', {
                     method: "PUT",
@@ -136,19 +129,7 @@
                         "content-type": "application/json"
                     }
                 });
-            },
-            /*changeColor() {
-                document.addEventListener('click', function (e) {
-                    let iconClass = document.getElementById("iconChoice");
-                    console.log("This is class: " + iconClass.className);
-
-                    let array = iconClass.className.split(" ");
-                    iconClass.className = array[0] + " " + array[1] + " " + e.target.id;
-                    console.log(array)
-
-                });
-            },*/
-
+            }
         }
     }
     ;
@@ -196,24 +177,8 @@
         font-size: 2em;
         outline: #0c5460;
     }
-
-    .blue {
-        color: cornflowerblue;
-    }
-
-    .pink {
-        color: #e83e8c;
-    }
-
-    .green {
-        color: limegreen;
-    }
-
-    .yellow {
-        color: gold;
-    }
-
-    .color, .icon {
+    
+    .icon {
         background-color: white;
         border: none;
         outline: none;

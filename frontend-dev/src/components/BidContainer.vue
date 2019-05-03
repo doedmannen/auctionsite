@@ -56,7 +56,10 @@
                             <b-col><i :class="bid.user.avatar_class" :style="'color: '+bid.user.avatar_color"></i></b-col>
                             <b-col><router-link :to="'/profile/' + bid.user.userid">{{bid.user.firstname+' '+bid.user.lastname}}</router-link></b-col>
                             <b-col>${{bid.bidamount}}</b-col>
-                            <b-col>{{bid.bidtime.toString().replace(/T/g," ")}}</b-col>
+                            <b-col>{{(bid.bidtime instanceof Date ? bid.bidtime.getFullYear() + ' ' 
+                                + bid.bidtime.getMonth() + ' ' + bid.bidtime.getDay() + ' ' +
+                                bid.bidtime.getHour() + ':' + bid.bidtime.getMinutes() + ':' + bid.bidtime.getSeconds() 
+                                : bid.bidtime.toString().replace(/T/g," "))}}</b-col>
                         </b-row>
                         <button @click="loadPreviousFive"><<</button>
                         <button @click="loadFiveMore">>></button>
@@ -111,7 +114,10 @@
                             <b-col><i :class="bid.user.avatar_class" :style="'color: '+bid.user.avatar_color"></i></b-col>
                             <b-col><router-link :to="'/profile/' + bid.user.userid">{{bid.user.firstname+' '+bid.user.lastname}}</router-link></b-col>
                             <b-col>${{bid.bidamount}}</b-col>
-                            <b-col>{{bid.bidtime.toString().replace(/T/g," ")}}</b-col>
+                            <b-col>{{(bid.bidtime instanceof Date ? bid.bidtime.getFullYear() + ' ' 
+                                + bid.bidtime.getMonth() + ' ' + bid.bidtime.getDay() + ' ' +
+                                bid.bidtime.getHour() + ':' + bid.bidtime.getMinutes() + ':' + bid.bidtime.getSeconds() 
+                                : bid.bidtime.toString().replace(/T/g," "))}}</b-col>
                         </b-row>
                         <button @click="loadPreviousFive"><<</button>
                         <button @click="loadFiveMore">>></button>

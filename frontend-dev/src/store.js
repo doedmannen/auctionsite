@@ -61,9 +61,11 @@ export default new Vuex.Store({
             state.socketConnected = value;
         },
         appendBid(state, value){
+           
             state.auctionPosts
                 .filter(ap => value.auctionid == ap.auctionid)[0]
-                .bids.unshift(value);
+                .bids.unshift(value); 
+                console.log(state.auctionPosts)
         },
         setChatHistory(state, value){
             // console.log(value);

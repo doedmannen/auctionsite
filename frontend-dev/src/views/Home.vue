@@ -30,7 +30,7 @@
 
       <div class="mainFlex">
         <div
-          class="border"
+          class="border hello"
           v-for="(auction, index) in auctionPosts.slice(0,auctionsShown)"
           :key="index"
         >
@@ -232,5 +232,8 @@ a:hover {
 .flex {
   display: flex;
   flex-direction: column;
+}
+.hello{
+    width: 350px;
 }
 </style>

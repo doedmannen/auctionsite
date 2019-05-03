@@ -22,6 +22,13 @@
                     </div>
                     </div>
                 </div>
+                <div v-else class="convoContainer">
+                    <div class="singleConversation">
+                        <div class="noConvo">
+                            No conversations
+                        </div>
+                    </div>
+                </div>
             </div>
             <div v-else>
                 <ChatComponent />
@@ -176,5 +183,9 @@ export default {
 }
 .offline > *{
     color: red;
+}
+.noConvo{
+    text-align: center;
+    padding: 10px;
 }
 </style>

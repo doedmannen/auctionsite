@@ -97,8 +97,9 @@ export default new Vuex.Store({
         },
         addNotification(state, value){
             console.log(value);
-            if(!state.notifications.includes(value))
+            if(state.notifications.filter(n => n.id == value.id).length == 0){
                 state.notifications.unshift(value);
+            }
         },
         addPush(state, value){
             if(state.pushes.includes(value))

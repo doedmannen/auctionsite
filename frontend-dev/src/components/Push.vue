@@ -12,9 +12,9 @@
           </div>
           <div class="textContent" @click="clickPush">
               <div v-if="pushType == 'Notification'">
-                  <div v-if="msgObject.bid.user.userid == msgObject.auction.users.userid">
+                  <div v-if="msgObject.auction.users.userid != me.userid">
                       <p>
-                          <strong>You are loosing an auction. </strong> {{msgObject.bid.user.firstname}} {{ msgObject.bid.user.lastname}} placed a bid of <strong>$ {{msgObject.bid.bidamount}}</strong> on <em><strong>{{msgObject.auction.title}}</strong></em>.
+                          <strong>You are losing an auction. </strong> {{msgObject.bid.user.firstname}} {{ msgObject.bid.user.lastname}} placed a bid of <strong>$ {{msgObject.bid.bidamount}}</strong> on <em><strong>{{msgObject.auction.title}}</strong></em>.
                       </p>
                   </div>
                   <div class="notificationText" v-else>
@@ -70,6 +70,9 @@ export default {
         },
         msgObject(){
             return this.$store.state.pushes[this.indexToUse].msgObject;
+        },
+        me(){
+            return this.$store.state.me 
         }
     },
     methods: {

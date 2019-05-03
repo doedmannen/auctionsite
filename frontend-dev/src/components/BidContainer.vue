@@ -20,7 +20,7 @@
             <hr class="my-4">
             <div v-if="loggedIn">
                 <div v-if="auctionPost.users.userid != this.me.userid">
-                    <div v-if="auctionPost.bids[0].user.userid != this.me.userid">
+                    <div v-if="!auctionPost.bids[0] || auctionPost.bids[0].user.userid != this.me.userid">
                         <h3>Place your bid</h3>
                         <input type="text" name="bidAmount" placeholder="Place your bid"
                         @change="parseNumbers" v-on:keyup="parseNumbers"><br>

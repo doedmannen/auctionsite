@@ -27,7 +27,6 @@ public class MessageService {
     public void incommingChatMessage(WebSocketSession session, Message m){
         Users sender = null;
         Users receiver = null;
-        System.out.println(session.getPrincipal().getName());
         try{
             sender = userRepo.findDistinctFirstByEmailIgnoreCase(session.getPrincipal().getName());
             receiver = userRepo.findById(m.getReceiverid()).get();

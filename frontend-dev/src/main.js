@@ -17,11 +17,11 @@ new Vue({
   render: h => h(App)
 }).$mount('#app')
 
-setInterval(() => {
-    if(store.state.socket == null){
-        setTimeout(()=> {
-                console.log("Socket was rebooted");
-                store.dispatch('connectSocket');
-        }, 500);
-    }
-}, 1000);
+// setInterval(() => {
+//     if(store.state.socket == null){
+//         setTimeout(()=> {
+//                 console.log("Socket was rebooted");
+//                 store.dispatch('connectSocket');
+//         }, 500);
+//     }
+// }, 1000);

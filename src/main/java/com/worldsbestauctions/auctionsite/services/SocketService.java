@@ -71,7 +71,10 @@ public class SocketService {
                 loggedIn.put(session.getPrincipal().getName(), new HashSet<>());
             }
             loggedIn.get(session.getPrincipal().getName()).add(session);
+            System.out.println(session.getPrincipal().getName() + " has number of sessions: "+ loggedIn.get(session.getPrincipal().getName()).size());
+            System.out.println(session);
         } catch (Exception e) {
+            System.out.println("A anonymous socket connected");
         }
     }
 

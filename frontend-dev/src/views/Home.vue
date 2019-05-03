@@ -67,7 +67,7 @@
                   >Price: ${{auction.startprice }} Bids: {{ auction.bids.length }}</p>
                 </b-col>
                 <b-col>
-                  <p class="textRight">{{auction.endtime.replace(/T/g, "~").toString().slice(5, 16)}}</p>
+                  <p class="textRight">{{(toDateString(auction.endtime))}}</p>
                 </b-col>
               </b-row>
             </b-container>
@@ -111,14 +111,14 @@ export default {
 
       if (this.showActive) {
         active = ap.filter(auction => {
-          let dat = auction.endtime.replace(/T/g, " ");
-          return timeNow > new Date(dat);
+          let dat = auction.endtime;
+          return timeNow > new Date(dat*1000);
         });
       }
       if (this.showCompleted) {
         complete = ap.filter(auction => {
-          let dat = auction.endtime.replace(/T/g, " ");
-          return timeNow <= new Date(dat);
+          let dat = auction.endtime;
+          return timeNow <= new Date(dat*1000);
         });
       }
 
@@ -143,6 +143,11 @@ export default {
     searchInDb() {
       this.$store.commit("homeSearchInDb", this.searchAuctions);
       //skickar value till store/mutated
+    },
+    toDateString(seconds){
+        let ms = seconds * 1000;
+        let d = new Date(ms);
+        return `${(d.getFullYear()+"").padStart(4,0)}-${(d.getMonth()+1+"").padStart(2,0)}-${(d.getDate()+"").padStart(2,0)} ${(d.getHours()+"").padStart(2,0)}:${(d.getMinutes()+"").padStart(2,0)}:${(d.getSeconds()+"").padStart(2,0)}`;
     }
   }
 };

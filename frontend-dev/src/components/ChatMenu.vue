@@ -132,6 +132,7 @@ export default {
 }
 .unread{
     font-style: italic;
+    margin-right: 10px;
 }
 .invisiblecover{
     min-height: 100vh;

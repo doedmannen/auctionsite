@@ -5,6 +5,7 @@ import com.worldsbestauctions.auctionsite.socketwrapper.Sendable;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -55,8 +56,8 @@ public class Bids  implements Sendable{
         this.bidtime = bidtime;
     }
 
-    public LocalDateTime getBidtime() {
-        return bidtime;
+    public long getBidtime() {
+        return bidtime.toEpochSecond(ZoneOffset.UTC);
     }
 
     public long getId() {

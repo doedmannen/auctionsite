@@ -79,7 +79,7 @@
                             </router-link>
                         </div>
                         <div id="right">
-                            Ending: {{auction.endtime.toString().replace(/T/g," ")}}
+                            Ending: {{toDateString(auction.endtime)}}
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -141,7 +141,11 @@
                 this.user = {users: user}
                 console.log(this.user);
             },
-
+            toDateString(seconds){
+                let ms = seconds * 1000;
+                let d = new Date(ms);
+                return `${(d.getFullYear()+"").padStart(4,0)}-${(d.getMonth()+1+"").padStart(2,0)}-${(d.getDate()+"").padStart(2,0)} ${(d.getHours()+"").padStart(2,0)}:${(d.getMinutes()+"").padStart(2,0)}:${(d.getSeconds()+"").padStart(2,0)}`;
+            },
             showModal() {
                 let element = this.$refs.modal.$el;
                 $(element).modal('show');

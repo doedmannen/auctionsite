@@ -35,7 +35,7 @@
                 </div>
             </div>
 
-            <p>{{auctionPost.endtime.toString().replace(/T/g," ")}}</p>
+            <p>{{(toDateString(auctionPost.endtime))}}</p>
             <router-link :to="'/profile/' + auctionPost.users.userid"><p class="nameContainer">Seller: {{ auctionPost.users.firstname+' '+auctionPost.users.lastname}} <i :class="auctionPost.users.avatar_class" :style="'color: '+auctionPost.users.avatar_color"></i></p></router-link>
             <p class="startnewchat" v-if="loggedIn && auctionPost.users.userid != this.me.userid" @click="openChat">Open chat</p>
             <div>
@@ -56,10 +56,7 @@
                             <b-col><i :class="bid.user.avatar_class" :style="'color: '+bid.user.avatar_color"></i></b-col>
                             <b-col><router-link :to="'/profile/' + bid.user.userid">{{bid.user.firstname+' '+bid.user.lastname}}</router-link></b-col>
                             <b-col>${{bid.bidamount}}</b-col>
-                            <b-col>{{(bid.bidtime instanceof Date ? bid.bidtime.getFullYear() + ' ' 
-                                + bid.bidtime.getMonth() + ' ' + bid.bidtime.getDay() + ' ' +
-                                bid.bidtime.getHour() + ':' + bid.bidtime.getMinutes() + ':' + bid.bidtime.getSeconds() 
-                                : bid.bidtime.toString().replace(/T/g," "))}}</b-col>
+                            <b-col>{{(toDateString(bid.bidtime))}}</b-col>
                         </b-row>
                         <button @click="loadPreviousFive"><<</button>
                         <button @click="loadFiveMore">>></button>
@@ -114,10 +111,7 @@
                             <b-col><i :class="bid.user.avatar_class" :style="'color: '+bid.user.avatar_color"></i></b-col>
                             <b-col><router-link :to="'/profile/' + bid.user.userid">{{bid.user.firstname+' '+bid.user.lastname}}</router-link></b-col>
                             <b-col>${{bid.bidamount}}</b-col>
-                            <b-col>{{(bid.bidtime instanceof Date ? bid.bidtime.getFullYear() + ' ' 
-                                + bid.bidtime.getMonth() + ' ' + bid.bidtime.getDay() + ' ' +
-                                bid.bidtime.getHour() + ':' + bid.bidtime.getMinutes() + ':' + bid.bidtime.getSeconds() 
-                                : bid.bidtime.toString().replace(/T/g," "))}}</b-col>
+                            <b-col>{{(toDateString(bid.bidtime))}}</b-col>
                         </b-row>
                         <button @click="loadPreviousFive"><<</button>
                         <button @click="loadFiveMore">>></button>
@@ -146,6 +140,11 @@
                     this.limit += 5
                 }
 
+            },
+            toDateString(seconds){
+                let ms = seconds * 1000;
+                let d = new Date(ms);
+                return `${(d.getFullYear()+"").padStart(4,0)}-${(d.getMonth()+1+"").padStart(2,0)}-${(d.getDate()+"").padStart(2,0)} ${(d.getHours()+"").padStart(2,0)}:${(d.getMinutes()+"").padStart(2,0)}:${(d.getSeconds()+"").padStart(2,0)}`;
             },
             loadPreviousFive(){
                 if(this.limit>5){
@@ -200,10 +199,10 @@
                 return this.$store.state.auctionPosts.filter(auction => auction.auctionid == this.$route.params.auctionid)[0]
             },
             activeAuction() {
-                return Date.now() <= Date.parse(this.auctionPost.endtime.toString())
+                return Date.now() <= new Date(this.auctionPost.endtime * 1000)
             },
             oneDayRemaining() {
-                return Date.parse(this.auctionPost.endtime.toString()) - this.oneDayInMS < Date.now()
+                return new Date(this.auctionPost.endtime * 1000) - this.oneDayInMS < Date.now()
             },
             loggedIn() {
                 return this.$store.state.me != null;

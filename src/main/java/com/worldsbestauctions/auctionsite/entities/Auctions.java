@@ -2,6 +2,7 @@ package com.worldsbestauctions.auctionsite.entities;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -86,16 +87,16 @@ public class Auctions {
         this.starttime = starttime;
     }
 
-    public LocalDateTime getStarttime() {
-        return starttime;
+    public long getStarttime() {
+        return starttime.toEpochSecond(ZoneOffset.UTC);
     }
 
     public void setEndtime(LocalDateTime endtime) {
         this.endtime = endtime;
     }
 
-    public LocalDateTime getEndtime() {
-        return endtime;
+    public long getEndtime() {
+        return endtime.toEpochSecond(ZoneOffset.UTC);
     }
 
     public void setAuctionowner(long auctionowner) {
